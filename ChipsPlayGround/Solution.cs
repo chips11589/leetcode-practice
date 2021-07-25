@@ -4,6 +4,31 @@ namespace ChipsPlayGround
 {
     public class Solution
     {
+        public static void Rotate(int[] nums, int k)
+        {
+            //int maxRotateCount = k % nums.Length;
+            //for (int i = 0; i < maxRotateCount; i++)
+            //{
+            //    int last = nums[nums.Length - 1];
+            //    for (int j = nums.Length - 1; j > 0; j--)
+            //    {
+            //        nums[j] = nums[j - 1];
+            //    }
+            //    nums[0] = last;
+            //}
+
+            int maxRotateCount = k % nums.Length;
+            for (int i = 0; i < maxRotateCount; i++)
+            {
+                int last = nums[nums.Length - 1];
+                for (int j = nums.Length - 1; j > 0; j--)
+                {
+                    nums[j] = nums[j - 1];
+                }
+                nums[0] = last;
+            }
+        }
+
         public static int MaxProfit(int[] prices)
         {
             const int MAX_VALUE = 10001;

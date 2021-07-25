@@ -7,6 +7,18 @@ namespace ChipsTest
     public class SolutionTest
     {
         [TestMethod]
+        [DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3, new int[] { 5, 6, 7, 1, 2, 3, 4 })]
+        [DataRow(new int[] { -1, -100, 3, 99 }, 2, new int[] { 3, 99, -1, -100 })]
+        public void Rotate(int[] input, int k, int[] expected)
+        {
+            Solution.Rotate(input, k);
+            for (int i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], input[i]);
+            }
+        }
+
+        [TestMethod]
         [DataRow(new int[] { 7, 1, 5, 3, 6, 4 }, 7)]
         [DataRow(new int[] { 1, 2, 3, 4, 5 }, 4)]
         [DataRow(new int[] { 7, 6, 4, 3, 1 }, 0)]
