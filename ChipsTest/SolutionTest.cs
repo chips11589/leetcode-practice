@@ -8,7 +8,14 @@ namespace ChipsTest
     {
         [TestMethod]
         [DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3, new int[] { 5, 6, 7, 1, 2, 3, 4 })]
+        [DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 2, new int[] { 6, 7, 1, 2, 3, 4, 5 })]
+        [DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 1, new int[] { 7, 1, 2, 3, 4, 5, 6 })]
         [DataRow(new int[] { -1, -100, 3, 99 }, 2, new int[] { 3, 99, -1, -100 })]
+        [DataRow(new int[] { 1 }, 0, new int[] { 1 })]
+        [DataRow(new int[] { 1 }, 1, new int[] { 1 })]
+        [DataRow(new int[] { 1, 2 }, 1, new int[] { 2, 1 })]
+        [DataRow(new int[] { 1, 2 }, 2, new int[] { 1, 2 })]
+        [DataRow(new int[] { 1, 2, 3, 4, 5, 6 }, 2, new int[] { 5, 6, 1, 2, 3, 4 })]
         public void Rotate(int[] input, int k, int[] expected)
         {
             Solution.Rotate(input, k);
