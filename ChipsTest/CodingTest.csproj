@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChipsPlayGround\ChipsPlayGround.csproj" />
+    <ProjectReference Include="..\ChipsPlayGround\Coding.csproj" />
   </ItemGroup>
 
 </Project>
