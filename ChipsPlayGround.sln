@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingTest", "ChipsTest\Cod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignPatterns", "DesignPatterns\DesignPatterns.csproj", "{5C3F9848-4DC3-4BB7-A5D1-A37EBAAE6119}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "NodejsConsoleApp", "NodejsConsoleApp\NodejsConsoleApp.njsproj", "{87468236-AF04-4449-988B-97E71A7D1FBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5C3F9848-4DC3-4BB7-A5D1-A37EBAAE6119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C3F9848-4DC3-4BB7-A5D1-A37EBAAE6119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C3F9848-4DC3-4BB7-A5D1-A37EBAAE6119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87468236-AF04-4449-988B-97E71A7D1FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87468236-AF04-4449-988B-97E71A7D1FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87468236-AF04-4449-988B-97E71A7D1FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87468236-AF04-4449-988B-97E71A7D1FBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
