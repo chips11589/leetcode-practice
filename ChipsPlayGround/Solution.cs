@@ -121,7 +121,7 @@ namespace ChipsPlayGround
             return profit;
         }
 
-        public int[] Intersect(int[] nums1, int[] nums2)
+        public static int[] Intersect(int[] nums1, int[] nums2)
         {
             //Input: nums1 = [4, 9, 10, 15], nums2 = [4, 4, 8, 9, 9, 10, 12, 15]
             //Output: [4,9,15]
@@ -167,5 +167,7 @@ namespace ChipsPlayGround
 
             return result.ToArray();
         }
+
+
     }
 }
