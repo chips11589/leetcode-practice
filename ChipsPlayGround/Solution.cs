@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ChipsPlayGround
 {
@@ -118,6 +119,53 @@ namespace ChipsPlayGround
             }
 
             return profit;
+        }
+
+        public int[] Intersect(int[] nums1, int[] nums2)
+        {
+            //Input: nums1 = [4, 9, 10, 15], nums2 = [4, 4, 8, 9, 9, 10, 12, 15]
+            //Output: [4,9,15]
+
+            List<int> result = new List<int>();
+            Dictionary<int, int> distinct1 = new Dictionary<int, int>();
+            Dictionary<int, int> distinct2 = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                if (!distinct1.ContainsKey(nums1[i]))
+                {
+                    distinct1[nums1[i]] = 0;
+                }
+                else
+                {
+                    distinct1[nums1[i]] += 1;
+                }
+            }
+
+            for (int i = 0; i < nums2.Length; i++)
+            {
+                if (!distinct2.ContainsKey(nums2[i]))
+                {
+                    distinct2[nums2[i]] = 0;
+                }
+                else
+                {
+                    distinct2[nums2[i]] += 1;
+                }
+            }
+
+            foreach (var key in distinct1.Keys)
+            {
+                if (distinct2.ContainsKey(key))
+                {
+                    for (int i = 0; i < Math.Min(distinct1[key], distinct2[key]) + 1; i++)
+                    {
+                        result.Add(key);
+                    }
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }
