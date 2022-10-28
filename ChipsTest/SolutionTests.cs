@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ChipsTest
 {
     [TestClass]
-    public class SolutionTest
+    public class SolutionTests
     {
         [TestMethod]
         [DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3, new int[] { 5, 6, 7, 1, 2, 3, 4 })]
@@ -44,7 +44,17 @@ namespace ChipsTest
         [DataRow(new int[] { 4, 9, 5 }, new int[] { 9, 4, 9, 8, 4 }, new int[] { 4, 9 })]
         public void Intersect(int[] nums1, int[] nums2, int[] expected)
         {
-            expected.Should().BeEquivalentTo(Solution.Intersect(nums1, nums2));
+            Solution.Intersect(nums1, nums2).Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        [DataRow(new int[] { 1, 3 }, new int[] { 2 }, 2)]
+        [DataRow(new int[] { 1, 2 }, new int[] { 3, 4 }, 2.5)]
+        [DataRow(new int[] { 3, 5, 10, 11, 17 }, new int[] { 9, 13, 20, 21, 23, 27 }, 13)]
+        [DataRow(new int[] { 2, 3, 5, 8 }, new int[] { 10, 12, 14, 16, 18, 20 }, 11)]
+        public void FindMedianSortedArrays(int[] nums1, int[] nums2, double expected)
+        {
+            Solution.FindMedianSortedArrays(nums1, nums2).Should().Be(expected);
         }
     }
 }

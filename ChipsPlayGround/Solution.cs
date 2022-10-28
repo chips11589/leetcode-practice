@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChipsPlayGround
 {
@@ -168,6 +169,87 @@ namespace ChipsPlayGround
             return result.ToArray();
         }
 
+        public static double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            //var list = nums1.ToList();
+            //list.AddRange(nums2);
 
+            //list.Sort();
+            //return list.Any()
+            //    ? list.Count % 2 != 0
+            //        ? list.ElementAt(list.Count / 2)
+            //        : (double)(list.ElementAt(list.Count / 2 - 1) + list.ElementAt(list.Count / 2)) / 2
+            //    : 0;
+
+            //[DataRow(new int[] { 1, 3 }, new int[] { 2 }, 2)]
+            //[DataRow(new int[] { 1, 2 }, new int[] { 3, 4 }, 2.5)]
+
+            double findMedian(int[] a, int[] b)
+            {
+                int minIndex = 0;
+                int maxIndex = a.Length;
+                int i = 0; // num of elements taken from 1st array
+                int j = 0; // num of elements taken from 2nd array
+                int median = 0;
+
+                while (minIndex <= maxIndex)
+                {
+                    i = (minIndex + maxIndex) / 2;
+                    j = (a.Length + b.Length + 1) / 2 - i;
+
+                    if (j < b.Length && i > 0 && a[i - 1] > b[j])
+                    {
+                        maxIndex = i - 1;
+                    }
+                    else if (j > 0 && i < a.Length && b[j - 1] > a[i])
+                    {
+                        minIndex = i + 1;
+                    }
+                    else
+                    {
+                        if (i == 0)
+                        {
+                            median = b[j - 1];
+                        }
+                        else if (j == 0)
+                        {
+                            median = a[i - 1];
+                        }
+                        else
+                        {
+                            median = Math.Max(a[i - 1], b[j - 1]);
+                        }
+                        break;
+                    }
+                }
+
+                // calculating the median.
+                // If number of elements is odd
+                // there is one middle element.
+                if ((a.Length + b.Length) % 2 == 1)
+                    return median;
+
+                // Elements from a[] in the second
+                // half is an empty set.
+                if (i == a.Length)
+                    return (median + b[j]) / 2.0;
+
+                // Elements from b[] in the second
+                // half is an empty set.
+                if (j == b.Length)
+                    return (median + a[i]) / 2.0;
+
+                return (median + Math.Min(a[i], b[j])) / 2.0;
+            };
+
+            if (nums1.Length < nums2.Length)
+            {
+                return findMedian(nums1, nums2);
+            }
+            else
+            {
+                return findMedian(nums2, nums1);
+            }
+        }
     }
 }
