@@ -1,6 +1,7 @@
 using ChipsPlayGround;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace ChipsTest
 {
@@ -55,6 +56,20 @@ namespace ChipsTest
         public void FindMedianSortedArrays(int[] nums1, int[] nums2, double expected)
         {
             Solution.FindMedianSortedArrays(nums1, nums2).Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void CountkSpikes()
+        {
+            //Solution.CountkSpikes(new List<int> { 1, 3, 2, 5, 4 }, 1);
+            Solution.CountkSpikes(new List<int> { 1,2,8,3,7,5,4 }, 2);
+        }
+
+        [TestMethod]
+        public void FindMaxProducts()
+        {
+            //Solution.FindMaxProducts(new List<int> { 2, 9, 4, 7, 5, 2 });
+            Solution.FindMaxProducts(new List<int> { 25, 26, 45, 22, 31, 47, 29, 47, 2, 25, 25 });
         }
     }
 }

@@ -251,5 +251,73 @@ namespace ChipsPlayGround
                 return findMedian(nums2, nums1);
             }
         }
+
+        public static int CountkSpikes(List<int> prices, int k)
+        {
+            int count = 0;
+            int totalPrices = prices.Count;
+
+            for (int i = 0; i < totalPrices; i++)
+            {
+                bool foundK = false;
+                int leftK = 0;
+                int rightK = 0;
+                for (int j = 1; j < totalPrices; j++)
+                {
+                    if (i - j >= 0 && prices[i - j] < prices[i])
+                    {
+                        leftK++;
+                    }
+                    if (i + j < totalPrices && prices[i + j] < prices[i])
+                    {
+                        rightK++;
+                    }
+
+                    if (leftK >= k && rightK >= k)
+                    {
+                        foundK = true;
+                        break;
+                    }
+                }
+                if (foundK)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        public static long FindMaxProducts(List<int> products)
+        {
+            List<long> sum = new List<long>() { 0 };
+            int sumIndex = 0;
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                if (i > 0 && products[i] <= products[i - 1])
+                {
+                    var maxToTake = products[i];
+                    var newSum = 0;
+                    for (int j = i; j >= 0; j--)
+                    {
+                        newSum += Math.Min(products[j], maxToTake);
+                        maxToTake--;
+                        if (products[j] < maxToTake)
+                        {
+                            maxToTake = products[j] - 1;
+                        }
+                    }
+                    sum.Add(newSum);
+                    sumIndex++;
+                }
+                else
+                {
+                    sum[sumIndex] += products[i];
+                }
+            }
+
+            return sum.Max();
+        }
     }
 }
