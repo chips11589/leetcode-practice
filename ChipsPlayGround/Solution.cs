@@ -256,6 +256,8 @@ namespace ChipsPlayGround
         {
             int count = 0;
             int totalPrices = prices.Count;
+            int minSpike = int.MaxValue;
+            int lastRightSmallerIndex = -1;
 
             for (int i = 0; i < totalPrices; i++)
             {
@@ -264,18 +266,35 @@ namespace ChipsPlayGround
                 int rightK = 0;
                 for (int j = 1; j < totalPrices; j++)
                 {
-                    if (i - j >= 0 && prices[i - j] < prices[i])
+                    if (prices[i] >= minSpike)
+                    {
+                        leftK = k;
+                    }
+                    else if (i - j >= 0 && prices[i - j] < prices[i])
                     {
                         leftK++;
                     }
-                    if (i + j < totalPrices && prices[i + j] < prices[i])
+
+                    if (i + j < lastRightSmallerIndex)
                     {
+                        rightK = k;
+                    }
+                    else if (i + j < totalPrices && prices[i + j] < prices[i])
+                    {
+                        if (j > lastRightSmallerIndex)
+                        {
+                            lastRightSmallerIndex = j;
+                        }
                         rightK++;
                     }
 
                     if (leftK >= k && rightK >= k)
                     {
                         foundK = true;
+                        if (minSpike > prices[i])
+                        {
+                            minSpike = prices[i];
+                        }
                         break;
                     }
                 }

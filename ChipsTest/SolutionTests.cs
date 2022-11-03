@@ -62,7 +62,8 @@ namespace ChipsTest
         public void CountkSpikes()
         {
             //Solution.CountkSpikes(new List<int> { 1, 3, 2, 5, 4 }, 1);
-            Solution.CountkSpikes(new List<int> { 1,2,8,3,7,5,4 }, 2);
+            //Solution.CountkSpikes(new List<int> { 1,2,8,3,7,5,4 }, 2);
+            Solution.CountkSpikes(new List<int> { 1,2,7,3,8,5,4 }, 2);
         }
 
         [TestMethod]
