@@ -63,7 +63,7 @@ namespace ChipsTest
         {
             //Solution.CountkSpikes(new List<int> { 1, 3, 2, 5, 4 }, 1);
             //Solution.CountkSpikes(new List<int> { 1,2,8,3,7,5,4 }, 2);
-            Solution.CountkSpikes(new List<int> { 1,2,7,3,8,5,4 }, 2);
+            Solution.CountkSpikes(new List<int> { 1, 2, 7, 3, 8, 5, 4 }, 2);
         }
 
         [TestMethod]
@@ -71,6 +71,13 @@ namespace ChipsTest
         {
             //Solution.FindMaxProducts(new List<int> { 2, 9, 4, 7, 5, 2 });
             Solution.FindMaxProducts(new List<int> { 25, 26, 45, 22, 31, 47, 29, 47, 2, 25, 25 });
+        }
+
+        [TestMethod]
+        [DataRow(new string[] { "dd", "aa", "bb", "dd", "aa", "dd", "bb", "dd", "aa", "cc", "bb", "cc", "dd", "cc" })]
+        public void LongestPalindrome(string[] words)
+        {
+            Solution.LongestPalindrome(words).Should().Be(22);
         }
     }
 }

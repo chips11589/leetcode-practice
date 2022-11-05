@@ -338,5 +338,77 @@ namespace ChipsPlayGround
 
             return sum.Max();
         }
+
+        public static int LongestPalindrome(string[] words)
+        {
+            // ["lc","cl","gg"]
+            // ["cc","ll","xx"]
+            // ["cl"]
+            // ["cc"]
+            // ["dd","aa","bb","dd","aa","dd","bb","dd","aa","cc","bb","cc","dd","cc"]
+            // ["nn","nn","hg","gn","nn","hh","gh","nn","nh","nh"]
+            // ["qo","fo","fq","qf","fo","ff","qq","qf","of","of","oo","of","of","qf","qf","of"]
+
+            Dictionary<string, int> palindromeWordCounts = new Dictionary<string, int>();
+            int longestDiffLetterLength = 0;
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i][0] == words[i][1])
+                {
+                    if (!palindromeWordCounts.ContainsKey(words[i]))
+                    {
+                        palindromeWordCounts.Add(words[i], -2);
+                    }
+                    else
+                    {
+                        palindromeWordCounts[words[i]] -= 2; // gg, gg
+                    }
+                }
+                else
+                {
+                    var reversedString = new string(words[i].Reverse().ToArray());
+                    if (palindromeWordCounts.ContainsKey(reversedString)) // lc, cl, cl, lc
+                    {
+                        longestDiffLetterLength += 4;
+                        palindromeWordCounts[reversedString]--;
+                        if (palindromeWordCounts[reversedString] == 0)
+                        {
+                            palindromeWordCounts.Remove(reversedString);
+                        }
+                    }
+                    else if (!palindromeWordCounts.ContainsKey(words[i]))
+                    {
+                        palindromeWordCounts.Add(words[i], 1);
+                    }
+                    else
+                    {
+                        palindromeWordCounts[words[i]]++;
+                    }
+                }
+            }
+
+            int longestSameLetterLength = 0;
+            bool oddLengthFound = false;
+            foreach (var key in palindromeWordCounts.Keys)
+            {
+                var length = palindromeWordCounts[key];
+                if (length < 0)
+                {
+                    longestSameLetterLength += (length - length % 4);
+
+                    if (length % 4 != 0)
+                    {
+                        oddLengthFound = true;
+                    }
+                }
+            }
+
+            if (oddLengthFound) longestSameLetterLength -= 2;
+
+            if (longestSameLetterLength < 0) longestDiffLetterLength -= longestSameLetterLength;
+
+            return longestDiffLetterLength;
+        }
     }
 }
