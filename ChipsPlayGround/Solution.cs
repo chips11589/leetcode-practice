@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -445,6 +446,39 @@ namespace ChipsPlayGround
             }
 
             return maxes.Max();
+        }
+
+        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        {
+            ListNode current = l1;
+
+            while (current != null)
+            {
+                int sum;
+                if (l2 == null) sum = current.val;
+                else sum = current.val + l2.val;
+
+                current.val = sum % 10;
+
+                if (sum >= 10)
+                {
+                    if (current.next != null)
+                        current.next.val++;
+                    else if (l2?.next != null)
+                        l2.next.val++;
+                    else current.next = new ListNode(1);
+                }
+
+                if (current.next == null && l2 != null)
+                {
+                    current.next = l2.next;
+                    l2 = null;
+                }
+                current = current.next;
+
+                l2 = l2?.next;
+            }
+            return l1;
         }
     }
 }
