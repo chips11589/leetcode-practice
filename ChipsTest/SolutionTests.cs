@@ -79,5 +79,14 @@ namespace ChipsTest
         {
             Solution.LongestPalindrome(words).Should().Be(22);
         }
+
+        [TestMethod]
+        [DataRow(new int[] { 1, 20, 10, 1, 12, 40, 10, 8 }, 69)]
+        [DataRow(new int[] { 3, 2, 3, 4, 12, 4, 4, 20 }, 38)]
+        [DataRow(new int[] { 3, 12, 3, 4, 12, 4, 4, 20 }, 44)]
+        public void FindLargestAmountToRob(int[] input, int expected)
+        {
+            Solution.FindLargestAmountToRob(input).Should().Be(expected);
+        }
     }
 }
