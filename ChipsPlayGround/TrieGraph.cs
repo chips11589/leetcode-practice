@@ -6,7 +6,7 @@ namespace Coding
     {
         public class Node
         {
-            private Dictionary<char, Node> _children = new Dictionary<char, Node>();
+            private readonly Dictionary<char, Node> _children = new();
 
             public void Add(string s)
             {

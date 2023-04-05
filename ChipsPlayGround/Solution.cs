@@ -90,37 +90,64 @@ namespace ChipsPlayGround
 
         public static int MaxProfit(int[] prices)
         {
-            const int MAX_VALUE = 10001;
-            int buyPrice = MAX_VALUE;
-            int profit = 0;
-            int sellPrice = 0;
-            int current = MAX_VALUE;
+            // 2, 1, 2, 0, 1
+            var buyPrice = 2000; // 2,1,0
+            var profit = 0; // 1,
+            var prev = 0; // 2,1,2,0
 
             for (int i = 0; i < prices.Length; i++)
             {
-                if (i == prices.Length - 1 && sellPrice <= prices[i])
+                if (prev > prices[i] && prev > buyPrice) // price drop
                 {
-                    current = MAX_VALUE;
-                    sellPrice = prices[i];
+                    profit += (prev - buyPrice); // sell prev stock
+                    buyPrice = prices[i]; // buy new stock
+                }
+                else if (i == prices.Length - 1 && prices[i] > buyPrice)
+                {
+                    profit += (prices[i] - buyPrice);
                 }
 
-                if (current > prices[i])
+                if (buyPrice > prices[i])
                 {
-                    if (sellPrice > buyPrice)
-                    {
-                        profit += (sellPrice - buyPrice);
-                        sellPrice = 0;
-                    }
                     buyPrice = prices[i];
                 }
-                else if (buyPrice < prices[i])
-                {
-                    sellPrice = prices[i];
-                }
-                current = prices[i];
+
+                prev = prices[i];
             }
 
             return profit;
+
+            //const int MAX_VALUE = 10001;
+            //int buyPrice = MAX_VALUE;
+            //int profit = 0;
+            //int sellPrice = 0;
+            //int current = MAX_VALUE;
+
+            //for (int i = 0; i < prices.Length; i++)
+            //{
+            //    if (i == prices.Length - 1 && sellPrice <= prices[i])
+            //    {
+            //        current = MAX_VALUE;
+            //        sellPrice = prices[i];
+            //    }
+
+            //    if (current > prices[i])
+            //    {
+            //        if (sellPrice > buyPrice)
+            //        {
+            //            profit += (sellPrice - buyPrice);
+            //            sellPrice = 0;
+            //        }
+            //        buyPrice = prices[i];
+            //    }
+            //    else if (buyPrice < prices[i])
+            //    {
+            //        sellPrice = prices[i];
+            //    }
+            //    current = prices[i];
+            //}
+
+            //return profit;
         }
 
         public static int[] Intersect(int[] nums1, int[] nums2)
@@ -257,7 +284,7 @@ namespace ChipsPlayGround
         {
             int count = 0;
             int totalPrices = prices.Count;
-            int minSpike = int.MaxValue;
+            int minSpike = 2000;
             int lastRightSmallerIndex = -1;
 
             for (int i = 0; i < totalPrices; i++)
@@ -446,6 +473,28 @@ namespace ChipsPlayGround
             }
 
             return maxes.Max();
+        }
+
+        public static int FindLargestAmountToRob2(int[] nums)
+        {
+            // 1, 20, 10, 1, 12, 40, 10, 8
+            // 1, 20, 11, 21, 32, 61, 42, 69
+
+            // 3, 2, 3, 4, 12, 4, 4, 20
+
+            // 3, 12, 3, 4, 12, 4, 4, 20
+
+            if (nums.Length == 1) return nums[0];
+            if (nums.Length == 2) return Math.Max(nums[0], nums[1]);
+            if (nums.Length == 3) return Math.Max(nums[1], nums[0] + nums[2]);
+
+            nums[2] = nums[0] + nums[2];
+
+            for (int i = 3; i < nums.Length; i++)
+            {
+                nums[i] = Math.Max(nums[i] + nums[i - 2], nums[i] + nums[i - 3]);
+            }
+            return Math.Max(nums[nums.Length - 1], nums[nums.Length - 2]);
         }
 
         public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)

@@ -33,6 +33,8 @@ namespace ChipsTest
         [DataRow(new int[] { 7, 6, 4, 3, 1 }, 0)]
         [DataRow(new int[] { 6, 1, 3, 2, 4, 7 }, 7)]
         [DataRow(new int[] { 2, 4, 1 }, 2)]
+        [DataRow(new int[] { 1, 2, 1, 4, 5 }, 5)]
+        [DataRow(new int[] { 7, 1, 5, 4, 9, 1, 4, 8 }, 16)]
         [DataRow(new int[] { 2, 1, 2, 0, 1 }, 2)]
         [DataRow(new int[] { 1, 9, 6, 9, 1, 7, 1, 1, 5, 9, 9, 9 }, 25)]
         public void MaxProfit(int[] prices, int profit)
@@ -87,6 +89,8 @@ namespace ChipsTest
         public void FindLargestAmountToRob(int[] input, int expected)
         {
             Solution.FindLargestAmountToRob(input).Should().Be(expected);
+
+            Solution.FindLargestAmountToRob2(input).Should().Be(expected);
         }
     }
 }
