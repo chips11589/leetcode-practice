@@ -529,5 +529,58 @@ namespace ChipsPlayGround
             }
             return l1;
         }
+
+        public static void FindMinimumBribes(int[] input)
+        {
+            // 1 2 3 4 5
+            // 1 2 3 5 4
+            // 1 2 5 3 4
+
+            // 2 1 5 3 4
+
+            // 2 4 1 3 5
+
+            // 2 1 4 3 5
+            // 2 1 3 4 5
+            // 1 2 3 4 5
+
+            var q = new List<int>(input);
+            var minBribe = 0;
+
+            var j = 0;
+            while (j != -1)
+            {
+                var i = j;
+                j = -1;
+                var counter = 0;
+
+                for (int k = i; k < q.Count - 1;  k++)
+                {
+                    if (j == -1 && q[k] != k + 1)
+                    {
+                        j = k;
+                    }
+
+                    if (q[k + 1] < q[k])
+                    {
+                        (q[k], q[k + 1]) = (q[k + 1], q[k]);
+                        minBribe++;
+                        counter++;
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+
+                    if (counter > 2)
+                    {
+                        Console.WriteLine("Too chaotic");
+                        return;
+                    }
+                }
+            }
+
+            Console.WriteLine(minBribe);
+        }
     }
 }
