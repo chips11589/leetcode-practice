@@ -91,63 +91,36 @@ namespace ChipsPlayGround
         public static int MaxProfit(int[] prices)
         {
             // 2, 1, 2, 0, 1
-            var buyPrice = 2000; // 2,1,0
+            //var buyPrice = 2000; // 2,1,0
             var profit = 0; // 1,
-            var prev = 0; // 2,1,2,0
+            //var prev = 0; // 2,1,2,0
 
-            for (int i = 0; i < prices.Length; i++)
+            for (int i = 1; i < prices.Length; i++)
             {
-                if (prev > prices[i] && prev > buyPrice) // price drop
+                if (prices[i] > prices[i - 1])
                 {
-                    profit += (prev - buyPrice); // sell prev stock
-                    buyPrice = prices[i]; // buy new stock
-                }
-                else if (i == prices.Length - 1 && prices[i] > buyPrice)
-                {
-                    profit += (prices[i] - buyPrice);
+                    profit += prices[i] - prices[i - 1];
                 }
 
-                if (buyPrice > prices[i])
-                {
-                    buyPrice = prices[i];
-                }
+                //if (prev > prices[i] && prev > buyPrice) // price drop
+                //{
+                //    profit += (prev - buyPrice); // sell prev stock
+                //    buyPrice = prices[i]; // buy new stock
+                //}
+                //else if (i == prices.Length - 1 && prices[i] > buyPrice)
+                //{
+                //    profit += (prices[i] - buyPrice);
+                //}
 
-                prev = prices[i];
+                //if (buyPrice > prices[i])
+                //{
+                //    buyPrice = prices[i];
+                //}
+
+                //prev = prices[i];
             }
 
             return profit;
-
-            //const int MAX_VALUE = 10001;
-            //int buyPrice = MAX_VALUE;
-            //int profit = 0;
-            //int sellPrice = 0;
-            //int current = MAX_VALUE;
-
-            //for (int i = 0; i < prices.Length; i++)
-            //{
-            //    if (i == prices.Length - 1 && sellPrice <= prices[i])
-            //    {
-            //        current = MAX_VALUE;
-            //        sellPrice = prices[i];
-            //    }
-
-            //    if (current > prices[i])
-            //    {
-            //        if (sellPrice > buyPrice)
-            //        {
-            //            profit += (sellPrice - buyPrice);
-            //            sellPrice = 0;
-            //        }
-            //        buyPrice = prices[i];
-            //    }
-            //    else if (buyPrice < prices[i])
-            //    {
-            //        sellPrice = prices[i];
-            //    }
-            //    current = prices[i];
-            //}
-
-            //return profit;
         }
 
         public static int[] Intersect(int[] nums1, int[] nums2)
@@ -497,6 +470,31 @@ namespace ChipsPlayGround
             return Math.Max(nums[nums.Length - 1], nums[nums.Length - 2]);
         }
 
+        public static int FindLargestAmountToRob3(int[] nums) // brute force
+        {
+            // 1, 20, 10, 1, 12, 40, 10, 8
+
+            static int Rob(int[] nums, int i)
+            {
+                if (i >= nums.Length)
+                {
+                    return 0;
+                }
+
+                int robCurrent = nums[i] + Rob(nums, i + 2);
+                int skipCurrent = Rob(nums, i + 1);
+
+                return Math.Max(robCurrent, skipCurrent);
+            }
+
+            if (nums == null || nums.Length == 0)
+            {
+                return 0;
+            }
+
+            return Rob(nums, 0);
+        }
+
         public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
         {
             ListNode current = l1;
@@ -554,7 +552,7 @@ namespace ChipsPlayGround
                 j = -1;
                 var counter = 0;
 
-                for (int k = i; k < q.Count - 1;  k++)
+                for (int k = i; k < q.Count - 1; k++)
                 {
                     if (j == -1 && q[k] != k + 1)
                     {
@@ -581,6 +579,419 @@ namespace ChipsPlayGround
             }
 
             Console.WriteLine(minBribe);
+        }
+
+        public static string FindAbbreviation(string a, string b)
+        {
+            #region non dp attempt
+            // daBcd
+            // ABC
+            //int bIndex = 0;
+            //string substring = string.Empty;
+            //int lastCapPos = 0;
+            //for (int i = 0; i < a.Length; i++)
+            //{
+            //    if (char.IsUpper(a[i]) && !b.Contains(a[i]))
+            //    {
+            //        return "NO";
+            //    }
+
+            //    if (char.ToUpper(a[i]) == b[bIndex])
+            //    {
+            //        // already reached desired state and new char can be skipped
+            //        if (substring.ToUpper() == b)
+            //        {
+            //            if (char.IsLower(a[i]))
+            //            {
+            //                goto afterIteration;
+            //            }
+            //            else if (substring.Last() == char.ToLower(a[i]))
+            //            {
+            //                substring = substring.Remove(substring.Length - 1);
+            //                substring += a[i];
+            //                goto afterIteration;
+            //            }
+            //        }
+
+            //        substring += a[i];
+            //        bIndex = bIndex == b.Length - 1 ? b.Length - 1 : bIndex + 1;
+            //    }
+            //    else if (char.IsUpper(a[i]))
+            //    {
+            //        if (substring.LastIndexOf(char.ToLower(a[i]), substring.Length - 1, substring.Length - lastCapPos) is var index
+            //            && index > -1)
+            //        {
+            //            substring = substring.Remove(index);
+            //            substring = substring.Insert(index, a[i].ToString());
+            //            var backMove = substring.Length;
+            //            bIndex = backMove >= b.Length - 1 ? b.Length - 1 : backMove;
+            //        }
+            //        else
+            //        {
+            //            for (var j = substring.Length - 1; j >= 0; j--)
+            //            {
+            //                if (char.ToUpper(substring[j]) != a[i])
+            //                {
+            //                    break;
+            //                }
+            //                else if (char.IsLower(substring[j]))
+            //                {
+            //                    substring = substring.Remove(j, 1);
+            //                }
+            //            }
+            //            substring += a[i];
+            //        }
+            //    }
+
+            //afterIteration:
+            //    if (substring.Length > 0 && char.IsUpper(substring.Last()))
+            //    {
+            //        lastCapPos = substring.Length - 1;
+            //    }
+            //}
+
+            //return substring.ToUpper() == b ? "YES" : "NO";
+            #endregion
+
+            //daBcd
+            //ABC
+            int rows = b.Length;
+            int cols = a.Length;
+
+            bool[,] dp = new bool[rows + 1, cols + 1];
+            dp[0, 0] = true;
+            //Fill the first col
+            for (int row = 1; row <= rows; row++)
+            {
+                dp[row, 0] = false;
+            }
+
+            //Fill the first row
+            for (int col = 1; col <= cols; col++)
+            {
+                if (char.IsLower(a[col - 1]))
+                    dp[0, col] = dp[0, col - 1];
+                else
+                    dp[0, col] = false;
+            }
+
+            for (int row = 1; row <= rows; row++)
+            {
+                for (int col = 1; col <= cols; col++)
+                {
+                    if (char.ToUpper(a[col - 1]) == b[row - 1])
+                    {
+                        dp[row, col] = dp[row - 1, col - 1];
+
+                        if (char.IsLower(a[col - 1]))
+                        {
+                            dp[row, col] |= dp[row, col - 1];
+                        }
+                    }
+                    else if (char.IsLower(a[col - 1]))
+                    {
+                        dp[row, col] = dp[row, col - 1];
+                    }
+                    else
+                    {
+                        dp[row, col] = false;
+                    }
+                }
+            }
+            return dp[rows, cols] ? "YES" : "NO";
+        }
+
+        // find order to deliver goods
+        public static List<int> FindOrder(int cityNodes, List<int> cityFrom, List<int> cityTo, int company)
+        {
+            var output = new HashSet<int>();
+
+            // building adjacent nodes
+            Dictionary<int, PriorityQueue<int, int>> nodes = new();
+            for (int i = 0; i < cityFrom.Count; i++)
+            {
+                if (!nodes.ContainsKey(cityFrom[i]))
+                {
+                    nodes.Add(cityFrom[i], new PriorityQueue<int, int>());
+                }
+
+                if (i < cityTo.Count)
+                {
+                    nodes[cityFrom[i]].Enqueue(cityTo[i], cityTo[i]);
+                }
+            }
+
+            for (int i = 0; i < cityTo.Count; i++)
+            {
+                if (!nodes.ContainsKey(cityTo[i]))
+                {
+                    nodes.Add(cityTo[i], new PriorityQueue<int, int>());
+                }
+
+                if (i < cityFrom.Count)
+                {
+                    nodes[cityTo[i]].Enqueue(cityFrom[i], cityFrom[i]);
+                }
+            }
+
+            // breadth first search
+            Queue<int> queue = new();
+            queue.Enqueue(company); // add company node
+
+            while (queue.Count > 0)
+            {
+                int node = queue.Dequeue(); // current node
+
+                if (output.Contains(node)) continue;
+
+                if (node != company)
+                {
+                    output.Add(node);
+                }
+
+                if (nodes.ContainsKey(node))
+                {
+                    while (nodes[node].Count > 0)
+                    {
+                        var connected = nodes[node].Dequeue();
+
+                        queue.Enqueue(connected);
+                    }
+                }
+            }
+
+            return output.ToList();
+        }
+
+        public static int FindLowestPrice(List<List<string>> products, List<List<string>> discounts)
+        {
+            var discountLookup = new Dictionary<string, Tuple<decimal, decimal>>();
+            for (int i = 0; i < discounts.Count; i++)
+            {
+                if (!discountLookup.ContainsKey(discounts[i][0]))
+                {
+                    discountLookup.Add(discounts[i][0],
+                        new Tuple<decimal, decimal>(decimal.Parse(discounts[i][1]), decimal.Parse(discounts[i][2])));
+                }
+                else
+                {
+                    discountLookup[discounts[i][0]]
+                        = new Tuple<decimal, decimal>(decimal.Parse(discounts[i][1]), decimal.Parse(discounts[i][2]));
+                }
+            }
+
+            var discountedPrices = new List<int>();
+            for (int i = 0; i < products.Count; i++) // loop through products
+            {
+                decimal minPrice = decimal.Parse(products[i][0]);
+                for (int j = 1; j < products[i].Count; j++) // loop through discounts
+                {
+                    decimal discountedPrice = decimal.Parse(products[i][0]);
+                    if (discountLookup.ContainsKey(products[i][j]))
+                    {
+                        switch (discountLookup[products[i][j]].Item1) // switch discount types
+                        {
+                            case 0:
+                                discountedPrice = discountLookup[products[i][j]].Item2;
+                                break;
+                            case 1:
+                                discountedPrice -= (discountedPrice * discountLookup[products[i][j]].Item2 / 100);
+                                break;
+                            case 2:
+                                discountedPrice -= discountLookup[products[i][j]].Item2;
+                                break;
+                        }
+                    }
+                    if (minPrice > discountedPrice)
+                    {
+                        minPrice = discountedPrice;
+                    }
+                }
+
+                discountedPrices.Add((int)Math.Round(minPrice));
+            }
+
+            return discountedPrices.Sum();
+        }
+
+        public static long FindOptimalCandies(int n, List<int> arr)
+        {
+            var dp = new long[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                dp[i] = 1;
+            }
+
+            for (int i = 1; i < n; i++)
+            {
+                if (arr[i] > arr[i - 1])
+                {
+                    dp[i] = dp[i - 1] + 1;
+                }
+            }
+
+            for (int i = n - 1; i > 0; i--)
+            {
+                if (arr[i] < arr[i - 1] && dp[i - 1] <= dp[i])
+                {
+                    dp[i - 1] = dp[i] + 1;
+                }
+            }
+
+            return dp.Sum();
+        }
+
+        public static int FindMaxSubsetSum(int[] arr)
+        {
+            // non-adjacent elements with the maximum sum
+            if (arr.Length == 0) return 0;
+            if (arr.Length == 1) return arr[1] > 0 ? arr[1] : 0;
+
+            int[] dp = new int[arr.Length];
+            dp[0] = arr[0] > 0 ? arr[0] : 0;
+            dp[1] = Math.Max(dp[0], arr[1]);
+
+            for (int i = 2; i < arr.Length; i++)
+            {
+                dp[i] = Math.Max(dp[i - 2] + arr[i], dp[i - 1]);
+            }
+
+            return dp[arr.Length - 1];
+        }
+
+        public static int FindMaxProfitIV(int k, int[] prices)
+        {
+            if (prices == null || prices.Length == 0)
+            {
+                return 0;
+            }
+
+            int n = prices.Length;
+            int[,] dp = new int[k + 1, n];
+
+            //for (int i = 1; i <= k; i++)
+            //{
+            //    for (int j = 1; j < n; j++)
+            //    {
+            //        int maxProfit = 0;
+
+            //        for (int l = 0; l < j; l++)
+            //        {
+            //            maxProfit = Math.Max(maxProfit, dp[i - 1, l] + prices[j] - prices[l]);
+            //        }
+            //        dp[i, j] = Math.Max(dp[i, j -1], maxProfit);
+            //    }
+            //}
+
+            for (int i = 1; i <= k; i++)
+            {
+                int maxPrevDiff = int.MinValue;
+
+                for (int j = 1; j < n; j++)
+                {
+                    maxPrevDiff = Math.Max(maxPrevDiff, dp[i - 1, j - 1] - prices[j - 1]);
+
+                    dp[i, j] = Math.Max(dp[i, j - 1], prices[j] + maxPrevDiff);
+                }
+            }
+
+            return dp[k, n - 1];
+        }
+
+        public static int FindMinimumSwaps(int[] arr)
+        {
+            var minSwap = 0;
+            int n = arr.Length;
+
+            for (int i = 0; i < n; i++)
+            {
+                while (arr[i] != i + 1)
+                {
+                    (arr[i], arr[arr[i] - 1]) = (arr[arr[i] - 1], arr[i]);
+                    minSwap++;
+                }
+            }
+
+            return minSwap;
+        }
+
+        public static long BuildRoadsAndLibraries(int n, int c_lib, int c_road, List<List<int>> cities)
+        {
+            var cost = 0;
+            var nodes = new Dictionary<int, List<int>>();
+            var nodesToTraverse = new HashSet<int>();
+            var citiesPerConnectedArea = new List<int>();
+
+            // if c_road > c_lib
+            if (c_road * (n - 1) > c_lib * n)
+            {
+                return c_lib * n;
+            }
+
+            // build adjacent list
+            for (int i = 0; i < cities.Count; i++)
+            {
+                if (!nodes.ContainsKey(cities[i][0]))
+                {
+                    nodes.Add(cities[i][0], new List<int> { cities[i][1] });
+                }
+                else
+                {
+                    nodes[cities[i][0]].Add(cities[i][1]);
+                }
+
+                if (!nodes.ContainsKey(cities[i][1]))
+                {
+                    nodes.Add(cities[i][1], new List<int> { cities[i][0] });
+                }
+                else
+                {
+                    nodes[cities[i][1]].Add(cities[i][0]);
+                }
+            }
+
+            // find connected areas
+            for (int i = 0; i < n; i++)
+            {
+                nodesToTraverse.Add(i + 1);
+            }
+            var queue = new Queue<int>();
+            int areaIndex = 0;
+
+            while (nodesToTraverse.Count > 0)
+            {
+                citiesPerConnectedArea.Add(0);
+                citiesPerConnectedArea[areaIndex]++;
+                var current = nodesToTraverse.ElementAt(0);
+                queue.Enqueue(current);
+                nodesToTraverse.Remove(current);
+
+                while (queue.Count > 0)
+                {
+                    var node = queue.Dequeue();
+
+                    if (nodes.ContainsKey(node))
+                    {
+                        foreach (var adjacentNode in nodes[node])
+                        {
+                            if (nodesToTraverse.Remove(adjacentNode))
+                            {
+                                queue.Enqueue(adjacentNode);
+                                citiesPerConnectedArea[areaIndex]++;
+                            }
+                        }
+                    }
+                }
+                areaIndex++;
+            }
+
+            foreach (var numOfCity in citiesPerConnectedArea)
+            {
+                cost += (c_lib + (numOfCity - 1) * c_road);
+            }
+
+            return cost;
         }
     }
 }
