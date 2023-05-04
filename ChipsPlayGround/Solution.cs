@@ -918,80 +918,57 @@ namespace ChipsPlayGround
 
         public static long BuildRoadsAndLibraries(int n, int c_lib, int c_road, List<List<int>> cities)
         {
-            var cost = 0;
-            var nodes = new Dictionary<int, List<int>>();
-            var nodesToTraverse = new HashSet<int>();
-            var citiesPerConnectedArea = new List<int>();
+            var connectedAreas = 0;
+            bool[] visited = new bool[n + 1];
+            List<List<int>> nextNodes = new List<List<int>>(n + 1);
 
             // if c_road > c_lib
-            if (c_road * (n - 1) > c_lib * n)
+            if ((long)c_road * (n - 1) > (long)c_lib * n)
             {
-                return c_lib * n;
+                return (long)c_lib * n;
+            }
+
+            for (int i = 0; i <= n; i++)
+            {
+                nextNodes.Add(new List<int>());
             }
 
             // build adjacent list
             for (int i = 0; i < cities.Count; i++)
             {
-                if (!nodes.ContainsKey(cities[i][0]))
-                {
-                    nodes.Add(cities[i][0], new List<int> { cities[i][1] });
-                }
-                else
-                {
-                    nodes[cities[i][0]].Add(cities[i][1]);
-                }
-
-                if (!nodes.ContainsKey(cities[i][1]))
-                {
-                    nodes.Add(cities[i][1], new List<int> { cities[i][0] });
-                }
-                else
-                {
-                    nodes[cities[i][1]].Add(cities[i][0]);
-                }
+                nextNodes[cities[i][0]].Add(cities[i][1]);
+                nextNodes[cities[i][1]].Add(cities[i][0]);
             }
+
+            var queue = new Queue<int>();
 
             // find connected areas
-            for (int i = 0; i < n; i++)
+            for (int i = 1; i <= n; i++)
             {
-                nodesToTraverse.Add(i + 1);
-            }
-            var queue = new Queue<int>();
-            int areaIndex = 0;
+                if (visited[i]) continue;
 
-            while (nodesToTraverse.Count > 0)
-            {
-                citiesPerConnectedArea.Add(0);
-                citiesPerConnectedArea[areaIndex]++;
-                var current = nodesToTraverse.ElementAt(0);
-                queue.Enqueue(current);
-                nodesToTraverse.Remove(current);
+                queue.Enqueue(i);
 
                 while (queue.Count > 0)
                 {
                     var node = queue.Dequeue();
 
-                    if (nodes.ContainsKey(node))
+                    if (visited[node] || node > nextNodes.Count - 1) continue;
+                    visited[node] = true;
+
+                    var current = nextNodes[node];
+                    foreach (var adjacentNode in current)
                     {
-                        foreach (var adjacentNode in nodes[node])
+                        if (!visited[adjacentNode])
                         {
-                            if (nodesToTraverse.Remove(adjacentNode))
-                            {
-                                queue.Enqueue(adjacentNode);
-                                citiesPerConnectedArea[areaIndex]++;
-                            }
+                            queue.Enqueue(adjacentNode);
                         }
                     }
                 }
-                areaIndex++;
+                connectedAreas++;
             }
 
-            foreach (var numOfCity in citiesPerConnectedArea)
-            {
-                cost += (c_lib + (numOfCity - 1) * c_road);
-            }
-
-            return cost;
+            return connectedAreas * (long)c_lib + (n - connectedAreas) * (long)c_road;
         }
     }
 }

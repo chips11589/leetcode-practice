@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ChipsTest
@@ -277,6 +278,34 @@ namespace ChipsTest
                 .BuildRoadsAndLibraries(n, c_lib, c_road, cities)
                 .Should()
                 .Be(expected);
+
+            //var filePath = Directory.GetCurrentDirectory() + "\\TestData\\roads-and-libs-input-2.txt";
+            //using (StreamReader reader = new(filePath))
+            //{
+            //    int q = Convert.ToInt32(reader.ReadLine().Trim());
+
+            //    for (int qItr = 0; qItr < q; qItr++)
+            //    {
+            //        string[] firstMultipleInput = reader.ReadLine().TrimEnd().Split(' ');
+
+            //        n = Convert.ToInt32(firstMultipleInput[0]);
+
+            //        int m = Convert.ToInt32(firstMultipleInput[1]);
+
+            //        c_lib = Convert.ToInt32(firstMultipleInput[2]);
+
+            //        c_road = Convert.ToInt32(firstMultipleInput[3]);
+
+            //        List<List<int>> cities = new List<List<int>>();
+
+            //        for (int i = 0; i < m; i++)
+            //        {
+            //            cities.Add(reader.ReadLine().TrimEnd().Split(' ').ToList().Select(citiesTemp => Convert.ToInt32(citiesTemp)).ToList());
+            //        }
+
+            //        long result = Solution.BuildRoadsAndLibraries(n, c_lib, c_road, cities);
+            //    }
+            //}
         }
     }
 }

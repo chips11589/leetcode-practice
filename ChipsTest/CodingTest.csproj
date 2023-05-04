@@ -20,4 +20,13 @@
     <ProjectReference Include="..\ChipsPlayGround\Coding.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\roads-and-libs-input-2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\roads-and-libs-input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
