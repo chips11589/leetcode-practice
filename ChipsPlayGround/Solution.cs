@@ -918,6 +918,80 @@ namespace ChipsPlayGround
 
         public static long BuildRoadsAndLibraries(int n, int c_lib, int c_road, List<List<int>> cities)
         {
+            #region find no of cities per connected area
+            //long cost = 0;
+            //var nodes = new Dictionary<int, List<int>>();
+            //var citiesPerConnectedArea = new List<int>();
+            //var visited = new bool[n + 1];
+
+            //// if c_road > c_lib
+            //if ((long)c_road * (n - 1) > (long)c_lib * n)
+            //{
+            //    return (long)c_lib * n;
+            //}
+
+            //// build adjacent list
+            //for (int i = 0; i < cities.Count; i++)
+            //{
+            //    if (!nodes.ContainsKey(cities[i][0]))
+            //    {
+            //        nodes.Add(cities[i][0], new List<int> { cities[i][1] });
+            //    }
+            //    else
+            //    {
+            //        nodes[cities[i][0]].Add(cities[i][1]);
+            //    }
+
+            //    if (!nodes.ContainsKey(cities[i][1]))
+            //    {
+            //        nodes.Add(cities[i][1], new List<int> { cities[i][0] });
+            //    }
+            //    else
+            //    {
+            //        nodes[cities[i][1]].Add(cities[i][0]);
+            //    }
+            //}
+
+            //// find connected areas
+            //var queue = new Queue<int>();
+            //int areaIndex = 0;
+
+            //for (int i = 1; i <= n; i++)
+            //{
+            //    if (visited[i]) continue;
+
+            //    citiesPerConnectedArea.Add(0);
+            //    queue.Enqueue(i);
+
+            //    while (queue.Count > 0)
+            //    {
+            //        var node = queue.Dequeue();
+
+            //        if (visited[node]) continue;
+            //        visited[node] = true;
+
+            //        if (nodes.ContainsKey(node))
+            //        {
+            //            foreach (var adjacentNode in nodes[node])
+            //            {
+            //                if (visited[adjacentNode]) continue;
+
+            //                queue.Enqueue(adjacentNode);
+            //            }
+            //        }
+            //        citiesPerConnectedArea[areaIndex]++;
+            //    }
+            //    areaIndex++;
+            //}
+
+            //foreach (var numOfCity in citiesPerConnectedArea)
+            //{
+            //    cost += (c_lib + (numOfCity - 1) * (long)c_road);
+            //}
+
+            //return cost;
+            #endregion
+
             var connectedAreas = 0;
             bool[] visited = new bool[n + 1];
             List<List<int>> nextNodes = new List<List<int>>(n + 1);
