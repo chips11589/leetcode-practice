@@ -916,6 +916,9 @@ namespace ChipsPlayGround
             return minSwap;
         }
 
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/torque-and-development/problem
+        /// </summary>
         public static long BuildRoadsAndLibraries(int n, int c_lib, int c_road, List<List<int>> cities)
         {
             #region find no of cities per connected area
@@ -1043,6 +1046,65 @@ namespace ChipsPlayGround
             }
 
             return connectedAreas * (long)c_lib + (n - connectedAreas) * (long)c_road;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/find-the-nearest-clone/problem
+        /// </summary>
+        public static int FindShortest(int graphNodes, int[] graphFrom, int[] graphTo, long[] ids, int val)
+        {
+            var nodes = new List<List<int>>(graphNodes + 1);
+            var visited = new bool[graphNodes + 1];
+            var edgeCount = graphFrom.Length;
+            var minLength = int.MaxValue;
+
+            for (int i = 0; i <= graphNodes; i++)
+            {
+                nodes.Add(new List<int>());
+            }
+
+            for (int i = 0; i < edgeCount; i++)
+            {
+                nodes[graphFrom[i]].Add(graphTo[i]);
+                nodes[graphTo[i]].Add(graphFrom[i]);
+            }
+
+            for (int i = 1; i <= graphNodes; i++)
+            {
+                if (ids[i - 1] != val) continue;
+
+                var queue = new Queue<int>();
+                queue.Enqueue(i);
+
+                var nodeWeight = new int[graphNodes + 1]; // store distant from start node
+
+                while (queue.Count > 0)
+                {
+                    var node = queue.Dequeue();
+
+                    if (visited[node]) continue;
+
+                    visited[node] = true;
+
+                    if (ids[node - 1] == val && nodeWeight[node] > 0)
+                    {
+                        visited[node] = false; // we want to revisit matching colour node as a new starting point
+                        minLength = Math.Min(nodeWeight[node], minLength);
+                    }
+                    else // spread node search
+                    {
+                        foreach (var nextNode in nodes[node])
+                        {
+                            if (visited[nextNode]) continue;
+
+                            queue.Enqueue(nextNode);
+                            nodeWeight[nextNode] = nodeWeight[node] + 1;
+                        }
+                    }
+                }
+            }
+
+            return minLength == int.MaxValue ? -1 : minLength;
         }
     }
 }
