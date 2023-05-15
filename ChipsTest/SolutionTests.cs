@@ -329,5 +329,18 @@ namespace ChipsTest
                 .FindShortest(n, graphFrom.ToArray(), graphTo.ToArray(), ids, matchingColour)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData("abba", 4)]
+        [InlineData("abcd", 0)]
+        [InlineData("cdcd", 5)]
+        [InlineData("ifailuhkqq", 3)]
+        [InlineData("kkkk", 10)]
+        public void FindSherlockAndAnagrams(string s, int expected)
+        {
+            Solution
+                .FindSherlockAndAnagrams(s)
+                .Should().Be(expected);
+        }
     }
 }

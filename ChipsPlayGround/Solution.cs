@@ -1106,5 +1106,64 @@ namespace ChipsPlayGround
 
             return minLength == int.MaxValue ? -1 : minLength;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/sherlock-and-anagrams/problem
+        /// </summary>
+        public static int FindSherlockAndAnagrams(string s)
+        {
+            var n = s.Length;
+            var subStrLength = 1;
+            var count = 0;
+
+            while (subStrLength < n)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    if (i + subStrLength > n) break;
+
+                    var subStrArr = s.Substring(i, subStrLength).ToArray();
+                    Array.Sort(subStrArr);
+                    var subStr = new string(subStrArr);
+
+                    for (int j = i + 1; j < n; j++)
+                    {
+                        if (j + subStrLength > n) break;
+
+                        var subStrArr2 = s.Substring(j, subStrLength).ToArray();
+                        Array.Sort(subStrArr2);
+                        var subStr2 = new string(subStrArr2);
+
+                        if (subStr == subStr2) count++;
+                    }
+                }
+                subStrLength++;
+            }
+
+            return count;
+
+            //int n = s.Length;
+            //int count = 0;
+            //Dictionary<string, int> dict = new Dictionary<string, int>();
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = i + 1; j <= n; j++)
+            //    {
+            //        char[] arr = s.Substring(i, j - i).ToCharArray();
+            //        Array.Sort(arr);
+            //        string str = new string(arr);
+            //        if (dict.ContainsKey(str))
+            //        {
+            //            count += dict[str];
+            //            dict[str]++;
+            //        }
+            //        else
+            //        {
+            //            dict.Add(str, 1);
+            //        }
+            //    }
+            //}
+            //return count;
+        }
     }
 }
