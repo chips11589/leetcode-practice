@@ -1,4 +1,5 @@
-﻿using Coding;
+﻿using BenchmarkDotNet.Disassemblers;
+using Coding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1165,5 +1166,163 @@ namespace ChipsPlayGround
             //}
             //return count;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
+        /// Naive solution - counting sort for every element added/removed
+        /// </summary>
+        public static int FindActivityNotifications(List<int> expenditure, int d)
+        {
+            var countingSort = (int[] input, int max) =>
+            {
+                int[] output = new int[input.Length];
+                int[] count = new int[max + 1];
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    count[input[i]]++;
+                }
+
+                var oIndex = 0;
+                for (int i = 0; i < count.Length; i++)
+                {
+                    var c = count[i];
+                    while (c > 0)
+                    {
+                        output[oIndex] = i;
+                        oIndex++;
+                        c--;
+                    }
+                }
+
+                return output;
+            };
+
+            var count = 0;
+
+            List<int> sorted = new List<int>(d);
+
+            for (int i = 0; i < expenditure.Count; i++)
+            {
+                if (i >= d)
+                {
+                    double median;
+                    if (d % 2 == 0)
+                    {
+                        median = (sorted[d / 2] + sorted[d / 2 - 1]) / 2d;
+                    }
+                    else
+                    {
+                        median = sorted[d / 2];
+                    }
+                    if (expenditure[i] >= median * 2)
+                    {
+                        count++;
+                    }
+
+                    sorted.Remove(expenditure[i - d]);
+                }
+                sorted.Add(expenditure[i]);
+                sorted = countingSort(sorted.ToArray(), 200).ToList();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
+        /// Optimised solution - quick add or remove item by indexes stored in the count array to maintain a sorted array
+        /// </summary>
+        public static int FindActivityNotificationsV2(List<int> expenditure, int d)
+        {
+            var getPos = (int[] count, int add, int remove) =>
+            {
+                var max = count.Length;
+                var pos = new int[max];
+                count[add]++;
+
+                if (remove > -1)
+                {
+                    count[remove]--;
+                }
+
+                Array.Copy(count, pos, max);
+                for (int i = 1; i < max; i++)
+                {
+                    pos[i] += pos[i - 1];
+                }
+
+                return pos;
+            };
+
+            var sort = (int[] input, int[] pos, int add, int removePos) =>
+            {
+                var n = input.Length;
+                if (removePos > -1)
+                {
+                    for (int i = removePos; i < n - 1; i++)
+                    {
+                        input[i] = input[i + 1];
+                    }
+                }
+                if (pos[add] > -1)
+                {
+                    for (int i = n - 1; i > pos[add] - 1; i--)
+                    {
+                        input[i] = input[i - 1];
+                    }
+                    input[pos[add] - 1] = add;
+                }
+            };
+
+            var count = 0;
+            var sorted = new int[d];
+            var max = 201;
+            var countArr = new int[max];
+            int[] pos = new int[max];
+            Array.Fill(pos, -1);
+
+            for (int i = 0; i < expenditure.Count; i++)
+            {
+                var add = expenditure[i];
+                var removePos = -1;
+                if (i >= d)
+                {
+                    double median;
+                    if (d % 2 == 0)
+                    {
+                        median = (sorted[d / 2] + sorted[d / 2 - 1]) / 2d;
+                    }
+                    else
+                    {
+                        median = sorted[d / 2];
+                    }
+                    if (expenditure[i] >= median * 2)
+                    {
+                        count++;
+                    }
+
+                    var remove = expenditure[i - d];
+                    removePos = pos[remove] - 1;
+                    pos = getPos(countArr, add, remove);
+                }
+                else
+                {
+                    pos = getPos(countArr, add, -1);
+                }
+                sort(sorted, pos, add, removePos);
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
+        /// Optimised solution 2 - no need to sort, based on the count array to determine the median value
+        /// </summary>
+        //public static int FindActivityNotificationsV3(List<int> expenditure, int d)
+        //{
+            
+        //}
     }
 }

@@ -26,10 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\roads-and-libs-input-2.txt">
+    <None Update="TestData\activity-notifications.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\roads-and-libs-input.txt">
+    <None Update="TestData\roads-and-libs-2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\roads-and-libs.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

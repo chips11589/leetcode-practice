@@ -277,7 +277,7 @@ namespace ChipsTest
                 .Should()
                 .Be(expected);
 
-            //var filePath = Directory.GetCurrentDirectory() + "\\TestData\\roads-and-libs-input.txt";
+            //var filePath = Directory.GetCurrentDirectory() + "\\TestData\\roads-and-libs.txt";
             //using (StreamReader reader = new(filePath))
             //{
             //    int q = Convert.ToInt32(reader.ReadLine().Trim());
@@ -341,6 +341,34 @@ namespace ChipsTest
             Solution
                 .FindSherlockAndAnagrams(s)
                 .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("2 3 4 2 3 6 8 4 5", 5, 2)]
+        [InlineData("1 2 3 4 4", 4, 0)]
+        public void FindActivityNotifications(string expenditures, int d, int expected)
+        {
+            Solution
+                .FindActivityNotifications(expenditures.Split(' ').Select(int.Parse).ToList(), d)
+                .Should().Be(expected);
+        }
+
+        [Fact]
+        public void FindActivityNotificationsLargeTestData()
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "activity-notifications.txt");
+
+            using (var stream = new StreamReader(filePath))
+            {
+                var firstLineParts = stream.ReadLine();
+                var d = int.Parse(firstLineParts.Split(' ')[1]);
+                var expenditures = stream.ReadLine();
+                var expected = 926;
+
+                Solution
+                    .FindActivityNotifications(expenditures.Split(' ').Select(int.Parse).ToList(), d)
+                    .Should().Be(expected);
+            }
         }
     }
 }
