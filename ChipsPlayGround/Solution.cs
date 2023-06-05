@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Disassemblers;
-using Coding;
+﻿using Coding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1320,9 +1319,85 @@ namespace ChipsPlayGround
         /// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
         /// Optimised solution 2 - no need to sort, based on the count array to determine the median value
         /// </summary>
-        //public static int FindActivityNotificationsV3(List<int> expenditure, int d)
-        //{
-            
-        //}
+        public static int FindActivityNotificationsV3(List<int> expenditure, int d)
+        {
+            bool isEven = d % 2 == 0;
+            int medianPos = d / 2;
+
+            var updateCount = (int[] count, int add, int remove) =>
+            {
+                count[add]++;
+
+                if (remove > -1)
+                {
+                    count[remove]--;
+                }
+            };
+
+            var findMedian = (int[] count) =>
+            {
+                var max = count.Length;
+                var sum = 0;
+                var median = 0d;
+
+                var findNext = (int[] count, int i) =>
+                {
+                    var n = count.Length;
+                    for (int j = i + 1; j < n; j++)
+                    {
+                        if (count[j] > 0)
+                        {
+                            return j;
+                        }
+                    }
+                    throw new Exception();
+                };
+
+                for (int i = 0; i < max; i++)
+                {
+                    sum += count[i];
+
+                    if (sum == medianPos && isEven)
+                    {
+                        median = (i + findNext(count, i)) / 2d;
+                        break;
+                    }
+                    if (sum > medianPos)
+                    {
+                        median = i;
+                        break;
+                    }
+                }
+
+                return median;
+            };
+
+            var count = 0;
+            var max = 201;
+            var countArr = new int[max];
+            var n = expenditure.Count;
+
+            for (int i = 0; i < n; i++)
+            {
+                var add = expenditure[i];
+                if (i >= d)
+                {
+                    double median = findMedian(countArr);
+                    if (expenditure[i] >= median * 2)
+                    {
+                        count++;
+                    }
+
+                    var remove = expenditure[i - d];
+                    updateCount(countArr, add, remove);
+                }
+                else
+                {
+                    updateCount(countArr, add, -1);
+                }
+            }
+
+            return count;
+        }
     }
 }

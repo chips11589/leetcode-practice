@@ -346,28 +346,37 @@ namespace ChipsTest
         [Theory]
         [InlineData("2 3 4 2 3 6 8 4 5", 5, 2)]
         [InlineData("1 2 3 4 4", 4, 0)]
+        [InlineData("1 1 2 4 2", 4, 0)]
+        [InlineData("1 1 2 4 3", 4, 1)]
+        [InlineData("1 1 3 4 3", 4, 0)]
+        [InlineData("1 1 3 4 4", 4, 1)]
+        [InlineData("1 1 3 4 4 5", 5, 0)]
         public void FindActivityNotifications(string expenditures, int d, int expected)
         {
             Solution
-                .FindActivityNotifications(expenditures.Split(' ').Select(int.Parse).ToList(), d)
+                .FindActivityNotificationsV3(expenditures.Split(' ').Select(int.Parse).ToList(), d)
                 .Should().Be(expected);
         }
 
-        [Fact]
-        public void FindActivityNotificationsLargeTestData()
+        [Theory]
+        [InlineData("activity-notifications.txt", "activity-notifications-2.txt")]
+        public void FindActivityNotificationsLargeTestData(params string[] testFileNames)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "activity-notifications.txt");
-
-            using (var stream = new StreamReader(filePath))
+            foreach (var fileName in testFileNames)
             {
-                var firstLineParts = stream.ReadLine();
-                var d = int.Parse(firstLineParts.Split(' ')[1]);
-                var expenditures = stream.ReadLine();
-                var expected = 926;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", fileName);
 
-                Solution
-                    .FindActivityNotifications(expenditures.Split(' ').Select(int.Parse).ToList(), d)
-                    .Should().Be(expected);
+                using (var stream = new StreamReader(filePath))
+                {
+                    var firstLineParts = stream.ReadLine().Split(' ');
+                    var d = int.Parse(firstLineParts[1]);
+                    var expected = int.Parse(firstLineParts[2]);
+                    var expenditures = stream.ReadLine();
+
+                    Solution
+                        .FindActivityNotificationsV3(expenditures.Split(' ').Select(int.Parse).ToList(), d)
+                        .Should().Be(expected);
+                }
             }
         }
     }
