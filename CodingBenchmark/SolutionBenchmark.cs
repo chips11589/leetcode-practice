@@ -1,6 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
 using ChipsPlayGround;
-using System.Linq;
 
 namespace Coding
 {

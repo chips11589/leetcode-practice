@@ -707,56 +707,47 @@ namespace ChipsPlayGround
             var output = new HashSet<int>();
 
             // building adjacent nodes
-            Dictionary<int, PriorityQueue<int, int>> nodes = new();
+            List<PriorityQueue<int, int>> nodes = new(cityNodes + 1);
+            for (int i = 0; i < cityNodes; i++)
+            {
+                nodes.Add(new PriorityQueue<int, int>());
+            }
+
             for (int i = 0; i < cityFrom.Count; i++)
             {
-                if (!nodes.ContainsKey(cityFrom[i]))
-                {
-                    nodes.Add(cityFrom[i], new PriorityQueue<int, int>());
-                }
-
-                if (i < cityTo.Count)
-                {
-                    nodes[cityFrom[i]].Enqueue(cityTo[i], cityTo[i]);
-                }
+                nodes[cityFrom[i]].Enqueue(cityTo[i], cityTo[i]);
             }
 
             for (int i = 0; i < cityTo.Count; i++)
             {
-                if (!nodes.ContainsKey(cityTo[i]))
-                {
-                    nodes.Add(cityTo[i], new PriorityQueue<int, int>());
-                }
-
-                if (i < cityFrom.Count)
-                {
-                    nodes[cityTo[i]].Enqueue(cityFrom[i], cityFrom[i]);
-                }
+                nodes[cityTo[i]].Enqueue(cityFrom[i], cityFrom[i]);
             }
 
             // breadth first search
             Queue<int> queue = new();
             queue.Enqueue(company); // add company node
+            var visited = new bool[cityNodes + 1];
 
             while (queue.Count > 0)
             {
                 int node = queue.Dequeue(); // current node
 
-                if (output.Contains(node)) continue;
+                if (visited[node]) continue;
+
+                visited[node] = true;
 
                 if (node != company)
                 {
                     output.Add(node);
                 }
 
-                if (nodes.ContainsKey(node))
+                while (nodes[node].Count > 0)
                 {
-                    while (nodes[node].Count > 0)
-                    {
-                        var connected = nodes[node].Dequeue();
+                    var connected = nodes[node].Dequeue();
 
-                        queue.Enqueue(connected);
-                    }
+                    if (visited[connected]) continue;
+
+                    queue.Enqueue(connected);
                 }
             }
 
@@ -1230,7 +1221,7 @@ namespace ChipsPlayGround
 
         /// <summary>
         /// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
-        /// Optimised solution - quick add or remove item by indexes stored in the count array to maintain a sorted array
+        /// Optimised solution - quickly add or remove item by indexes stored in the count array to maintain a sorted array
         /// </summary>
         public static int FindActivityNotificationsV2(List<int> expenditure, int d)
         {

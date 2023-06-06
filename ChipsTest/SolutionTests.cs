@@ -184,14 +184,17 @@ namespace ChipsTest
             Solution.FindAbbreviation(a, b).Should().Be(expected);
         }
 
-        [Fact]
-        public void FindOrder()
+        [Theory]
+        [InlineData(
+            10, 2,
+            new int[] { 0, 0, 1, 1, 2, 2, 3, 4, 5, 6 },
+            new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
+            new int[] { 0, 5, 6, 1, 9, 3, 4, 7, 8 })]
+        public void FindOrder(int cityNodes, int company, int[] cityFrom, int[] cityTo, int[] expectedOrder)
         {
-            Solution.FindOrder(
-                10,
-                new List<int> { 0, 0, 1, 1, 2, 2, 3, 4, 5, 6 },
-                new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
-                2);
+            Solution
+                .FindOrder(cityNodes, cityFrom.ToList(), cityTo.ToList(), company)
+                .Should().BeEquivalentTo(expectedOrder.ToList());
         }
 
         [Fact]

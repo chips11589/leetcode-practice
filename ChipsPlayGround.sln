@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignPatterns", "DesignPat
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "NodejsConsoleApp", "NodejsConsoleApp\NodejsConsoleApp.njsproj", "{87468236-AF04-4449-988B-97E71A7D1FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionConsole", "SolutionConsole\SolutionConsole.csproj", "{71D248A9-4B04-48C2-812F-3D3183268993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingBenchmark", "CodingBenchmark\CodingBenchmark.csproj", "{C1305592-7A3A-4ACD-8F63-BF7CEABA0EB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{87468236-AF04-4449-988B-97E71A7D1FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87468236-AF04-4449-988B-97E71A7D1FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87468236-AF04-4449-988B-97E71A7D1FBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71D248A9-4B04-48C2-812F-3D3183268993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71D248A9-4B04-48C2-812F-3D3183268993}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71D248A9-4B04-48C2-812F-3D3183268993}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71D248A9-4B04-48C2-812F-3D3183268993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1305592-7A3A-4ACD-8F63-BF7CEABA0EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1305592-7A3A-4ACD-8F63-BF7CEABA0EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1305592-7A3A-4ACD-8F63-BF7CEABA0EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1305592-7A3A-4ACD-8F63-BF7CEABA0EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
