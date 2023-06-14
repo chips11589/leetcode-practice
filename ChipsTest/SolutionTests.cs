@@ -382,5 +382,35 @@ namespace ChipsTest
                 }
             }
         }
+
+        [Theory]
+        [InlineData(new[] { 1, 1 }, new[] { 2, 2 }, new[] { 3, 2 }, new[] { 1, 1 }, new[] { 1, 1 }, new[] { 2, 1 }, new[] { 3, 2 }, new[] { 0, 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 6 }, new[] { 3, 2 }, new[] { 1, 10 }, new[] { 1, 10 }, new[] { 1, 6 }, new[] { 2, 5 }, new[] { 3, 2 }, new[] { 0, 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 5 }, new[] { 1, 5 }, new[] { 3, 3 }, new[] { 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 5 }, new[] { 1, 5 }, new[] { 3, 2 }, new[] { 0 })]
+        [InlineData(new[] { 2, 5 }, new[] { 3, 1 }, new[] { 3, 1 }, new[] { 0, 0 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 5 }, new[] { 2, 5 }, new[] { 1, 5 }, new[] { 3, 2 }, new[] { 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 2, 5 }, new[] { 2, 5 }, new[] { 1, 5 }, new[] { 3, 1 }, new[] { 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 4 }, new[] { 2, 5 }, new[] { 2, 5 }, new[] { 3, 1 }, new[] { 1 })]
+        [InlineData(new[] { 1, 5 }, new[] { 1, 4 }, new[] { 2, 5 }, new[] { 2, 4 }, new[] { 3, 1 }, new[] { 0 })]
+        public void FreqQuery(params int[][] queries)
+        {
+            var input = new List<List<int>>();
+            for (int i = 0; i < queries.Length - 1; i++)
+            {
+                input.Add(new List<int>(2));
+
+                foreach (var j in queries[i])
+                {
+                    input[i].Add(j);
+                }
+            }
+
+            var expected = queries.Last().ToList();
+
+            Solution
+                .FreqQuery(input)
+                .Should().BeEquivalentTo(expected);
+        }
     }
 }

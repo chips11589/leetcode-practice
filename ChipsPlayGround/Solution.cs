@@ -1390,5 +1390,62 @@ namespace ChipsPlayGround
 
             return count;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/frequency-queries/problem
+        /// </summary>
+        public static List<int> FreqQuery(List<List<int>> queries)
+        {
+            var output = new List<int>();
+            var itemCount = new Dictionary<int, int>();
+            var freqCount = new Dictionary<int, int>();
+
+            var incrementKey = (Dictionary<int, int> dict, int key) =>
+            {
+                if (dict.ContainsKey(key))
+                {
+                    dict[key]++;
+                }
+                else
+                {
+                    dict.Add(key, 1);
+                }
+            };
+
+            var decrementKey = (Dictionary<int, int> dict, int key) =>
+            {
+                if (dict.ContainsKey(key) && dict[key] > 0)
+                {
+                    dict[key]--;
+                    return true;
+                }
+                return false;
+            };
+
+            foreach (var query in queries)
+            {
+                switch (query[0])
+                {
+                    case 1:
+                        incrementKey(itemCount, query[1]);
+
+                        incrementKey(freqCount, itemCount[query[1]]);
+                        decrementKey(freqCount, itemCount[query[1]] - 1);
+                        break;
+                    case 2:
+                        if (decrementKey(itemCount, query[1]))
+                        {
+                            incrementKey(freqCount, itemCount[query[1]]);
+                            decrementKey(freqCount, itemCount[query[1]] + 1);
+                        }
+                        break;
+                    case 3:
+                        output.Add(freqCount.ContainsKey(query[1]) && freqCount[query[1]] > 0 ? 1 : 0);
+                        break;
+                }
+            }
+
+            return output;
+        }
     }
 }
