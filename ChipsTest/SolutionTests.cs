@@ -412,5 +412,11 @@ namespace ChipsTest
                 .FreqQuery(input)
                 .Should().BeEquivalentTo(expected);
         }
+
+        [Fact]
+        public void SortingWithComparator()
+        {
+            Solution.SortingWithComparator();
+        }
     }
 }
