@@ -416,7 +416,25 @@ namespace ChipsTest
         [Fact]
         public void SortingWithComparator()
         {
-            Solution.SortingWithComparator();
+            var input = new List<Tuple<string, int>>
+            {
+                new ("amy", 100),
+                new ("david", 100),
+                new ("heraldo", 50),
+                new ("aakansha", 75),
+                new ("aleksa", 150)
+            };
+
+            Solution
+                .SortingWithComparator(input)
+                .Should().BeEquivalentTo(new List<Tuple<string, int>>
+                {
+                    new ("aleksa", 150),
+                    new ("amy", 100),
+                    new ("david", 100),
+                    new ("aakansha", 75),
+                    new ("heraldo", 50)
+                });
         }
 
         [Theory]

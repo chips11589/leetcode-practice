@@ -1451,7 +1451,7 @@ namespace ChipsPlayGround
         /// <summary>
         /// https://www.hackerrank.com/challenges/ctci-comparator-sorting/problem
         /// </summary>
-        public static List<Tuple<string, int>> SortingWithComparator()
+        public static List<Tuple<string, int>> SortingWithComparator(List<Tuple<string, int>> input)
         {
             //var n = int.Parse(Console.ReadLine());
             //List<Tuple<string, int>> input = new();
@@ -1461,15 +1461,6 @@ namespace ChipsPlayGround
             //    var lineParts = Console.ReadLine().Split(' ');
             //    input.Add(new(lineParts[0], int.Parse(lineParts[1])));
             //}
-
-            var input = new List<Tuple<string, int>>
-            {
-                new ("amy", 100),
-                new ("david", 100),
-                new ("heraldo", 50),
-                new ("aakansha", 75),
-                new ("aleksa", 150)
-            };
 
             input.Sort((x, y) =>
             {
