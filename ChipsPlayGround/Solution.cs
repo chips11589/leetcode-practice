@@ -1,5 +1,4 @@
 ﻿using Coding;
-using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1481,6 +1480,76 @@ namespace ChipsPlayGround
             });
 
             return input;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/special-palindrome-again/problem
+        /// </summary>
+        public static long SubstrCount(int n, string s)
+        {
+            var countSpecialStringsAllSame = (int @in) =>
+            {
+                long @out = 0;
+                for (int i = 0; i < @in; i++)
+                {
+                    @out += i;
+                }
+
+                return @out;
+            };
+
+            if (n == 1) return 1;
+
+            long result = 0;
+            int count = 1;
+            int balanceCount = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                if (i > 1)
+                {
+                    if (s[i] == s[i - 2] && s[i] != s[i - 1])
+                    {
+                        if (balanceCount > 0)
+                        {
+                            result += balanceCount;
+                        }
+                        balanceCount = 1;
+                    }
+                    else if (balanceCount > 0 && s[i] == s[i - 1]
+                        && (i - (balanceCount + 1) * 2) is int oppositeIndex && oppositeIndex > -1 && s[i] == s[oppositeIndex])
+                    {
+                        balanceCount++;
+                    }
+                    else
+                    {
+                        result += balanceCount;
+                        balanceCount = 0;
+                    }
+
+                    if (i == n - 1)
+                    {
+                        result += balanceCount;
+                        balanceCount = 0;
+                    }
+                }
+
+                if (i < n - 1 && s[i] == s[i + 1])
+                {
+                    count++;
+                }
+                else
+                {
+                    if (count > 1)
+                    {
+                        result += countSpecialStringsAllSame(count);
+                    }
+                    count = 1;
+                }
+            }
+            result += n;
+
+            return result;
         }
     }
 }
