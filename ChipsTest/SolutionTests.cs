@@ -469,7 +469,7 @@ namespace ChipsTest
         public void SubstrCount(string s, long expected)
         {
             Solution
-                .SubstrCount(s.Length, s)
+                .SubstrCountV2(s.Length, s)
                 .Should().Be(expected);
         }
     }

@@ -1542,5 +1542,51 @@ namespace ChipsPlayGround
 
             return result;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/special-palindrome-again/problem
+        /// Solve by storing the counts of repeating chars
+        /// </summary>
+        public static long SubstrCountV2(int n, string s)
+        {
+            long output = 0;
+
+            var charCounts = new List<(char @char, long count)>();
+
+            if (n == 1) return 1;
+
+            long counter = 1;
+
+            for (int i = 1; i < n; i++)
+            {
+                if (s[i] == s[i - 1])
+                {
+                    counter++;
+                }
+                else
+                {
+                    charCounts.Add((s[i - 1], counter));
+                    counter = 1;
+                }
+            }
+            charCounts.Add((s[n - 1], counter));
+
+            // same characters repeating, i.e. aaa, aaaa...
+            for (int i = 0; i < charCounts.Count; i++)
+            {
+                output += (charCounts[i].count * (charCounts[i].count + 1) / 2);
+            }
+
+            // characters repeating on both sides of another character, i.e. aba, abaa...
+            for (int i = 2; i < charCounts.Count; i++)
+            {
+                if (charCounts[i - 1].count == 1 && charCounts[i - 2].@char == charCounts[i].@char)
+                {
+                    output += Math.Min(charCounts[i - 2].count, charCounts[i].count);
+                }
+            }
+
+            return output;
+        }
     }
 }
