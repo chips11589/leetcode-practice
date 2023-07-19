@@ -1475,6 +1475,7 @@ namespace ChipsPlayGround
 
         /// <summary>
         /// https://www.hackerrank.com/challenges/special-palindrome-again/problem
+        /// Best performance but long and slightly complex approach
         /// </summary>
         public static long SubstrCount(int n, string s)
         {
@@ -1587,6 +1588,85 @@ namespace ChipsPlayGround
             }
 
             return output;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/common-child/problem
+        /// Unoptimised approach - store max values in an array and loop back to find the max value before an index
+        /// </summary>
+        public static int CommonChild(string s1, string s2)
+        {
+            int output = 0;
+            var n1 = s1.Length;
+            var n2 = s2.Length;
+            var maxes = new int[5001];
+            var posDict = new Dictionary<char, List<int>>();
+
+            var maxBefore = (int key) =>
+            {
+                var max = 0;
+                for (int i = key; i >= 0; i--)
+                {
+                    if (max < maxes[i]) max = maxes[i];
+                }
+                return max;
+            };
+
+            for (int i = 0; i < n2; i++)
+            {
+                if (!posDict.ContainsKey(s2[i])) posDict.Add(s2[i], new List<int> { i });
+                else posDict[s2[i]].Add(i);
+            }
+
+            for (int i = 0; i < n1; i++)
+            {
+                if (posDict.ContainsKey(s1[i]))
+                {
+                    var toUpdates = new List<KeyValuePair<int, int>>();
+
+                    foreach (var pos in posDict[s1[i]])
+                    {
+                        toUpdates.Add(new KeyValuePair<int, int>(pos + 1, maxBefore(pos) + 1));
+                    }
+
+                    foreach (var kvp in toUpdates)
+                    {
+                        maxes[kvp.Key] = kvp.Value;
+
+                        if (output < kvp.Value) output = kvp.Value;
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/common-child/problem
+        /// Optimised approach - Dp table
+        /// </summary>
+        public static int CommonChildV2(string s1, string s2)
+        {
+            var dp = new int[s1.Length + 1, s2.Length + 1];
+
+            for (int i = 0; i < s1.Length; i++)
+            {
+                for (int j = 0; j < s2.Length; j++)
+                {
+                    if (dp[i, j + 1] == dp[i + 1, j]
+                        && dp[i, j] == dp[i + 1, j]
+                        && s1[i] == s2[j])
+                    {
+                        dp[i + 1, j + 1] = Math.Max(dp[i, j + 1], dp[i + 1, j]) + 1;
+                    }
+                    else
+                    {
+                        dp[i + 1, j + 1] = Math.Max(dp[i, j + 1], dp[i + 1, j]);
+                    }
+                }
+            }
+
+            return dp[s1.Length, s2.Length];
         }
     }
 }

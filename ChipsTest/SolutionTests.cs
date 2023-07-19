@@ -472,5 +472,23 @@ namespace ChipsTest
                 .SubstrCountV2(s.Length, s)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData("ABCD", "ABDC", 3)]
+        [InlineData("ABCDA", "ABDAC", 4)]
+        [InlineData("ABCFD", "ABDCF", 4)]
+        [InlineData("ABCD", "BDCA", 2)]
+        [InlineData("AZHBCD", "BDCAZH", 3)]
+        [InlineData("ACZHBCD", "BDCAZHD", 4)]
+        [InlineData("ACDZHBCD", "BDCDAZHD", 5)]
+        [InlineData("SHINCHAN", "NOHARAAA", 3)]
+        [InlineData("MZXZJW", "XZWMZJ", 3)]
+        [InlineData("WEWOUCUIDGCGTRMEZEPXZFEJWISRSBBSYXAYDFEJJDLEBVHHKS", "FDAGCXGKCTKWNECHMRXZWMLRYUCOCZHJRRJBOAJOQJZZVUYXIC", 15)]
+        public void CommonChild(string s1, string s2, int expected)
+        {
+            Solution
+                .CommonChildV2(s1, s2)
+                .Should().Be(expected);
+        }
     }
 }
