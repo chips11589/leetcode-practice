@@ -490,5 +490,17 @@ namespace ChipsTest
                 .CommonChildV2(s1, s2)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(3, new int[] { 1, 2, 3, 4 }, 11)]
+        [InlineData(3, new int[] { 2, 5, 6 }, 13)]
+        [InlineData(2, new int[] { 2, 5, 6 }, 15)]
+        [InlineData(3, new int[] { 1, 3, 5, 7, 9 }, 29)]
+        public void GetMinimumCost(int k, int[] c, int expected)
+        {
+            Solution
+                .GetMinimumCost(k, c)
+                .Should().Be(expected);
+        }
     }
 }

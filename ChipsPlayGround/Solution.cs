@@ -1668,5 +1668,29 @@ namespace ChipsPlayGround
 
             return dp[s1.Length, s2.Length];
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/greedy-florist/problem
+        /// </summary>
+        public static int GetMinimumCost(int k, int[] c)
+        {
+            int output = 0;
+            var n = c.Length;
+            int round = 0;
+
+            Array.Sort(c);
+
+            for (int i = n - 1; i >= 0;)
+            {
+                for (int j = 0; j < k && i >= 0; j++)
+                {
+                    output += (round + 1) * c[i];
+                    i--;
+                }
+                round++;
+            }
+
+            return output;
+        }
     }
 }
