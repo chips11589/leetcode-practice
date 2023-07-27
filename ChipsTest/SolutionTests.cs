@@ -1,5 +1,6 @@
 using ChipsPlayGround;
 using FluentAssertions;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -500,6 +501,31 @@ namespace ChipsTest
         {
             Solution
                 .GetMinimumCost(k, c)
+                .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(2, new int[] { 1, 4, 7, 2 }, 1)]
+        [InlineData(3, new int[] { 10, 100, 300, 200, 1000, 20, 30 }, 20)]
+        [InlineData(4, new int[] { 1, 2, 3, 4, 10, 20, 30, 40, 100, 200 }, 3)]
+        [InlineData(2, new int[] { 1, 2, 1, 2, 1 }, 0)]
+        [InlineData(2, new int[] { 1, 1, 1, 1, 1 }, 0)]
+        [InlineData(2, new int[] { 1, 2 }, 1)]
+        public void MaxMin(int k, int[] arr, int expected)
+        {
+            Solution
+                .MaxMin(k, arr.ToList())
+                .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(new int[] { 2, 1, 3, 5, 6 }, 5, "1 3")]
+        [InlineData(new int[] { 1, 4, 5, 3, 2 }, 4, "1 4")]
+        [InlineData(new int[] { 2, 2, 4, 3 }, 4, "1 2")]
+        public void WhatFlavors(int[] cost, int money, string expected)
+        {
+            Solution
+                .WhatFlavors(cost.ToList(), money)
                 .Should().Be(expected);
         }
     }

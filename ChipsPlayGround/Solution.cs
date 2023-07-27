@@ -1692,5 +1692,54 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/angry-children/problem
+        /// </summary>
+        public static int MaxMin(int k, List<int> arr)
+        {
+            var output = int.MaxValue;
+
+            arr.Sort();
+
+            for (int i = 0; i < arr.Count - k + 1; i++)
+            {
+                var gap = arr[i + k - 1] - arr[i];
+                if (gap < output)
+                {
+                    output = gap;
+                }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/ctci-ice-cream-parlor/problem
+        /// </summary>
+        public static string WhatFlavors(List<int> cost, int money)
+        {
+            var dict = new Dictionary<int, int>();
+            var output = string.Empty;
+
+            for (int i = 0; i < cost.Count; i++)
+            {
+                var makeUp = money - cost[i];
+
+                if (makeUp <= 0) continue;
+
+                if (dict.ContainsKey(cost[i]))
+                {
+                    output = $"{dict[cost[i]]} {i + 1}";
+                }
+
+                if (!dict.ContainsKey(makeUp))
+                {
+                    dict[makeUp] = i + 1;
+                }
+            }
+
+            return output;
+        }
     }
 }
