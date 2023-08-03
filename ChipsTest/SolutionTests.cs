@@ -528,5 +528,14 @@ namespace ChipsTest
                 .WhatFlavors(cost.ToList(), money)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(2, new int[] { 1, 5, 3, 4, 2 }, 3)]
+        public void Pairs(int k, int[] arr, int expected)
+        {
+            Solution
+                .Pairs(k, arr.ToList())
+                .Should().Be(expected);
+        }
     }
 }

@@ -1741,5 +1741,30 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/pairs/problem
+        /// </summary>
+        public static int Pairs(int k, List<int> arr)
+        {
+            var output = 0;
+            var set = new HashSet<int>();
+
+            foreach (var item in arr)
+            {
+                set.Add(item);
+
+                if (set.Contains(item + k))
+                {
+                    output++;
+                }
+                if (set.Contains(item - k))
+                {
+                    output++;
+                }
+            }
+
+            return output;
+        }
     }
 }
