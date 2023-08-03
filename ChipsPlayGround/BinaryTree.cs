@@ -17,23 +17,49 @@ namespace Coding
             public Node Right { get; set; }
         }
 
-        public static class Solution
+        public static void Build(List<List<int>> indexes)
         {
-            public static void Run(Node root)
+            Node root = new(1);
+            var queue = new Queue<Node>();
+            queue.Enqueue(root);
+
+            var indexCount = 0;
+
+            while (queue.Count > 0 && indexCount < indexes.Count)
             {
-                var queue = new Queue<Node>();
-                queue.Enqueue(root);
-                HashSet<Node> visited = new HashSet<Node>();
+                var node = queue.Dequeue();
 
-                while (queue.Any())
+                var line = indexes[indexCount];
+
+                if (line[0] != -1)
                 {
-                    var node = queue.Dequeue();
-
-                    if (node.Left != null) queue.Enqueue(node.Left);
-                    if (node.Right != null) queue.Enqueue(node.Right);
-
-                    visited.Add(node);
+                    node.Left = new Node(line[0]);
+                    queue.Enqueue(node.Left);
                 }
+
+                if (line[1] != -1)
+                {
+                    node.Right = new Node(line[1]);
+                    queue.Enqueue(node.Right);
+                }
+                indexCount++;
+            }
+        }
+
+        public static void Traverse(Node start)
+        {
+            var queue = new Queue<Node>();
+            queue.Enqueue(start);
+            HashSet<Node> visited = new HashSet<Node>();
+
+            while (queue.Any())
+            {
+                var node = queue.Dequeue();
+
+                if (node.Left != null) queue.Enqueue(node.Left);
+                if (node.Right != null) queue.Enqueue(node.Right);
+
+                visited.Add(node);
             }
         }
     }
