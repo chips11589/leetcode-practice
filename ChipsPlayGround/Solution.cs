@@ -1766,5 +1766,54 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/triple-sum/problem
+        /// </summary>
+        public static long Triplets(int[] a, int[] b, int[] c)
+        {
+            var output = 0L;
+            var countA = 0L;
+            var countC = 0L;
+            var minusA = 0L; // minus duplicate elements
+            var minusC = 0L;
+
+            Array.Sort(a);
+            Array.Sort(b);
+            Array.Sort(c);
+
+            HashSet<int> seenA = new();
+            HashSet<int> seenB = new();
+            HashSet<int> seenC = new();
+
+            foreach (var item in b)
+            {
+                if (seenB.Contains(item)) continue;
+
+                seenB.Add(item);
+
+                while (countA < a.Length && item >= a[countA])
+                {
+                    if (seenA.Contains(a[countA])) minusA++;
+
+                    seenA.Add(a[countA]);
+
+                    countA++;
+                }
+
+                while (countC < c.Length && item >= c[countC])
+                {
+                    if (seenC.Contains(c[countC])) minusC++;
+
+                    seenC.Add(c[countC]);
+
+                    countC++;
+                }
+
+                output += (countA - minusA) * (countC - minusC);
+            }
+
+            return output;
+        }
     }
 }

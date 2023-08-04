@@ -537,5 +537,21 @@ namespace ChipsTest
                 .Pairs(k, arr.ToList())
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new int[] { 3, 5, 7 }, new int[] { 3, 6 }, new int[] { 4, 6, 9 }, 4)]
+        [InlineData(new int[] { 1, 3, 5 }, new int[] { 2, 3 }, new int[] { 1, 2, 3 }, 8)]
+        [InlineData(new int[] { 1, 4, 5 }, new int[] { 2, 3, 3 }, new int[] { 1, 2, 3 }, 5)]
+        [InlineData(new int[] { 1, 3, 5, 7 }, new int[] { 5, 7, 9 }, new int[] { 7, 9, 11, 13 }, 12)]
+        [InlineData(new int[] { 1, 3, 5 }, new int[] { 3, 3, 3 }, new int[] { 1, 2 }, 4)]
+        [InlineData(new int[] { 5, 5 }, new int[] { 2, 1 }, new int[] { 1 }, 0)]
+        [InlineData(new int[] { 5, 5, 2 }, new int[] { 2, 2 }, new int[] { 1 }, 1)]
+        [InlineData(new int[] { 5, 5 }, new int[] { 7 }, new int[] { 1, 1 }, 1)]
+        public void Triplets(int[] a, int[] b, int[] c, long expected)
+        {
+            Solution
+                .Triplets(a, b, c)
+                .Should().Be(expected);
+        }
     }
 }
