@@ -32,6 +32,12 @@
     <None Update="TestData\activity-notifications.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\minimum-time-required-2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\minimum-time-required.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\roads-and-libs-2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

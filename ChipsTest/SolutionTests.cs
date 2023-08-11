@@ -280,34 +280,41 @@ namespace ChipsTest
                 .BuildRoadsAndLibraries(n, c_lib, c_road, cities)
                 .Should()
                 .Be(expected);
+        }
 
-            //var filePath = Directory.GetCurrentDirectory() + "\\TestData\\roads-and-libs.txt";
-            //using (StreamReader reader = new(filePath))
-            //{
-            //    int q = Convert.ToInt32(reader.ReadLine().Trim());
+        [Theory]
+        [InlineData("roads-and-libs.txt")]
+        [InlineData("roads-and-libs-2.txt")]
+        public void BuildRoadsAndLibraries_LargeDataSet(string fileName)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", fileName);
 
-            //    for (int qItr = 0; qItr < q; qItr++)
-            //    {
-            //        string[] firstMultipleInput = reader.ReadLine().TrimEnd().Split(' ');
+            using (StreamReader reader = new(filePath))
+            {
+                int q = Convert.ToInt32(reader.ReadLine().Trim());
 
-            //        n = Convert.ToInt32(firstMultipleInput[0]);
+                for (int qItr = 0; qItr < q; qItr++)
+                {
+                    string[] firstMultipleInput = reader.ReadLine().TrimEnd().Split(' ');
 
-            //        int m = Convert.ToInt32(firstMultipleInput[1]);
+                    int n = Convert.ToInt32(firstMultipleInput[0]);
 
-            //        c_lib = Convert.ToInt32(firstMultipleInput[2]);
+                    int m = Convert.ToInt32(firstMultipleInput[1]);
 
-            //        c_road = Convert.ToInt32(firstMultipleInput[3]);
+                    int c_lib = Convert.ToInt32(firstMultipleInput[2]);
 
-            //        List<List<int>> cities = new List<List<int>>();
+                    int c_road = Convert.ToInt32(firstMultipleInput[3]);
 
-            //        for (int i = 0; i < m; i++)
-            //        {
-            //            cities.Add(reader.ReadLine().TrimEnd().Split(' ').ToList().Select(citiesTemp => Convert.ToInt32(citiesTemp)).ToList());
-            //        }
+                    List<List<int>> cities = new List<List<int>>();
 
-            //        long result = Solution.BuildRoadsAndLibraries(n, c_lib, c_road, cities);
-            //    }
-            //}
+                    for (int i = 0; i < m; i++)
+                    {
+                        cities.Add(reader.ReadLine().TrimEnd().Split(' ').ToList().Select(citiesTemp => Convert.ToInt32(citiesTemp)).ToList());
+                    }
+
+                    long result = Solution.BuildRoadsAndLibraries(n, c_lib, c_road, cities);
+                }
+            }
         }
 
         [Theory]
@@ -364,7 +371,7 @@ namespace ChipsTest
 
         [Theory]
         [InlineData("activity-notifications.txt", "activity-notifications-2.txt")]
-        public void FindActivityNotificationsLargeTestData(params string[] testFileNames)
+        public void FindActivityNotifications_LargeDataSet(params string[] testFileNames)
         {
             foreach (var fileName in testFileNames)
             {
@@ -552,6 +559,39 @@ namespace ChipsTest
             Solution
                 .Triplets(a, b, c)
                 .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(new long[] { 2, 3, 2 }, 10, 8)]
+        [InlineData(new long[] { 2, 3 }, 5, 6)]
+        [InlineData(new long[] { 1, 3, 4 }, 10, 7)]
+        [InlineData(new long[] { 4, 5, 6 }, 12, 20)]
+        public void MinTime(long[] machines, long goal, long expected)
+        {
+            Solution
+                .MinTimeV2(machines, goal)
+                .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("minimum-time-required.txt", 1340828872701)]
+        [InlineData("minimum-time-required-2.txt", 340655733624)]
+        public void MinTime_LargeDataSet(string fileName, long expected)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", fileName);
+
+            using (var stream = new StreamReader(filePath))
+            {
+                var lineParts = stream.ReadLine().Split(' ');
+                var goal = int.Parse(lineParts[1]);
+
+                lineParts = stream.ReadLine().Split(' ');
+                var machines = lineParts.Select(s => long.Parse(s)).ToArray();
+
+                Solution
+                    .MinTimeV2(machines, goal)
+                    .Should().Be(expected);
+            }
         }
     }
 }

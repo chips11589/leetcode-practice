@@ -1815,5 +1815,88 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/minimum-time-required/problem
+        /// Naive solution - count each day of production
+        /// </summary>
+        public static long MinTime(long[] machines, long goal)
+        {
+            var output = 0L;
+            var production = 0L;
+
+            while (production < goal)
+            {
+                output++;
+
+                foreach (var machine in machines)
+                {
+                    if (output % machine == 0)
+                    {
+                        production++;
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/minimum-time-required/problem
+        /// Optimised - Try to search for the min days by calculating approximate values
+        /// </summary>
+        public static long MinTimeV2(long[] machines, long goal)
+        {
+            var productionPerDay = 0M;
+
+            foreach (var machine in machines)
+            {
+                productionPerDay += (1M / machine);
+            }
+
+            var approximate = (long)Math.Round(goal / productionPerDay, MidpointRounding.ToPositiveInfinity);
+            var production = 0L;
+
+            foreach (var machine in machines)
+            {
+                production += (approximate / machine);
+            }
+
+            // Delta for the search
+            var days = Math.Max((long)(1 / productionPerDay), 1) * Math.Abs(goal - production);
+
+            do
+            {
+                if (days < 10)
+                {
+                    days = 1;
+                }
+
+                while (production >= goal)
+                {
+                    production = 0;
+                    approximate -= days;
+                    foreach (var machine in machines)
+                    {
+                        production += (approximate / machine);
+                    }
+                }
+
+                while (production < goal)
+                {
+                    production = 0;
+                    approximate += days;
+                    foreach (var machine in machines)
+                    {
+                        production += (approximate / machine);
+                    }
+                }
+
+                days = Math.Max(days / 10, 1);
+            }
+            while (days != 1); // search until we reach highest precision
+
+            return approximate;
+        }
     }
 }
