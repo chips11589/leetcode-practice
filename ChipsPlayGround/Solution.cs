@@ -1843,7 +1843,7 @@ namespace ChipsPlayGround
 
         /// <summary>
         /// https://www.hackerrank.com/challenges/minimum-time-required/problem
-        /// Optimised - Try to search for the min days by calculating approximate values
+        /// Optimised - Try to search for the min days by calculating approximate bounds and deltas
         /// </summary>
         public static long MinTimeV2(long[] machines, long goal)
         {
@@ -1897,6 +1897,40 @@ namespace ChipsPlayGround
             while (days != 1); // search until we reach highest precision
 
             return approximate;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/minimum-time-required/problem
+        /// Optimised - Binary search
+        /// </summary>
+        public static long MinTimeV3(long[] machines, long goal)
+        {
+            Array.Sort(machines);
+            var lowerBound = 1L;
+            var upperBound = machines[machines.Length - 1] * goal;
+
+            while (lowerBound < upperBound)
+            {
+                var mid = (lowerBound + upperBound) / 2;
+                var production = 0L;
+
+                foreach (var machine in machines)
+                {
+                    production += (mid / machine);
+                }
+
+                // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+                if (production >= goal)
+                {
+                    upperBound = mid;
+                }
+                else
+                {
+                    lowerBound = mid + 1;
+                }
+            }
+
+            return lowerBound;
         }
     }
 }

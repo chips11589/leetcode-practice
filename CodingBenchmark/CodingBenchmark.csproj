@@ -21,4 +21,10 @@
     <ProjectReference Include="..\ChipsPlayGround\Coding.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\minimum-time-required-2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

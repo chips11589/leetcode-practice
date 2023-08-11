@@ -569,7 +569,7 @@ namespace ChipsTest
         public void MinTime(long[] machines, long goal, long expected)
         {
             Solution
-                .MinTimeV2(machines, goal)
+                .MinTimeV3(machines, goal)
                 .Should().Be(expected);
         }
 
@@ -589,7 +589,7 @@ namespace ChipsTest
                 var machines = lineParts.Select(s => long.Parse(s)).ToArray();
 
                 Solution
-                    .MinTimeV2(machines, goal)
+                    .MinTimeV3(machines, goal)
                     .Should().Be(expected);
             }
         }
