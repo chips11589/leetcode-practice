@@ -605,5 +605,22 @@ namespace ChipsTest
                 .MaximumSum(a.ToList(), m)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new int[] { 1, 2, 3, 4 }, new int[] { 10, 10 })]
+        [InlineData(new int[] { -1, 2, 3, -4, 5, 10 }, new int[] { 16, 20 })]
+        [InlineData(new int[] { -1, 2, 3, -4 }, new int[] { 5, 5 })]
+        [InlineData(new int[] { -1, 2, 3, -4, 6 }, new int[] { 7, 11 })]
+        [InlineData(new int[] { 1, 2, 3, -4, 6 }, new int[] { 8, 12 })]
+        [InlineData(new int[] { 1, -12, 3, -4, -6, 22 }, new int[] { 22, 26 })]
+        [InlineData(new int[] { 1, -12, 12, -4, -6, 22 }, new int[] { 24, 35 })]
+        [InlineData(new int[] { -2, -3, -1, -4, -6 }, new int[] { -1, -1 })]
+        [InlineData(new int[] { -10, 1, -22, 5 }, new int[] { 5, 6 })]
+        public void MaxSubarray(int[] arr, int[] expected)
+        {
+            Solution
+                .MaxSubarray(arr.ToList())
+                .Should().BeEquivalentTo(expected.ToList());
+        }
     }
 }

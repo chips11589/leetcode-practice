@@ -1970,5 +1970,48 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/maxsubarray/problem
+        /// </summary>
+        public static List<int> MaxSubarray(List<int> arr)
+        {
+            var output = new List<int>();
+            var max1 = 0;
+            var max2 = 0;
+            var currentSum = 0;
+            var possibleSums = new SortedSet<int>();
+            var sortedValues = new SortedSet<int>();
+
+            foreach (var item in arr)
+            {
+                // find max subarrays
+                currentSum += item;
+                max1 = Math.Max(currentSum, max1);
+
+                if (possibleSums.Min < 0)
+                {
+                    max1 = Math.Max(currentSum - possibleSums.Min, max1);
+                }
+
+                sortedValues.Add(item);
+                possibleSums.Add(currentSum);
+
+                // find max subsequences
+                if (item > 0)
+                {
+                    max2 += item;
+                }
+            }
+
+            if (max2 == 0)
+            {
+                max1 = max2 = sortedValues.Max;
+            }
+            output.Add(max1);
+            output.Add(max2);
+
+            return output;
+        }
     }
 }
