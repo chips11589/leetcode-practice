@@ -1,6 +1,5 @@
 using ChipsPlayGround;
 using FluentAssertions;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -592,6 +591,19 @@ namespace ChipsTest
                     .MinTimeV3(machines, goal)
                     .Should().Be(expected);
             }
+        }
+
+        [Theory]
+        [InlineData(new long[] { 1, 1, 2, 3 }, 7, 6)]
+        [InlineData(new long[] { 3, 3, 9, 9, 5 }, 7, 6)]
+        [InlineData(new long[] { 1, 1, 3, 4, 4 }, 7, 6)]
+        [InlineData(new long[] { 1, 1, 3, 4 }, 7, 5)]
+        [InlineData(new long[] { 1, 1, 3, 2, 4, 2 }, 7, 6)]
+        public void MaximumSum(long[] a, long m, long expected)
+        {
+            Solution
+                .MaximumSum(a.ToList(), m)
+                .Should().Be(expected);
         }
     }
 }

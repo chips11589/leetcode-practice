@@ -1932,5 +1932,43 @@ namespace ChipsPlayGround
 
             return lowerBound;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/maximum-subarray-sum/problem
+        /// </summary>
+        public static long MaximumSum(List<long> a, long m)
+        {
+            // m = 7
+            // 3 3 9 9 5 - 3 6 15 24 29 - 3 6 1 3 1
+            // 1 1 2 3
+            // 1 1 3 4 4
+            // 1 1 3 2 4 2
+
+            // (2 + 1 + 5 + 7) % 7 - (5 + 7) % 7
+
+            var output = 0L;
+            var currentSum = 0L;
+            var possibleSums = new SortedSet<long>();
+
+            foreach (var item in a)
+            {
+                currentSum = (currentSum + item) % m;
+                output = Math.Max(currentSum, output);
+
+                // all sums range from 0 to m. Find max by looking at possibleSums[i] greater and closest to currentSum
+                // max = (currentSum - possibleSums[i] + m) % m
+                var greaterAndClosest = possibleSums.GetViewBetween(currentSum + 1, m).Min;
+
+                if (greaterAndClosest > 0)
+                {
+                    output = Math.Max((currentSum - greaterAndClosest + m) % m, output);
+                }
+                if (output == m - 1) break;
+
+                possibleSums.Add(currentSum);
+            }
+
+            return output;
+        }
     }
 }
