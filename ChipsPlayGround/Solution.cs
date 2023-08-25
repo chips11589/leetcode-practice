@@ -2013,5 +2013,23 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/stockmax/problem
+        /// </summary>
+        public static long Stockmax(List<int> prices)
+        {
+            var output = 0L;
+            var max = 0;
+
+            for (int i = prices.Count - 1; i >= 0; i--)
+            {
+                max = Math.Max(max, prices[i]);
+
+                output += (max - prices[i]);
+            }
+
+            return output;
+        }
     }
 }

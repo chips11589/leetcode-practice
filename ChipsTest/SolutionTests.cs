@@ -622,5 +622,18 @@ namespace ChipsTest
                 .MaxSubarray(arr.ToList())
                 .Should().BeEquivalentTo(expected.ToList());
         }
+
+        [Theory]
+        [InlineData(new int[] { 1, 3, 1, 2 }, 3)]
+        [InlineData(new int[] { 1, 3, 5, 1, 2 }, 7)]
+        [InlineData(new int[] { 1, 3, 5, 1, 2, 1, 7 }, 29)] // 4 + 2 + 1 + 6 < 6 + 4 + 2 + 6 + 5 + 6
+        [InlineData(new int[] { 1, 3, 5, 4, 7 }, 15)] // 4 + 2 + 3 < 6 + 4 + 2 + 3
+        [InlineData(new int[] { 1, 2, 100 }, 197)]
+        public void Stockmax(int[] arr, long expected)
+        {
+            Solution
+                .Stockmax(arr.ToList())
+                .Should().Be(expected);
+        }
     }
 }
