@@ -2031,5 +2031,36 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/largest-rectangle/problem
+        /// </summary>
+        public static long LargestRectangle(List<int> h)
+        {
+            var output = 0L;
+
+            for (int i = 0; i < h.Count; i++)
+            {
+                var left = i;
+                var right = i;
+                var width = 1;
+
+                while (left > 0 && h[i] <= h[left - 1])
+                {
+                    width++;
+                    left--;
+                }
+
+                while (right < h.Count - 1 && h[i] <= h[right + 1])
+                {
+                    width++;
+                    right++;
+                }
+
+                output = Math.Max(output, width * h[i]);
+            }
+
+            return output;
+        }
     }
 }

@@ -635,5 +635,20 @@ namespace ChipsTest
                 .Stockmax(arr.ToList())
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new int[] { 1, 2, 3, 4, 5 }, 9)]
+        [InlineData(new int[] { 1, 7, 2, 3, 1 }, 7)]
+        [InlineData(new int[] { 1, 7, 1, 4, 5 }, 8)]
+        [InlineData(new int[] { 1, 7, 3, 4, 5 }, 12)]
+        [InlineData(new int[] { 2, 7, 3, 2, 4, 5 }, 12)]
+        [InlineData(new int[] { 7, 2, 3, 4 }, 8)]
+        [InlineData(new int[] { 1, 2, 3, 4, 5, 3 }, 12)]
+        public void LargestRectangle(int[] h, long expected)
+        {
+            Solution
+                .LargestRectangle(h.ToList())
+                .Should().Be(expected);
+        }
     }
 }
