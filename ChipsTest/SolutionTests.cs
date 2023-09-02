@@ -650,5 +650,20 @@ namespace ChipsTest
                 .LargestRectangle(h.ToList())
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new long[] { 2, 6, 1, 12 }, new long[] { 12, 2, 1, 1 })]
+        //[InlineData(new long[] { 2, 6, 1, 12, 4 }, new long[] { })]
+        //[InlineData(new long[] { 6, 1, 2 }, new long[] { })]
+        public void Riddle(long[] arr, long[] expected)
+        {
+            Solution
+                .Riddle(arr)
+                .Should().BeEquivalentTo(expected);
+
+            Solution
+                .RiddleV2(arr)
+                .Should().BeEquivalentTo(expected);
+        }
     }
 }

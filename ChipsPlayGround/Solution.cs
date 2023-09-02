@@ -1,4 +1,5 @@
 ﻿using Coding;
+using Perfolizer.Horology;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -2061,6 +2062,135 @@ namespace ChipsPlayGround
             }
 
             return output;
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/min-max-riddle/problem
+        /// Brute force
+        /// </summary>
+        public static long[] Riddle(long[] arr)
+        {
+            var output = new List<long>();
+
+            for (int windowSize = 1; windowSize < arr.Length + 1; windowSize++)
+            {
+                int start = 0;
+                long maxOfMin = int.MinValue;
+
+                while (start <= arr.Length - windowSize)
+                {
+                    var min = arr[start];
+
+                    for (int j = 0; j < windowSize; j++)
+                    {
+                        if (arr[start + j] < min) min = arr[start + j];
+                    }
+
+                    if (maxOfMin < min) maxOfMin = min;
+
+                    start++;
+                }
+                output.Add(maxOfMin);
+            }
+
+            return output.ToArray();
+        }
+
+        /// <summary>
+        /// https://www.hackerrank.com/challenges/min-max-riddle/problem
+        /// Solution copied from https://www.geeksforgeeks.org/find-the-maximum-of-minimums-for-every-window-size-in-a-given-array/
+        /// Still trying to understand why it was implemented like that
+        /// </summary>
+        public static long[] RiddleV2(long[] arr)
+        {
+            // Used to find previous and next smaller
+            Stack<int> s = new Stack<int>();
+            var n = arr.Length;
+
+            // Arrays to store previous
+            // and next smaller
+            int[] left = new int[n + 1];
+            int[] right = new int[n + 1];
+
+            // Initialize elements of left[]
+            // and right[]
+            for (int i = 0; i < n; i++)
+            {
+                left[i] = -1;
+                right[i] = n;
+            }
+
+            // Fill elements of left[] using logic discussed on
+            // https://www.geeksforgeeks.org/next-greater-element/
+            for (int i = 0; i < n; i++)
+            {
+                while (s.Count > 0 && arr[s.Peek()] >= arr[i])
+                {
+                    s.Pop();
+                }
+
+                if (s.Count > 0)
+                {
+                    left[i] = s.Peek();
+                }
+
+                s.Push(i);
+            }
+
+            // Empty the stack as stack is going
+            // to be used for right[]
+            while (s.Count > 0)
+            {
+                s.Pop();
+            }
+
+            // Fill elements of right[] using
+            // same logic
+            for (int i = n - 1; i >= 0; i--)
+            {
+                while (s.Count > 0 && arr[s.Peek()] >= arr[i])
+                {
+                    s.Pop();
+                }
+
+                if (s.Count > 0)
+                {
+                    right[i] = s.Peek();
+                }
+
+                s.Push(i);
+            }
+
+            // Create and initialize answer array
+            long[] ans = new long[n + 1];
+
+            // Fill answer array by comparing
+            // minimums of all lengths computed
+            // using left[] and right[]
+            for (int i = 0; i < n; i++)
+            {
+                // length of the interval
+                int len = right[i] - left[i] - 1;
+
+                // 2, 6, 1, 12 - left: -1, 0, -1, 2 - right: 2, 2, 4, 4
+                // 2, 6, 1, 12, 4 - left: -1, 0, -1, 2, 2, 0 - right: 2, 2, 5, 4, 5, 0
+                // 6, 1, 12 - left: -1, -1, 1, 0 - right: 1, 3, 3, 0
+
+                // arr[i] is a possible answer for
+                // this length 'len' interval, check x
+                // if arr[i] is more than max for 'len'
+                ans[len] = Math.Max(ans[len], arr[i]);
+            }
+
+            // Some entries in ans[] may not be
+            // filled yet. Fill them by taking
+            // values from right side of ans[]
+            for (int i = n - 1; i >= 1; i--)
+            {
+                ans[i] = Math.Max(ans[i], ans[i + 1]);
+            }
+
+            return ans.Skip(1).ToArray();
         }
     }
 }
