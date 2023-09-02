@@ -2099,7 +2099,7 @@ namespace ChipsPlayGround
         /// <summary>
         /// https://www.hackerrank.com/challenges/min-max-riddle/problem
         /// Solution copied from https://www.geeksforgeeks.org/find-the-maximum-of-minimums-for-every-window-size-in-a-given-array/
-        /// Still trying to understand why it was implemented like that
+        /// Still trying to understand why `ans[len] = Math.Max(ans[len], arr[i]);`
         /// </summary>
         public static long[] RiddleV2(long[] arr)
         {
