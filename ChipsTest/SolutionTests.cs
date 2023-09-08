@@ -653,8 +653,8 @@ namespace ChipsTest
 
         [Theory]
         [InlineData(new long[] { 2, 6, 1, 12 }, new long[] { 12, 2, 1, 1 })]
-        //[InlineData(new long[] { 2, 6, 1, 12, 4 }, new long[] { })]
-        //[InlineData(new long[] { 6, 1, 2 }, new long[] { })]
+        [InlineData(new long[] { 2, 6, 1, 12, 4 }, new long[] { 12L, 4L, 1L, 1L, 1L })]
+        [InlineData(new long[] { 6, 1, 2 }, new long[] { 6L, 1L, 1L })]
         public void Riddle(long[] arr, long[] expected)
         {
             Solution
@@ -664,6 +664,19 @@ namespace ChipsTest
             Solution
                 .RiddleV2(arr)
                 .Should().BeEquivalentTo(expected);
+        }
+
+        [Theory]
+        [InlineData(new int[] { 1, 2, 3 }, "1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1")]
+        [InlineData(new int[] { 0, 1 }, "0,1],[1,0")]
+        [InlineData(new int[] { 1 }, "1")]
+        public void Permute(int[] nums, string expected)
+        {
+            var expectedArr = expected.Split("],[").Select(strArr => strArr.Split(',').Select(i => int.Parse(i)).ToList()).ToList();
+
+            Solution
+                .Permute(nums)
+                .Should().BeEquivalentTo(expectedArr);
         }
     }
 }

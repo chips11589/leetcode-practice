@@ -2192,5 +2192,74 @@ namespace ChipsPlayGround
 
             return ans.Skip(1).ToArray();
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/permutations/
+        /// </summary>
+        public static IList<IList<int>> Permute(int[] nums)
+        {
+
+            // 1,2,3
+            // 1,2,3 - 1,3,2 - 2,1,3 - 2,3,1 - 3,2,1 - 3,1,2
+
+            //for (int i = 0; i < n; i++)
+            //{
+            //    var selected = new HashSet<int>();
+
+            //    if (selected.Contains(nums[i])) continue;
+
+            //    selected.Add(nums[i]);
+
+            //    for (int j = 0; j < n; j++)
+            //    {
+            //        if (selected.Contains(nums[j])) continue;
+
+            //        selected.Add(nums[j]);
+
+            //        for (int k = 0; k < n; k++)
+            //        {
+            //            if (selected.Contains(nums[k])) continue;
+
+            //            var list = selected.ToList();
+            //            list.Add(nums[k]);
+
+            //            output.Add(list);
+            //        }
+            //        selected.Remove(nums[j]);
+            //    }
+            //    selected.Remove(nums[i]);
+            //}
+
+            IList<IList<int>> output = new List<IList<int>>();
+            var n = nums.Length;
+            var selected = new HashSet<int>();
+
+            void Loop(int depth)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    if (selected.Contains(nums[i])) continue;
+
+                    if (depth == 1)
+                    {
+                        var list = selected.ToList();
+                        list.Add(nums[i]);
+
+                        output.Add(list);
+                    }
+                    else
+                    {
+                        selected.Add(nums[i]);
+
+                        Loop(depth - 1);
+
+                        selected.Remove(nums[i]);
+                    }
+                }
+            }
+            Loop(n);
+
+            return output;
+        }
     }
 }
