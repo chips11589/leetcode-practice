@@ -678,5 +678,14 @@ namespace ChipsTest
                 .Permute(nums)
                 .Should().BeEquivalentTo(expectedArr);
         }
+
+        [Theory]
+        [InlineData(new int[] { 2, 2, 3, 3, 2, 4, 4, 4, 4, 4 }, 4)]
+        public void MinimumRounds(int[] nums, int expected)
+        {
+            Solution
+                .MinimumRounds(nums)
+                .Should().Be(expected);
+        }
     }
 }

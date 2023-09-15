@@ -2261,5 +2261,45 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks/
+        /// </summary>
+        public static int MinimumRounds(int[] tasks)
+        {
+            var dict = new Dictionary<int, int>();
+            var output = 0;
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                if (!dict.ContainsKey(tasks[i]))
+                {
+                    dict.Add(tasks[i], 1);
+                }
+                else
+                {
+                    dict[tasks[i]]++;
+                }
+            }
+
+            foreach (var val in dict.Values)
+            {
+                if (val < 2) return -1;
+
+                var div = val / 3;
+                var mod = val % 3;
+
+                if (mod > 0)
+                {
+                    output += div + 1;
+                }
+                else
+                {
+                    output += div;
+                }
+            }
+
+            return output;
+        }
     }
 }
