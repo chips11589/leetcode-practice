@@ -2,6 +2,7 @@
 using Perfolizer.Horology;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace ChipsPlayGround
@@ -2297,6 +2298,119 @@ namespace ChipsPlayGround
                 {
                     output += div;
                 }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-sum-of-squared-difference/description/
+        /// </summary>
+        public static long MinSumSquareDiff(int[] nums1, int[] nums2, int k1, int k2)
+        {
+            var output = 0L;
+            var diffs = new PriorityQueue<int, int>();
+            var n = nums1.Length;
+            var sumK = k1 + k2;
+
+            for (int i = 0; i < n; i++)
+            {
+                var diff = Math.Abs(nums1[i] - nums2[i]);
+                diffs.Enqueue(diff, -diff);
+            }
+
+            // 7, 10
+            // 2, 1
+            // 5, 9 - 5, 0 - 2, 3
+            // 9
+
+            while (sumK > 0)
+            {
+                var diff = diffs.Dequeue();
+                diff--;
+
+                if (diff < 0) break;
+
+                diffs.Enqueue(diff, -diff);
+
+                sumK--;
+            }
+
+            while (diffs.Count > 0)
+            {
+                output += (long)Math.Pow(diffs.Dequeue(), 2);
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-sum-of-squared-difference/description/
+        /// </summary>
+        public static long MinSumSquareDiffV2(int[] nums1, int[] nums2, int k1, int k2)
+        {
+            var output = 0L;
+            var diffs = new List<int>();
+            var n = nums1.Length;
+            var sumK = k1 + k2;
+
+            // the trick here is to levelling the diffs
+            for (int i = 0; i < n; i++)
+            {
+                var diff = Math.Abs(nums1[i] - nums2[i]);
+                diffs.Add(diff);
+            }
+            diffs.Add(0);
+
+            diffs.Sort();
+
+            // nums1: 7, 10
+            // nums2: 2, 1
+            // diffs: 5, 9 - k1 + k2 = 9
+            // choices: 5, 0 vs 2, 3
+            for (int i = n; i >= 0; i--)
+            {
+                if (i > 0 && diffs[i] > diffs[i - 1])
+                {
+                    // distribute shared portion to level the diffs
+                    var gap = diffs[n] - diffs[i - 1];
+                    var portion = Math.Max(sumK / (n - i + 1), 1);
+
+                    for (int j = 0; sumK > 0 && j <= n - i; j++)
+                    {
+                        var sub = Math.Min(portion, gap);
+                        diffs[n - j] -= sub;
+                        sumK -= sub;
+
+                        if (sumK == 0) break;
+                    }
+                }
+
+                if (sumK == 0) break;
+            }
+
+            var prev = diffs[n];
+
+            // distribute left overs of sumK
+            while (sumK > 0 && prev > 0)
+            {
+                for (int i = n; i > 0; i--)
+                {
+                    prev = diffs[i];
+
+                    if (prev == 0 || sumK == 0)
+                    {
+                        break;
+                    }
+
+                    diffs[i]--;
+                    sumK--;
+                }
+            }
+
+            for (int i = 1; i <= n; i++)
+            {
+                output += (long)Math.Pow(diffs[i], 2);
             }
 
             return output;

@@ -687,5 +687,18 @@ namespace ChipsTest
                 .MinimumRounds(nums)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new int[] { 1, 4, 10, 12 }, new int[] { 5, 8, 6, 9 }, 1, 1, 43)]
+        [InlineData(new int[] { 10, 10, 10, 11, 5 }, new int[] { 1, 0, 6, 6, 1 }, 11, 27, 0)]
+        [InlineData(new int[] { 10, 10, 10, 11, 5 }, new int[] { 1, 0, 6, 6, 1 }, 11, 0, 89)]
+        [InlineData(new int[] { 19, 18, 19, 18, 18, 19, 19 }, new int[] { 1, 0, 1, 0, 0, 1, 1 }, 10, 33, 985)]
+        [InlineData(new int[] { 18, 4, 8, 19, 13, 8 }, new int[] { 18, 11, 8, 2, 13, 15 }, 16, 8, 17)]
+        public void MinSumSquareDiff(int[] nums1, int[] nums2, int k1, int k2, int expected)
+        {
+            Solution
+                .MinSumSquareDiffV2(nums1, nums2, k1, k2)
+                .Should().Be(expected);
+        }
     }
 }
