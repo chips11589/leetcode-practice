@@ -700,5 +700,15 @@ namespace ChipsTest
                 .MinSumSquareDiffV2(nums1, nums2, k1, k2)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new int[] { 4, 1, 3, 3 }, 5)]
+        [InlineData(new int[] { 1, 2, 3, 4, 5 }, 0)]
+        public void CountBadPairs(int[] nums, int expected)
+        {
+            Solution
+                .CountBadPairs(nums)
+                .Should().Be(expected);
+        }
     }
 }

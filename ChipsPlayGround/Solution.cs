@@ -2415,5 +2415,60 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/count-number-of-bad-pairs/
+        /// </summary>
+        public static long CountBadPairs(int[] nums)
+        {
+            var count = 0L;
+            var n = nums.Length;
+
+            //--- brute force ---\\
+            //for (int i = 0; i < n; i++)
+            //{
+            //    for (int j = i + 1; j < n; j++)
+            //    {
+            //        if (nums[j] - nums[i] != j - i)
+            //            count++;
+            //    }
+            //}
+
+            //--- improved ---\\
+            // ( j - i ) != ( A[j] - A[i] ) => ( A[i] - i ) != ( A[j] - j )
+            // good pairs: ( A[i] - i ) == ( A[j] - j )
+
+            // total pairs
+            // (n - 1) + (n - 2) + ... 1 for (n - 1) times
+            // 1 + 2 + ... + (n - 1) => n * (n - 1) / 2 loops
+            // 0 0 0 0
+            // 1 0 0 0
+            // 1 1 0 0
+            // 1 1 1 0
+            // 1 1 1 1
+
+            // or just simply loop :D
+            var totalPairs = 0L;
+            for (int i = 0; i < n - 1; i++)
+            {
+                totalPairs += (n - i - 1);
+            }
+
+            Dictionary<long, long> dict = new();
+            for (int i = 0; i < n; i++)
+            {
+                var diff = nums[i] - i;
+                if (!dict.ContainsKey(diff)) dict[diff] = 1;
+                else dict[diff]++;
+            }
+
+            foreach (var goodKeys in dict.Values)
+            {
+                var goodPairs = (goodKeys) * (goodKeys - 1) / 2;
+                count += goodPairs;
+            }
+
+            return totalPairs - count;
+        }
     }
 }
