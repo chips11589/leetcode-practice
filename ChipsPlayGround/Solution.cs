@@ -2470,5 +2470,35 @@ namespace ChipsPlayGround
 
             return totalPairs - count;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/all-paths-from-source-to-target/
+        /// </summary>
+        public static IList<IList<int>> AllPathsSourceTarget(int[][] graph)
+        {
+            var output = new List<IList<int>>();
+            var n = graph.Length;
+
+            void Next(int curr, List<int> path)
+            {
+                if (path == null) path = new List<int>();
+
+                path.Add(curr);
+
+                if (curr == n - 1)
+                {
+                    output.Add(path);
+                }
+
+                foreach (var node in graph[curr])
+                {
+                    Next(node, path.ToList());
+                }
+            };
+
+            Next(0, new List<int>());
+
+            return output;
+        }
     }
 }

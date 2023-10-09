@@ -710,5 +710,21 @@ namespace ChipsTest
                 .CountBadPairs(nums)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData("0,1,3],[0,2,3", new[] { 1, 2 }, new[] { 3 }, new[] { 3 }, new int[] { })]
+        [InlineData("0,4],[0,3,4],[0,1,3,4],[0,1,2,3,4],[0,1,4", new[] { 4, 3, 1 }, new[] { 3, 2, 4 }, new[] { 3 }, new int[] { 4 }, new int[] { })]
+        [InlineData(
+            "0,3,6,7],[0,3,4,7],[0,3,4,6,7],[0,3,4,5,6,7],[0,1,4,7],[0,1,4,6,7],[0,1,4,5,6,7],[0,1,6,7],[0,1,7],[0,1,2,4,7],[0,1,2,4,6,7]," +
+            "[0,1,2,4,5,6,7],[0,1,2,6,7],[0,1,2,3,6,7],[0,1,2,3,4,7],[0,1,2,3,4,6,7],[0,1,2,3,4,5,6,7],[0,1,5,6,7",
+            new[] { 3, 1 }, new[] { 4, 6, 7, 2, 5 }, new[] { 4, 6, 3 }, new int[] { 6, 4 }, new int[] { 7, 6, 5 }, new int[] { 6 }, new int[] { 7 }, new int[] { })]
+        public void AllPathsSourceTarget(string expected, params int[][] graph)
+        {
+            var expectedArr = expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList()).ToList();
+
+            Solution
+                .AllPathsSourceTarget(graph)
+                .Should().BeEquivalentTo(expectedArr);
+        }
     }
 }
