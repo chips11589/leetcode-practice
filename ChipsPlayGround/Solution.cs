@@ -2479,24 +2479,22 @@ namespace ChipsPlayGround
             var output = new List<IList<int>>();
             var n = graph.Length;
 
-            void Next(int curr, List<int> path)
+            void Next(int curr, int[] path, int depth)
             {
-                if (path == null) path = new List<int>();
-
-                path.Add(curr);
+                path[depth] = curr;
 
                 if (curr == n - 1)
                 {
-                    output.Add(path);
+                    output.Add(path[..(depth + 1)]);
                 }
 
                 foreach (var node in graph[curr])
                 {
-                    Next(node, path.ToList());
+                    Next(node, path, depth + 1);
                 }
             };
 
-            Next(0, new List<int>());
+            Next(0, new int[n], 0);
 
             return output;
         }
