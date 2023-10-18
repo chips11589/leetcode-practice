@@ -726,5 +726,27 @@ namespace ChipsTest
                 .AllPathsSourceTarget(graph)
                 .Should().BeEquivalentTo(expectedArr);
         }
+
+        [Theory]
+        [InlineData(3, 7, 28)]
+        [InlineData(3, 2, 3)]
+        public void UniquePaths(int m, int n, int expected)
+        {
+            Solution
+                .UniquePaths(m, n)
+                .Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("2],[3,4],[6,5,7],[4,1,8,3", 11)]
+        [InlineData("-10", -10)]
+        public void MinimumTotal(string triangleStr, int expected)
+        {
+            List<IList<int>> triangle = triangleStr.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
+
+            Solution
+                .MinimumTotal(triangle)
+                .Should().Be(expected);
+        }
     }
 }

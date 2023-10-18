@@ -2498,5 +2498,50 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/unique-paths/
+        /// </summary>
+        public static int UniquePaths(int m, int n)
+        {
+            var dp = new int[m, n];
+
+            for (int i = 0; i < m; i++)
+            {
+                dp[i, 0] = 1;
+            }
+
+            for (int j = 0; j < n; j++)
+            {
+                dp[0, j] = 1;
+            }
+
+            for (int i = 1; i < m; i++)
+            {
+                for (int j = 1; j < n; j++)
+                {
+                    dp[i, j] = dp[i - 1, j] + dp[i, j - 1];
+                }
+            }
+
+            return dp[m - 1, n - 1];
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/triangle/
+        /// </summary>
+        public static int MinimumTotal(IList<IList<int>> triangle)
+        {
+            for (int i = 1; i < triangle.Count; i++)
+            {
+                for (int j = 0; j < triangle[i].Count; j++)
+                {
+                    triangle[i][j] = triangle[i][j]
+                        + Math.Min(triangle[i - 1][j > 0 ? j - 1 : j], triangle[i - 1][j > triangle[i - 1].Count - 1 ? triangle[i - 1].Count - 1 : j]);
+                }
+            }
+
+            return triangle[triangle.Count - 1].Min();
+        }
     }
 }
