@@ -742,7 +742,10 @@ namespace ChipsTest
         [InlineData("-10", -10)]
         public void MinimumTotal(string triangleStr, int expected)
         {
-            List<IList<int>> triangle = triangleStr.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
+            List<IList<int>> triangle = triangleStr
+                .Split("],[")
+                .Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>)
+                .ToList();
 
             Solution
                 .MinimumTotal(triangle)
