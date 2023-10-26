@@ -2543,5 +2543,74 @@ namespace ChipsPlayGround
 
             return triangle[triangle.Count - 1].Min();
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/partition-equal-subset-sum
+        /// brute force
+        /// </summary>
+        public static bool CanPartition(int[] nums)
+        {
+            var sum = nums.Sum();
+
+            if (sum % 2 != 0) return false;
+
+            var total = sum / 2;
+            Array.Sort(nums);
+
+            if (nums[^1] > total || nums.Length == 1) return false;
+
+            var possibleSums = new HashSet<int> { 0 };
+
+            // 23, 13, 11, 7, 6, 5, 5
+            for (int i = nums.Length - 1; i >= 0; i--)
+            {
+                if (nums[i] > total)
+                {
+                    return false;
+                }
+
+                var count = possibleSums.Count;
+                for (int j = 0; j < count; j++)
+                {
+                    possibleSums.Add(possibleSums.ElementAt(j) + nums[i]);
+                }
+
+                if (possibleSums.Contains(total)) return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/partition-equal-subset-sum
+        /// recursion
+        /// </summary>
+        public static bool CanPartitionV2(int[] nums)
+        {
+            var sum = nums.Sum();
+
+            if (sum % 2 != 0) return false;
+
+            var total = sum / 2;
+
+            if (nums[^1] > total || nums.Length == 1) return false;
+
+            var calculated = new HashSet<(int, int)>();
+
+            bool Check(int tmpSum, int i)
+            {
+                if (calculated.Contains((tmpSum, i))) return false;
+
+                if (tmpSum == total) return true;
+
+                if (i >= nums.Length || nums[i] > total) return false;
+
+                calculated.Add((tmpSum, i));
+
+                return Check(tmpSum, i + 1) || Check(tmpSum + nums[i], i + 1);
+            }
+
+            return Check(0, 0);
+        }
     }
 }
