@@ -1,9 +1,11 @@
 ﻿using Coding;
+using Microsoft.Extensions.Primitives;
 using Perfolizer.Horology;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace ChipsPlayGround
 {
@@ -2611,6 +2613,93 @@ namespace ChipsPlayGround
             }
 
             return Check(0, 0);
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/remove-duplicate-letters/
+        /// brute force
+        /// </summary>
+        public static string RemoveDuplicateLetters(string s)
+        {
+            var shortest = string.Empty;
+            var calculated = new HashSet<(string, int)>();
+
+            static bool IsGreater(string s1, string s2)
+            {
+                if (s1.Length == 0) return true;
+
+                for (int i  = 0; i < s1.Length && i < s2.Length; i++)
+                {
+                    if (s1[i] == s2[i]) continue;
+
+                    return s1[i] > s2[i];
+                }
+
+                return s1.Length > s2.Length;
+            }
+
+            var stack = new Stack<(string, int)>();
+            stack.Push((string.Empty, 0));
+
+            while (stack.Count > 0)
+            {
+                var s1 = stack.Pop();
+
+                if (s1.Item2 == s.Length)
+                {
+                    shortest = IsGreater(shortest, s1.Item1) ? s1.Item1 : shortest;
+                    continue;
+                }
+
+                if (calculated.Contains(s1)) continue;
+
+                calculated.Add(s1);
+
+                var index = s1.Item1.IndexOf(s[s1.Item2]);
+
+                if (index == -1)
+                {
+                    stack.Push((s1.Item1 + s[s1.Item2], s1.Item2 + 1));
+                    continue;
+                }
+
+                stack.Push((s1.Item1.Remove(index, 1) + s[s1.Item2], s1.Item2 + 1));
+                stack.Push((s1.Item1, s1.Item2 + 1));
+            }
+
+            return shortest;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/remove-duplicate-letters/
+        /// optimised
+        /// </summary>
+        public static string RemoveDuplicateLettersV2(string s)
+        {
+            var stack = new Stack<char>();
+            var seen = new HashSet<int>();
+            var lastOccurrence = new Dictionary<char, int>();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                lastOccurrence[s[i]] = i;
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                var c = s[i];
+                if (!seen.Contains(c))
+                {
+                    while (stack.Count > 0 && c < stack.Peek() && i < lastOccurrence[stack.Peek()])
+                    {
+                        seen.Remove(stack.Pop());
+                    }
+                    seen.Add(c);
+                    stack.Push(c);
+                }
+            }
+
+            return string.Join("", stack.ToArray().Reverse());
         }
     }
 }

@@ -766,5 +766,17 @@ namespace ChipsTest
                 .CanPartitionV2(nums)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData("bcabc", "abc")]
+        [InlineData("cbacdcbc", "acdb")]
+        [InlineData("adccbcbd", "abcd")]
+        [InlineData("bxshkpdwcsjdbikywvioxrypfzfbppydfilfxxtouzzjxaymjpmdoevv", "bhcsdikworfltuzjxaympev")]
+        public void RemoveDuplicateLetters(string s, string expected)
+        {
+            Solution
+                .RemoveDuplicateLettersV2(s)
+                .Should().Be(expected);
+        }
     }
 }
