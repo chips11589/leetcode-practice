@@ -2205,62 +2205,62 @@ namespace ChipsPlayGround
             // 1,2,3
             // 1,2,3 - 1,3,2 - 2,1,3 - 2,3,1 - 3,2,1 - 3,1,2
 
-            //for (int i = 0; i < n; i++)
+            IList<IList<int>> output = new List<IList<int>>();
+            var n = nums.Length;
+            //var selected = new HashSet<int>();
+
+            //void Loop(int depth)
             //{
-            //    var selected = new HashSet<int>();
-
-            //    if (selected.Contains(nums[i])) continue;
-
-            //    selected.Add(nums[i]);
-
-            //    for (int j = 0; j < n; j++)
+            //    for (int i = 0; i < n; i++)
             //    {
-            //        if (selected.Contains(nums[j])) continue;
+            //        if (selected.Contains(nums[i])) continue;
 
-            //        selected.Add(nums[j]);
-
-            //        for (int k = 0; k < n; k++)
+            //        if (depth == 1)
             //        {
-            //            if (selected.Contains(nums[k])) continue;
-
             //            var list = selected.ToList();
-            //            list.Add(nums[k]);
+            //            list.Add(nums[i]);
 
             //            output.Add(list);
             //        }
-            //        selected.Remove(nums[j]);
+            //        else
+            //        {
+            //            selected.Add(nums[i]);
+
+            //            Loop(depth - 1);
+
+            //            selected.Remove(nums[i]);
+            //        }
             //    }
-            //    selected.Remove(nums[i]);
             //}
+            //Loop(n);
 
-            IList<IList<int>> output = new List<IList<int>>();
-            var n = nums.Length;
-            var selected = new HashSet<int>();
+            var stack = new Stack<(int, HashSet<int>)>();
+            stack.Push((n, new HashSet<int>()));
 
-            void Loop(int depth)
+            while (stack.Count > 0)
             {
+                var item = stack.Pop();
+
                 for (int i = 0; i < n; i++)
                 {
-                    if (selected.Contains(nums[i])) continue;
+                    if (item.Item2.Contains(nums[i])) continue;
 
-                    if (depth == 1)
+                    if (item.Item1 == 1)
                     {
-                        var list = selected.ToList();
+                        var list = item.Item2.ToList();
                         list.Add(nums[i]);
 
                         output.Add(list);
                     }
                     else
                     {
-                        selected.Add(nums[i]);
+                        var hash = item.Item2.ToHashSet();
+                        hash.Add(nums[i]);
 
-                        Loop(depth - 1);
-
-                        selected.Remove(nums[i]);
+                        stack.Push((item.Item1 - 1, hash));
                     }
                 }
             }
-            Loop(n);
 
             return output;
         }
