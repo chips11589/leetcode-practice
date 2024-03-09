@@ -778,5 +778,18 @@ namespace ChipsTest
                 .RemoveDuplicateLettersV2(s)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new[] { 1, 2, 3 }, 2)]
+        [InlineData(new[] { 1, 10, 2, 9 }, 16)]
+        [InlineData(new[] { 1, 2, 3, 9, 10 }, 16)]
+        [InlineData(new[] { 1, 1, 2 }, 1)]
+        [InlineData(new[] { 1, -1, 2 }, 3)]
+        public void MinMoves2(int[] nums, int expected)
+        {
+            Solution
+                .MinMoves2(nums)
+                .Should().Be(expected);
+        }
     }
 }

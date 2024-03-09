@@ -2628,7 +2628,7 @@ namespace ChipsPlayGround
             {
                 if (s1.Length == 0) return true;
 
-                for (int i  = 0; i < s1.Length && i < s2.Length; i++)
+                for (int i = 0; i < s1.Length && i < s2.Length; i++)
                 {
                     if (s1[i] == s2[i]) continue;
 
@@ -2700,6 +2700,26 @@ namespace ChipsPlayGround
             }
 
             return string.Join("", stack.ToArray().Reverse());
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/
+        /// </summary>
+        public static int MinMoves2(int[] nums)
+        {
+            // 1, 2, 9, 10 - chosen - any from 2 to 9
+            // 1, 2, 3, 9, 10 - chosen - 3
+
+            Array.Sort(nums);
+            var chosen = nums[nums.Length / 2];
+            var output = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                output += Math.Abs(chosen - nums[i]);
+            }
+
+            return output;
         }
     }
 }
