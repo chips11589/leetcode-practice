@@ -791,5 +791,19 @@ namespace ChipsTest
                 .MinMoves2(nums)
                 .Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new[] { 1, 2, 3, 0, 0, 0 }, 3, new[] { 2, 5, 6 }, 3, new[] { 1, 2, 2, 3, 5, 6 })]
+        [InlineData(new[] { 6, 7, 0, 0, 0, 0 }, 2, new[] { 1, 2, 5, 6 }, 4, new[] { 1, 2, 5, 6, 6, 7 })]
+        [InlineData(new[] { 1, 2, 3, 7, 0, 0, 0 }, 4, new[] { 2, 5, 6 }, 3, new[] { 1, 2, 2, 3, 5, 6, 7 })]
+        [InlineData(new[] { 1, 2, 3, 4, 0, 0, 0, 0 }, 4, new[] { 2, 2, 3, 5 }, 4, new[] { 1, 2, 2, 2, 3, 3, 4, 5 })]
+        [InlineData(new[] { 0 }, 0, new[] { 1 }, 1, new[] { 1 })]
+        public void Merge(int[] nums1, int m, int[] nums2, int n, int[] expected)
+        {
+            Solution
+                .Merge(nums1, m, nums2, n);
+
+            nums1.Should().BeEquivalentTo(expected, config => config.WithStrictOrdering());
+        }
     }
 }

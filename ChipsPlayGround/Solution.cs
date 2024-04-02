@@ -2721,5 +2721,40 @@ namespace ChipsPlayGround
 
             return output;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/merge-sorted-array
+        /// </summary>
+        public static void Merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            // 1,2,3,4,0,0,0,0 - 1,2,2,2,3,4,0,0 - 1,2,2,2,3,3,4,0
+            // 2,2,3,5
+
+            // [1,2,3,0,0,0] - 1,2,2,3,0,0
+            // [2,5,6]
+
+            var rightIndex = m + n - 1;
+            while (m > 0 && n > 0)
+            {
+                if (nums2[n - 1] >= nums1[m - 1])
+                {
+                    nums1[rightIndex] = nums2[n - 1];
+                    n--;
+                }
+                else
+                {
+                    nums1[rightIndex] = nums1[m - 1];
+                    m--;
+                }
+                rightIndex--;
+            }
+
+            while (n > 0)
+            {
+                nums1[rightIndex] = nums2[n - 1];
+                n--;
+                rightIndex--;
+            }
+        }
     }
 }
