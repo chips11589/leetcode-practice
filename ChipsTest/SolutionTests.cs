@@ -805,5 +805,24 @@ namespace ChipsTest
 
             nums1.Should().BeEquivalentTo(expected, config => config.WithStrictOrdering());
         }
+
+        [Theory]
+        [InlineData(new[] { 3, 2, 2, 3 }, 3, new[] { 2, 2 })]
+        [InlineData(new[] { 0, 1, 2, 2, 3, 0, 4, 2 }, 2, new[] { 0, 0, 1, 3, 4 })]
+        [InlineData(new[] { 0, 1, 2, 2, 3, 0, 4 }, 2, new[] { 0, 0, 1, 3, 4 })]
+        [InlineData(new[] { 1 }, 1, new int[] { })]
+        [InlineData(new[] { 3, 3 }, 3, new int[] { })]
+        public void RemoveElement(int[] nums1, int val, int[] expectedNums)
+        {
+            var k = Solution
+                .RemoveElement(nums1, val);
+
+            k.Should().Be(expectedNums.Length);
+            Array.Sort(nums1, 0, k);
+            for (int i = 0; i < k; i++)
+            {
+                nums1[i].Should().Be(expectedNums[i]);
+            }
+        }
     }
 }
