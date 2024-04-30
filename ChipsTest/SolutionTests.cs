@@ -824,5 +824,19 @@ namespace ChipsTest
                 nums1[i].Should().Be(expectedNums[i]);
             }
         }
+
+        [Theory]
+        [InlineData(new[] { 3, 2, 3 }, 3)]
+        [InlineData(new[] { 2, 2, 1, 1, 1, 2, 2 }, 2)]
+        [InlineData(new[] { 1, 1, 1, 3, 3, 2, 2, 3, 3, 3, 2, 3, 3 }, 3)]
+        [InlineData(new[] { 1, 1, 1, 2, 3, 3, 3, 3 }, 3)]
+        [InlineData(new[] { 2, 2, 2, 2, 1, 1, 1, 1, 2 }, 2)]
+        public void MajorityElement(int[] nums, int expectedNum)
+        {
+            var k = Solution
+                .MajorityElement(nums);
+
+            k.Should().Be(expectedNum);
+        }
     }
 }

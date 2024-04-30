@@ -2779,5 +2779,24 @@ namespace ChipsPlayGround
 
             return k;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/majority-element
+        /// </summary>
+        public static int MajorityElement(int[] nums)
+        {
+            var majorNum = 0;
+            var counter = 0;
+
+            foreach (var num in nums)
+            {
+                if (counter == 0) majorNum = num;
+
+                if (num != majorNum) counter--;
+                else counter++;
+            }
+
+            return majorNum;
+        }
     }
 }
