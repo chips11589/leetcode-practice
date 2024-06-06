@@ -2798,5 +2798,31 @@ namespace ChipsPlayGround
 
             return majorNum;
         }
+
+        public static int CanCompleteCircuit(int[] gas, int[] cost)
+        {
+            // gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+            // -2, -2, -2, 3, 3
+
+            var n = gas.Length;
+            var total = 0;
+            var totalSurplus = 0;
+            var start = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                var surplus = gas[i] - cost[i];
+                totalSurplus += surplus;
+
+                if (totalSurplus < 0)
+                {
+                    totalSurplus = 0;
+                    start = i + 1;
+                }
+                total += surplus;
+            }
+
+            return total < 0 ? -1 : start;
+        }
     }
 }
