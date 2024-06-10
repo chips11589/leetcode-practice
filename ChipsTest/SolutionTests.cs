@@ -838,5 +838,16 @@ namespace ChipsTest
 
             k.Should().Be(expectedNum);
         }
+
+        [Theory]
+        [InlineData(new[] { 4, 2, 0, 3, 2, 5 }, 9)]
+        [InlineData(new[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }, 6)]
+        public void Trap(int[] height, int expectedWater)
+        {
+            var k = Solution
+                .Trap(height);
+
+            k.Should().Be(expectedWater);
+        }
     }
 }

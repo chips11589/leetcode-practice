@@ -2799,6 +2799,9 @@ namespace ChipsPlayGround
             return majorNum;
         }
 
+        /// <summary>
+        /// https://leetcode.com/problems/gas-station/description
+        /// </summary>
         public static int CanCompleteCircuit(int[] gas, int[] cost)
         {
             // gas = [1,2,3,4,5], cost = [3,4,5,1,2]
@@ -2823,6 +2826,39 @@ namespace ChipsPlayGround
             }
 
             return total < 0 ? -1 : start;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/trapping-rain-water
+        /// </summary>
+        public static int Trap(int[] height)
+        {
+            var n = height.Length;
+            var ans = 0;
+
+            var maxes = new int[n];
+            maxes[0] = height[0];
+
+            for (int i = 1; i < n; i++)
+            {
+                maxes[i] = Math.Max(maxes[i - 1], height[i]);
+            }
+
+            maxes[n - 1] = height[n - 1];
+            for (int i = n - 2; i >= 0; i--)
+            {
+                maxes[i] = Math.Min(maxes[i], Math.Max(height[i], maxes[i + 1]));
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                if (maxes[i] - height[i] > 0)
+                {
+                    ans += maxes[i] - height[i];
+                }
+            }
+
+            return ans;
         }
     }
 }
