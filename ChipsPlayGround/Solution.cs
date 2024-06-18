@@ -2860,5 +2860,33 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        public static string LongestCommonPrefix(string[] strs)
+        {
+            if (strs.Length == 0) return "";
+            if (strs.Length == 1) return strs[0];
+
+            var ans = strs[0].AsSpan();
+
+            for (int i = 1; i < strs.Length; i++)
+            {
+                var length = Math.Min(strs[i].Length, ans.Length);
+                ans = ans[..length];
+
+                for (int j = 0; j < length; j++)
+                {
+                    if (ans[j] != strs[i][j])
+                    {
+                        ans = ans[..j];
+
+                        if (ans.Length == 0) return string.Empty;
+
+                        break;
+                    }
+                }
+            }
+
+            return ans.ToString();
+        }
     }
 }
