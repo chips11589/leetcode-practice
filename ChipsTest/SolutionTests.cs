@@ -849,5 +849,15 @@ namespace ChipsTest
 
             k.Should().Be(expectedWater);
         }
+
+        [Theory]
+        [InlineData("PAYPALISHIRING", 3, "PAHNAPLSIIGYIR")]
+        public void ZigzagConvert(string s, int numRows, string expected)
+        {
+            var k = Solution
+                .Convert(s, numRows);
+
+            k.Should().Be(expected);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace ChipsPlayGround
 {
@@ -2884,6 +2885,52 @@ namespace ChipsPlayGround
                         break;
                     }
                 }
+            }
+
+            return ans.ToString();
+        }
+
+        public static string Convert(string s, int numRows)
+        {
+            if (numRows == 1) return s;
+            if (numRows >= s.Length) return s;
+
+            var strs = new string[numRows];
+            var ans = new StringBuilder();
+            var k = 0;
+            var isDownward = true;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                strs[k] += s[i];
+
+                if (isDownward)
+                {
+                    if (k == numRows - 1)
+                    {
+                        isDownward = false;
+                        k--;
+                        continue;
+                    }
+
+                    k++;
+                }
+                else
+                {
+                    if (k == 0)
+                    {
+                        isDownward = true;
+                        k++;
+                        continue;
+                    }
+
+                    k--;
+                }
+            }
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                ans.Append(strs[i]);
             }
 
             return ans.ToString();
