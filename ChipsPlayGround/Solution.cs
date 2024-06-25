@@ -2862,6 +2862,9 @@ namespace ChipsPlayGround
             return ans;
         }
 
+        /// <summary>
+        /// https://leetcode.com/problems/longest-common-prefix/description
+        /// </summary>
         public static string LongestCommonPrefix(string[] strs)
         {
             if (strs.Length == 0) return "";
@@ -2890,6 +2893,9 @@ namespace ChipsPlayGround
             return ans.ToString();
         }
 
+        /// <summary>
+        /// https://leetcode.com/problems/zigzag-conversion/description
+        /// </summary>
         public static string Convert(string s, int numRows)
         {
             if (numRows == 1) return s;
@@ -2934,6 +2940,21 @@ namespace ChipsPlayGround
             }
 
             return ans.ToString();
+        }
+
+        public static int StrStr(string haystack, string needle)
+        {
+            var span = haystack.AsSpan();
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                if (i + needle.Length <= span.Length && span.Slice(i, needle.Length).SequenceEqual(needle))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }

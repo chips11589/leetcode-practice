@@ -859,5 +859,16 @@ namespace ChipsTest
 
             k.Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData("sadbutsad", "sad", 0)]
+        [InlineData("leetcode", "leeto", -1)]
+        public void StrStr(string haystack, string needle, int expected)
+        {
+            var k = Solution
+                .StrStr(haystack, needle);
+
+            k.Should().Be(expected);
+        }
     }
 }
