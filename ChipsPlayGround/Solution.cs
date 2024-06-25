@@ -1,95 +1,35 @@
 ﻿using Coding;
-using Microsoft.Extensions.Primitives;
-using Perfolizer.Horology;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace ChipsPlayGround
 {
     public class Solution
     {
+        /// <summary>
+        /// https://leetcode.com/problems/rotate-array
+        /// </summary>
         public static void Rotate(int[] nums, int k)
         {
-            //int maxRotateCount = k % nums.Length;
-            //for (int i = 0; i < maxRotateCount; i++)
-            //{
-            //    int last = nums[nums.Length - 1];
-            //    for (int j = nums.Length - 1; j > 0; j--)
-            //    {
-            //        nums[j] = nums[j - 1];
-            //    }
-            //    nums[0] = last;
-            //}
+            var n = nums.Length;
+            k = k % n;
+            var nums2 = new int[k];
 
-            //[DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3, new int[] { 5, 6, 7, 1, 2, 3, 4 })]
-            // k: 3 - 6 -> 2, 2 -> 5, 5 -> 1, 1 -> 4, 4 -> 0, 0 -> 3, 3 -> 6
-            //[DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 2, new int[] { 6, 7, 1, 2, 3, 4, 5 })]
-            // k: 2 - 6 -> 1, 1 -> 3, 3 -> 5, 5 -> 0, 0 -> 2, 2 -> 4, 4 -> 6
-            //[DataRow(new int[] { 1, 2, 3, 4, 5, 6, 7 }, 1, new int[] { 7, 1, 2, 3, 4, 5, 6 })]
-            // k: 1 - 6 -> 0, 0 -> 1, 1 -> 2, 2 -> 3, 3 -> 4, 4 -> 5, 5 -> 6
-            //[DataRow(new int[] { -1, -100, 3, 99 }, 2, new int[] { 3, 99, -1, -100 })]
-            // k: 2 - ... 
-            //[DataRow(new int[] { 1, 2, 3, 4, 5, 6 }, 2, new int[] { 5, 6, 1, 2, 3, 4 })]
-            // k: 2 - 5 -> 1, 1 -> 3, 3 -> 5
-
-            if (k * 2 == nums.Length)
+            for (int i = 0; i < k; i++)
             {
-                int maxRotate = nums.Length / 2;
-                for (int i = 0; i < maxRotate; i++)
-                {
-                    int indexToReplace = maxRotate + i;
-                    int temp = nums[indexToReplace];
-                    nums[indexToReplace] = nums[i];
-                    nums[i] = temp;
-                }
+                nums2[i] = nums[n - k + i];
             }
-            else
+
+            for (int i = n - 1 - k; i >= 0; i--)
             {
-                int shiftingNumberCount = k % nums.Length;
+                nums[i + k] = nums[i];
+            }
 
-                if (shiftingNumberCount == 0)
-                {
-                    return;
-                }
-                int splitPoint = nums.Length - shiftingNumberCount - 1;
-                int getNextIndexToReplace(int oldIndex)
-                {
-                    int newIndex;
-                    if (oldIndex > splitPoint)
-                    {
-                        newIndex = shiftingNumberCount - (nums.Length - oldIndex);
-                    }
-                    else
-                    {
-                        newIndex = nums.Length - 1 - (splitPoint - oldIndex);
-                    }
-                    return newIndex;
-                }
-
-                int numberBeingMoved;
-                int count = 0;
-
-                for (int startPoint = 0; count < nums.Length - 1; startPoint++)
-                {
-                    numberBeingMoved = nums[startPoint];
-                    int indexToReplace = getNextIndexToReplace(startPoint);
-
-                    while (startPoint != indexToReplace)
-                    {
-                        int temp = nums[indexToReplace];
-                        nums[indexToReplace] = numberBeingMoved;
-                        numberBeingMoved = temp;
-
-                        indexToReplace = getNextIndexToReplace(indexToReplace);
-                        count++;
-                    }
-                    nums[indexToReplace] = numberBeingMoved;
-                    count++;
-                }
+            for (int i = 0; i < k; i++)
+            {
+                nums[i] = nums2[i];
             }
         }
 
