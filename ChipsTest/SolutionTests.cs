@@ -870,5 +870,18 @@ namespace ChipsTest
 
             k.Should().Be(expected);
         }
+
+        [Theory]
+        [InlineData(new[] { "This", "is", "an", "example", "of", "text", "justification." }, 16, new[] { "This    is    an", "example  of text", "justification.  " })]
+        [InlineData(new[] { "What", "must", "be", "acknowledgment", "shall", "be" }, 16, new[] { "What   must   be", "acknowledgment  ", "shall be        " })]
+        [InlineData(new[] { "Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art", "is", "everything", "else", "we", "do" }, 20, new[] { "Science  is  what we", "understand      well", "enough to explain to", "a  computer.  Art is", "everything  else  we", "do                  " })]
+        [InlineData(new[] { "what", "you", "can", "do", "for", "your", "country" }, 16, new[] { "what  you can do", "for your country" })]
+        [InlineData(new[] { "Give", "me", "my", "Romeo;", "and,", "when", "he", "shall", "die,", "Take", "him", "and", "cut", "him", "out", "in", "little", "stars,", "And", "he", "will", "make", "the", "face", "of", "heaven", "so", "fine", "That", "all", "the", "world", "will", "be", "in", "love", "with", "night", "And", "pay", "no", "worship", "to", "the", "garish", "sun." }, 25, new[] { "Give  me  my  Romeo; and,", "when  he  shall die, Take", "him  and  cut  him out in", "little stars, And he will", "make  the  face of heaven", "so   fine  That  all  the", "world  will  be  in  love", "with  night  And  pay  no", "worship   to  the  garish", "sun.                     " })]
+        public void FullJustify(string[] words, int maxWidth, string[] expected)
+        {
+            Solution
+                .FullJustify(words, maxWidth)
+                .Should().BeEquivalentTo(expected);
+        }
     }
 }

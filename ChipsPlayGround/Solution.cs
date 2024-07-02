@@ -2882,6 +2882,9 @@ namespace ChipsPlayGround
             return ans.ToString();
         }
 
+        /// <summary>
+        /// https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string
+        /// </summary>
         public static int StrStr(string haystack, string needle)
         {
             var span = haystack.AsSpan();
@@ -2895,6 +2898,105 @@ namespace ChipsPlayGround
             }
 
             return -1;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/text-justification
+        /// </summary>
+        public static IList<string> FullJustify(string[] words, int maxWidth)
+        {
+            var lines = new List<List<string>>();
+            var currLineLength = 0;
+            var currLineCount = 0;
+
+            // calculate words per line
+            lines.Add(new List<string>());
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (currLineLength == 0)
+                {
+                    lines[currLineCount].Add(words[i]);
+                    currLineLength += words[i].Length;
+                }
+                else
+                {
+                    if (currLineLength + words[i].Length + 1 <= maxWidth)
+                    {
+                        lines[currLineCount].Add(words[i]);
+                        currLineLength += words[i].Length + 1;
+                    }
+                    else
+                    {
+                        i--;
+                        lines.Add(new List<string>());
+                        currLineCount++;
+                        currLineLength = 0;
+                    }
+                }
+            }
+
+            // calculate spaces per line
+            var allSpaces = new List<List<string>>(lines.Count);
+
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                var length = line.Sum(word => word.Length);
+
+                if (i != lines.Count - 1 && line.Count != 1)
+                {
+                    var lineSpaces = new List<string>(line.Count);
+                    var availableSpaces = maxWidth - length;
+                    var isEvenSpaces = false;
+                    var maxSpace = 0;
+                    var idealSpace = string.Empty;
+
+                    for (int j = 1; j < line.Count; j++)
+                    {
+                        if (!isEvenSpaces) // spaces can be evenly distributed, no need to recalculate
+                        {
+                            isEvenSpaces = availableSpaces % (line.Count - j) == 0;
+                            maxSpace = isEvenSpaces
+                                ? availableSpaces / (line.Count - j)
+                                : availableSpaces / (line.Count - j) + 1;
+
+                            idealSpace = new string(' ', maxSpace);
+                        }
+
+                        availableSpaces -= maxSpace;
+                        lineSpaces.Add(idealSpace);
+                    }
+                    allSpaces.Add(lineSpaces);
+                }
+                else // fill spaces in last line, or single word lines
+                {
+                    var arrSpace = new string[line.Count];
+                    Array.Fill(arrSpace, " ");
+                    arrSpace[line.Count - 1] = new string(' ', maxWidth - length - line.Count + 1);
+
+                    allSpaces.Add(new List<string>(arrSpace));
+                }
+            }
+
+            // aggregate the result
+            var ans = new List<string>(lines.Count);
+
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                var spaces = allSpaces[i];
+                var lineStr = new StringBuilder();
+
+                for (int j = 0; j < line.Count; j++)
+                {
+                    lineStr.Append(line[j]).Append(j < spaces.Count ? spaces[j] : string.Empty);
+                }
+
+                ans.Add(lineStr.ToString());
+            }
+
+            return ans;
         }
     }
 }
