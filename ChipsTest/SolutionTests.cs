@@ -672,7 +672,7 @@ namespace ChipsTest
         [InlineData(new int[] { 1 }, "1")]
         public void Permute(int[] nums, string expected)
         {
-            var expectedArr = expected.Split("],[").Select(strArr => strArr.Split(',').Select(i => int.Parse(i)).ToList()).ToList();
+            var expectedArr = ConvertStringsToLists(expected);
 
             Solution
                 .Permute(nums)
@@ -720,7 +720,7 @@ namespace ChipsTest
             new[] { 3, 1 }, new[] { 4, 6, 7, 2, 5 }, new[] { 4, 6, 3 }, new int[] { 6, 4 }, new int[] { 7, 6, 5 }, new int[] { 6 }, new int[] { 7 }, new int[] { })]
         public void AllPathsSourceTarget(string expected, params int[][] graph)
         {
-            var expectedArr = expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList()).ToList();
+            var expectedArr = ConvertStringsToLists(expected);
 
             Solution
                 .AllPathsSourceTarget(graph)
@@ -742,10 +742,7 @@ namespace ChipsTest
         [InlineData("-10", -10)]
         public void MinimumTotal(string triangleStr, int expected)
         {
-            List<IList<int>> triangle = triangleStr
-                .Split("],[")
-                .Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>)
-                .ToList();
+            List<IList<int>> triangle = ConvertStringsToLists(triangleStr);
 
             Solution
                 .MinimumTotal(triangle)
@@ -882,6 +879,25 @@ namespace ChipsTest
             Solution
                 .FullJustify(words, maxWidth)
                 .Should().BeEquivalentTo(expected);
+        }
+
+        [Theory]
+        [InlineData(new[] { -1, 0, 1, 2, -1, -4 }, "-1,-1,2],[-1,0,1")]
+        [InlineData(new[] { -2, 0, 1, 1, 2 }, "-2,0,2],[-2,1,1")]
+        [InlineData(new[] { -1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4 }, "-4,0,4],[-4,1,3],[-3,-1,4],[-3,0,3],[-3,1,2],[-2,-1,3],[-2,0,2],[-1,-1,2],[-1,0,1")]
+        [InlineData(new[] { -4, -2, 1, -5, -4, -4, 4, -2, 0, 4, 0, -2, 3, 1, -5, 0 }, "-5,1,4],[-4,0,4],[-4,1,3],[-2,-2,4],[-2,1,1],[0,0,0")]
+        public void ThreeSum(int[] nums, string expected)
+        {
+            var expectedList = ConvertStringsToLists(expected);
+
+            Solution
+                .ThreeSum(nums)
+                .Should().BeEquivalentTo(expectedList);
+        }
+
+        private static List<IList<int>> ConvertStringsToLists(string expected)
+        {
+            return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
         }
     }
 }

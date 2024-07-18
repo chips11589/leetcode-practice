@@ -2998,5 +2998,49 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/3sum
+        /// </summary>
+        public static IList<IList<int>> ThreeSum(int[] nums)
+        {
+            var ans = new List<IList<int>>();
+            Array.Sort(nums);
+
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+                var right = nums.Length - 1;
+                var left = i + 1;
+
+                while (left < right)
+                {
+                    if (nums[i] + nums[left] + nums[right] < 0)
+                    {
+                        left++;
+                        continue;
+                    }
+
+                    if (nums[i] + nums[left] + nums[right] == 0)
+                    {
+                        List<int> match = [nums[i], nums[left], nums[right]];
+                        ans.Add(match);
+
+                        while (left < right && nums[left] == match[1])
+                            left++;
+                        while (left < right && nums[right] == match[2])
+                            right--;
+                    }
+
+                    if (nums[i] + nums[left] + nums[right] > 0)
+                    {
+                        right--;
+                    }
+                }
+            }
+
+            return ans;
+        }
     }
 }
