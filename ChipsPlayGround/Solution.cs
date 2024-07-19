@@ -3042,5 +3042,32 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-size-subarray-sum
+        /// </summary>
+        public static int MinSubArrayLen(int target, int[] nums)
+        {
+            var sum = 0;
+            var currWindowLength = 0;
+            var minWindowLength = int.MaxValue;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                currWindowLength++;
+
+                while (i + 1 - currWindowLength >= 0 && sum - nums[i + 1 - currWindowLength] >= target)
+                {
+                    sum -= nums[i + 1 - currWindowLength];
+                    currWindowLength--;
+                }
+
+                if (sum >= target)
+                    minWindowLength = Math.Min(minWindowLength, currWindowLength);
+            }
+
+            return minWindowLength == int.MaxValue ? 0 : minWindowLength;
+        }
     }
 }
