@@ -3069,5 +3069,38 @@ namespace ChipsPlayGround
 
             return minWindowLength == int.MaxValue ? 0 : minWindowLength;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/longest-substring-without-repeating-characters
+        /// </summary>
+        public static int LengthOfLongestSubstring(string s)
+        {
+            var max = 0;
+            var currWindow = 0;
+            var lastSeen = new Dictionary<char, int>();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!lastSeen.TryAdd(s[i], i))
+                {
+                    var j = i - currWindow;
+                    while (j < lastSeen[s[i]])
+                    {
+                        lastSeen.Remove(s[j]);
+                        j++;
+                    }
+                    currWindow = i - lastSeen[s[i]];
+                    lastSeen[s[i]] = i;
+                }
+                else
+                {
+                    currWindow++;
+                    max = Math.Max(max, currWindow);
+                }
+
+            }
+
+            return max;
+        }
     }
 }
