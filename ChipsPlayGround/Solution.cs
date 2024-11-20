@@ -1,6 +1,7 @@
 ﻿using Coding;
 using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 
@@ -3101,6 +3102,173 @@ namespace ChipsPlayGround
             }
 
             return max;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/substring-with-concatenation-of-all-words
+        /// </summary>
+        public static IList<int> FindSubstring(string s, string[] words)
+        {
+            var ans = new List<int>();
+
+            // ["foo","bar"]
+            // barfoothefoobarman
+            var wordLength = words[0].Length;
+            var allDict = new Dictionary<string, int>();
+            var allWordLength = wordLength * words.Length;
+
+            if (allWordLength > s.Length)
+                return ans;
+
+            // Try to reuse the previously calculated observedDict: i -> i + w -> i + 2w...
+            var observedDicts = new Dictionary<int, Dictionary<string, int>>();
+
+            for (int i = 0; i < wordLength; i++)
+            {
+                var observedDict = new Dictionary<string, int>();
+                var j = i;
+
+                while (j - i + wordLength <= allWordLength && j + wordLength <= s.Length)
+                {
+                    var word = s.Substring(j, wordLength);
+
+                    if (observedDict.ContainsKey(word))
+                    {
+                        observedDict[word]++;
+                    }
+                    else
+                    {
+                        observedDict.Add(word, 1);
+                    }
+
+                    j += wordLength;
+                }
+
+                observedDicts.Add(i, observedDict);
+            }
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (allDict.ContainsKey(words[i]))
+                {
+                    allDict[words[i]]++;
+                }
+                else
+                {
+                    allDict.Add(words[i], 1);
+                }
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                var found = true;
+
+                if (!observedDicts.TryGetValue(i, out Dictionary<string, int> observedDict) && i + allWordLength <= s.Length)
+                {
+                    observedDict = observedDicts[i - wordLength];
+
+                    var headWord = s.Substring(i - wordLength, wordLength);
+                    if (observedDict[headWord] == 1)
+                    {
+                        observedDict.Remove(headWord);
+                    }
+                    else
+                    {
+                        observedDict[headWord]--;
+                    }
+
+                    var tailWord = s.Substring(i + allWordLength - wordLength, wordLength);
+                    if (observedDict.ContainsKey(tailWord))
+                    {
+                        observedDict[tailWord]++;
+                    }
+                    else
+                    {
+                        observedDict.Add(tailWord, 1);
+                    }
+
+                    observedDicts.Add(i, observedDict);
+                    observedDicts.Remove(i - wordLength);
+                }
+
+
+                if (observedDict != null)
+                {
+                    foreach (var (key, value) in allDict)
+                    {
+                        if (!observedDict.TryGetValue(key, out var observedVal) || observedVal != value)
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        ans.Add(i);
+                }
+            }
+
+            return ans;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-window-substring/description/
+        /// </summary>
+        public static string MinWindow(string s, string t)
+        {
+            var ans = string.Empty;
+
+            if (t.Length > s.Length)
+                return ans;
+
+            Dictionary<char, int> observed;
+            Dictionary<char, int> allChars = [];
+
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (!allChars.TryAdd(t[i], 1))
+                {
+                    allChars[t[i]]++;
+                }
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                var currWindow = string.Empty;
+                var matchedCount = 0;
+                observed = [];
+
+                for (int j = i; j < s.Length; j++)
+                {
+                    if (allChars.TryGetValue(s[j], out int allCharVal))
+                    {
+                        if (!observed.TryGetValue(s[j], out int val) || val < allCharVal)
+                        {
+                            if (val == 0)
+                                observed.Add(s[j], 1);
+                            else
+                                observed[s[j]]++;
+
+                            matchedCount++;
+                        }
+
+                        currWindow += s[j].ToString();
+                    }
+                    else if (currWindow != string.Empty)
+                    {
+                        currWindow += s[j];
+                    }
+
+                    if (matchedCount == t.Length && (ans == string.Empty || ans.Length > currWindow.Length))
+                    {
+                        ans = currWindow;
+
+                        break;
+                    }
+                }
+            }
+
+            return ans;
         }
     }
 }

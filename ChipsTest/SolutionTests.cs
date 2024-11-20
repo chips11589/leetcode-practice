@@ -895,6 +895,22 @@ namespace ChipsTest
                 .Should().BeEquivalentTo(expectedList);
         }
 
+        [Theory]
+        [InlineData("barfoothefoobarman", new[] { "foo", "bar" }, new[] { 0, 9 })]
+        [InlineData("wordgoodgoodgoodbestword", new[] { "word", "good", "best", "word" }, new int[] { })]
+        [InlineData("barfoofoobarthefoobarman", new[] { "bar", "foo", "the" }, new int[] { 6, 9, 12 })]
+        public void FindSubstring(string s, string[] words, int[] expected)
+        {
+            Solution.FindSubstring(s, words).Should().BeEquivalentTo(expected);
+        }
+
+        [Theory]
+        [InlineData("ADOBECODEBANC", "ABC", "BANC")]
+        public void MinWindow(string s, string t, string expected)
+        {
+            Solution.MinWindow(s, t).Should().BeEquivalentTo(expected);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
