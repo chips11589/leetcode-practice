@@ -1,4 +1,5 @@
 ﻿using Coding;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Formats.Asn1;
@@ -3216,10 +3217,9 @@ namespace ChipsPlayGround
         /// </summary>
         public static string MinWindow(string s, string t)
         {
-            var ans = string.Empty;
+            if (t.Length > s.Length) return string.Empty;
 
-            if (t.Length > s.Length)
-                return ans;
+            if (s == t) return s;
 
             Dictionary<char, int> observed;
             Dictionary<char, int> allChars = [];
@@ -3232,43 +3232,86 @@ namespace ChipsPlayGround
                 }
             }
 
+            int start = -1, end = -1;
+            var observedCount = 0;
+            observed = [];
+
             for (int i = 0; i < s.Length; i++)
             {
-                var currWindow = string.Empty;
-                var matchedCount = 0;
-                observed = [];
-
-                for (int j = i; j < s.Length; j++)
+                if (allChars.ContainsKey(s[i]))
                 {
-                    if (allChars.TryGetValue(s[j], out int allCharVal))
-                    {
-                        if (!observed.TryGetValue(s[j], out int val) || val < allCharVal)
-                        {
-                            if (val == 0)
-                                observed.Add(s[j], 1);
-                            else
-                                observed[s[j]]++;
+                    if (t.Length == 1)
+                        return t;
 
-                            matchedCount++;
-                        }
-
-                        currWindow += s[j].ToString();
-                    }
-                    else if (currWindow != string.Empty)
-                    {
-                        currWindow += s[j];
-                    }
-
-                    if (matchedCount == t.Length && (ans == string.Empty || ans.Length > currWindow.Length))
-                    {
-                        ans = currWindow;
-
-                        break;
-                    }
+                    start = i;
+                    end = start + 1;
+                    observedCount++;
+                    observed.Add(s[i], 1);
+                    break;
                 }
             }
 
-            return ans;
+            if (start == -1) return string.Empty;
+
+            var nextMatches = new Queue<int>();
+            var minStart = 0;
+            var minEnd = int.MaxValue;
+
+            while (end < s.Length)
+            {
+                // ADOBECODEBANC
+                // ADOBEC
+                // BECODEBA
+                // CODEBA
+                // BANC
+                if (observedCount == t.Length)
+                {
+                    if (observed.TryGetValue(s[start], out int val))
+                    {
+                        if (val == 1)
+                            observed.Remove(s[start]);
+                        else
+                            observed[s[start]]--;
+                    }
+
+                    if (end - start < minEnd - minStart)
+                    {
+                        minEnd = end;
+                        minStart = start;
+                    }
+
+                    if (val <= allChars[s[start]])
+                        observedCount--;
+
+                    if (nextMatches.Count() == 0) break;
+
+                    start = nextMatches.Dequeue();
+                }
+                else
+                {
+                    if (allChars.TryGetValue(s[end], out int allCharVal))
+                    {
+                        if (!observed.TryGetValue(s[end], out int val) || val < allCharVal)
+                        {
+                            observedCount++;
+                        }
+
+                        if (val == 0)
+                            observed.Add(s[end], 1);
+                        else
+                            observed[s[end]] = val + 1;
+
+                        nextMatches.Enqueue(end);
+                    }
+                }
+
+                if (observedCount != t.Length)
+                    end++;
+            }
+
+            if (minEnd == int.MaxValue) return string.Empty;
+
+            return s[minStart..(minEnd + 1)];
         }
     }
 }

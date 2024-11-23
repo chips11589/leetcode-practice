@@ -906,6 +906,11 @@ namespace ChipsTest
 
         [Theory]
         [InlineData("ADOBECODEBANC", "ABC", "BANC")]
+        [InlineData("ADOBACODEBANC", "ABC", "BAC")]
+        [InlineData("A", "A", "A")]
+        [InlineData("AB", "AB", "AB")]
+        [InlineData("AB", "A", "A")]
+        [InlineData("baaaabab", "abb", "bab")]
         public void MinWindow(string s, string t, string expected)
         {
             Solution.MinWindow(s, t).Should().BeEquivalentTo(expected);
