@@ -3221,24 +3221,20 @@ namespace ChipsPlayGround
 
             if (s == t) return s;
 
-            Dictionary<char, int> observed;
-            Dictionary<char, int> allChars = [];
+            int[] observed = new int[128];
+            int[] allChars = new int[128];
 
             for (int i = 0; i < t.Length; i++)
             {
-                if (!allChars.TryAdd(t[i], 1))
-                {
-                    allChars[t[i]]++;
-                }
+                allChars[t[i]]++;
             }
 
             int start = -1, end = -1;
             var observedCount = 0;
-            observed = [];
 
             for (int i = 0; i < s.Length; i++)
             {
-                if (allChars.ContainsKey(s[i]))
+                if (allChars[s[i]] > 0)
                 {
                     if (t.Length == 1)
                         return t;
@@ -3246,7 +3242,7 @@ namespace ChipsPlayGround
                     start = i;
                     end = start + 1;
                     observedCount++;
-                    observed.Add(s[i], 1);
+                    observed[s[i]]++;
                     break;
                 }
             }
@@ -3266,13 +3262,7 @@ namespace ChipsPlayGround
                 // BANC
                 if (observedCount == t.Length)
                 {
-                    if (observed.TryGetValue(s[start], out int val))
-                    {
-                        if (val == 1)
-                            observed.Remove(s[start]);
-                        else
-                            observed[s[start]]--;
-                    }
+                    observed[s[start]]--;
 
                     if (end - start < minEnd - minStart)
                     {
@@ -3280,26 +3270,23 @@ namespace ChipsPlayGround
                         minStart = start;
                     }
 
-                    if (val <= allChars[s[start]])
+                    if (observed[s[start]] < allChars[s[start]])
                         observedCount--;
 
-                    if (nextMatches.Count() == 0) break;
+                    if (nextMatches.Count == 0) break;
 
                     start = nextMatches.Dequeue();
                 }
                 else
                 {
-                    if (allChars.TryGetValue(s[end], out int allCharVal))
+                    if (allChars[s[end]] > 0)
                     {
-                        if (!observed.TryGetValue(s[end], out int val) || val < allCharVal)
+                        if (observed[s[end]] == 0 || observed[s[end]] < allChars[s[end]])
                         {
                             observedCount++;
                         }
 
-                        if (val == 0)
-                            observed.Add(s[end], 1);
-                        else
-                            observed[s[end]] = val + 1;
+                        observed[s[end]]++;
 
                         nextMatches.Enqueue(end);
                     }
