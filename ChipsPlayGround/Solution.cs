@@ -3300,5 +3300,60 @@ namespace ChipsPlayGround
 
             return s[minStart..(minEnd + 1)];
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/valid-sudoku
+        /// </summary>
+        public static bool IsValidSudoku(char[][] board)
+        {
+            board = [
+                ['.', '.', '4', '.', '.', '.', '6', '3', '.'],
+                ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                ['5', '.', '.', '.', '.', '.', '.', '9', '.'],
+                ['.', '.', '.', '5', '6', '.', '.', '.', '.'],
+                ['4', '.', '3', '.', '.', '.', '.', '.', '1'],
+                ['.', '.', '.', '7', '.', '.', '.', '.', '.'],
+                ['.', '.', '.', '5', '.', '.', '.', '.', '.'],
+                ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                ['.', '.', '.', '.', '.', '.', '.', '.', '.']];
+
+
+            var rowHashSets = new HashSet<char>[9];
+            var columnHashSets = new HashSet<char>[9];
+            var boxHashSets = new HashSet<char>[9];
+
+            for (int i = 0; i < 9; i++)
+            {
+                rowHashSets[i] = [];
+                columnHashSets[i] = [];
+                boxHashSets[i] = [];
+            }
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    if (board[i][j] != '.')
+                    {
+                        if (!rowHashSets[i].Add(board[i][j]))
+                        {
+                            return false;
+                        }
+
+                        if (!columnHashSets[j].Add(board[i][j]))
+                        {
+                            return false;
+                        }
+
+                        if (!boxHashSets[3 * (i / 3) + j / 3].Add(board[i][j]))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }
