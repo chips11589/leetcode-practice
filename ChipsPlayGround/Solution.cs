@@ -3355,5 +3355,98 @@ namespace ChipsPlayGround
 
             return true;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/spiral-matrix
+        /// </summary>
+        public static IList<int> SpiralOrder(int[][] matrix)
+        {
+            var ans = new List<int>();
+            var size = matrix.Length * matrix[0].Length;
+            var direction = 0;
+            var checkedMatrix = new int[matrix.Length, matrix[0].Length];
+            int currRow = 0, currCol = 0;
+
+            while (ans.Count < size)
+            {
+                if (direction == 0) // left to right
+                {
+                    for (int i = currCol; i <= matrix[0].Length; i++)
+                    {
+                        if (i < matrix[0].Length && checkedMatrix[currRow, i] != 1)
+                        {
+                            ans.Add(matrix[currRow][i]);
+                            currCol = i;
+                            checkedMatrix[currRow, i] = 1;
+                        }
+                        else
+                        {
+                            direction = 1;
+                            if (currRow < matrix.Length - 1) currRow++;
+                            break;
+                        }
+                    }
+                }
+
+                if (direction == 1) // top to bottom
+                {
+                    for (int j = currRow; j <= matrix.Length; j++)
+                    {
+                        if (j < matrix.Length && checkedMatrix[j, currCol] != 1)
+                        {
+                            ans.Add(matrix[j][currCol]);
+                            currRow = j;
+                            checkedMatrix[j, currCol]  = 1;
+                        }
+                        else
+                        {
+                            direction = 2;
+                            if (currCol > 0) currCol--;
+                            break;
+                        }
+                    }
+                }
+
+                if (direction == 2) // right to left
+                {
+                    for (int i = currCol; i >= -1; i--)
+                    {
+                        if (i > -1 && checkedMatrix[currRow, i] != 1)
+                        {
+                            ans.Add(matrix[currRow][i]);
+                            currCol = i;
+                            checkedMatrix[currRow, i] = 1;
+                        }
+                        else
+                        {
+                            direction = 3;
+                            if (currRow > 0) currRow--;
+                            break;
+                        }
+                    }
+                }
+
+                if (direction == 3) // bottom to top
+                {
+                    for (int j = currRow; j >= -1; j--)
+                    {
+                        if (j > -1 && checkedMatrix[j, currCol] != 1)
+                        {
+                            ans.Add(matrix[j][currCol]);
+                            currRow = j;
+                            checkedMatrix[j, currCol]  = 1;
+                        }
+                        else
+                        {
+                            direction = 0;
+                            if (currCol < matrix[0].Length) currCol++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return ans;
+        }
     }
 }

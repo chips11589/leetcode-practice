@@ -916,6 +916,15 @@ namespace ChipsTest
             Solution.MinWindow(s, t).Should().BeEquivalentTo(expected);
         }
 
+        [Theory]
+        [InlineData(new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 7, 8, 9 })]
+        [InlineData(new int[] { 1, 2, 3, 4 }, new int[] { 5, 6, 7, 8 }, new int[] { 9, 10, 11, 12 })]
+        [InlineData(new int[] { 1 })]
+        public void SpiralOrder(params int[][] matrix)
+        {
+            Solution.SpiralOrder(matrix);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
