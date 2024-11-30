@@ -3396,7 +3396,7 @@ namespace ChipsPlayGround
                         {
                             ans.Add(matrix[j][currCol]);
                             currRow = j;
-                            checkedMatrix[j, currCol]  = 1;
+                            checkedMatrix[j, currCol] = 1;
                         }
                         else
                         {
@@ -3434,7 +3434,7 @@ namespace ChipsPlayGround
                         {
                             ans.Add(matrix[j][currCol]);
                             currRow = j;
-                            checkedMatrix[j, currCol]  = 1;
+                            checkedMatrix[j, currCol] = 1;
                         }
                         else
                         {
@@ -3447,6 +3447,49 @@ namespace ChipsPlayGround
             }
 
             return ans;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/rotate-image
+        /// </summary>
+        public static void Rotate(int[][] matrix)
+        {
+            // [1,2,3],
+            // [4,5,6],
+            // [7,8,9]
+
+            if (matrix.Length == 1) return;
+
+            var currRow = 0;
+
+            while (currRow < matrix.Length / 2)
+            {
+                for (int j = currRow; j < matrix.Length - currRow - 1; j++)
+                {
+                    var prev = matrix[currRow][j];
+
+                    for (int k = 0; k < 4; k++) // four sides
+                    {
+                        switch (k)
+                        {
+                            case 0: // right
+                                (prev, matrix[j][matrix.Length - 1 - currRow]) = (matrix[j][matrix.Length - 1 - currRow], prev);
+                                break;
+                            case 1: // bottom
+                                (prev, matrix[matrix.Length - 1 - currRow][matrix.Length - 1 - j]) = (matrix[matrix.Length - 1 - currRow][matrix.Length - 1 - j], prev);
+                                break;
+                            case 2: // left
+                                (prev, matrix[matrix.Length - 1 - j][currRow]) = (matrix[matrix.Length - 1 - j][currRow], prev);
+                                break;
+                            case 3: // top
+                                (prev, matrix[currRow][j]) = (matrix[currRow][j], prev);
+                                break;
+                        }
+                    }
+                }
+
+                currRow++;
+            }
         }
     }
 }

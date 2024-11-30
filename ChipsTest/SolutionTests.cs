@@ -925,6 +925,14 @@ namespace ChipsTest
             Solution.SpiralOrder(matrix);
         }
 
+        [Theory]
+        [InlineData(new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 7, 8, 9 })]
+        [InlineData(new int[] { 5, 1, 9, 11 }, new int[] { 2, 4, 8, 10 }, new int[] { 13, 3, 6, 7 }, new int[] { 15, 14, 12, 16 })]
+        public void RotateMatrix(params int[][] matrix)
+        {
+            Solution.Rotate(matrix);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
