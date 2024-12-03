@@ -3491,5 +3491,37 @@ namespace ChipsPlayGround
                 currRow++;
             }
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/set-matrix-zeroes
+        /// </summary>
+        public static void SetZeroes(int[][] matrix)
+        {
+            var rowCols = new List<(int, int)>();
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[0].Length; j++)
+                {
+                    if (matrix[i][j] == 0)
+                    {
+                        rowCols.Add((i, j));
+                    }
+                }
+            }
+
+            for (int i = 0; i < rowCols.Count; i++)
+            {
+                for (int j = 0; j < matrix[0].Length; j++)
+                {
+                    matrix[rowCols[i].Item1][j] = 0;
+                }
+
+                for (int j = 0; j < matrix.Length; j++)
+                {
+                    matrix[j][rowCols[i].Item2] = 0;
+                }
+            }
+        }
     }
 }
