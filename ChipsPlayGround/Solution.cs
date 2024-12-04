@@ -3525,6 +3525,9 @@ namespace ChipsPlayGround
             }
         }
 
+        /// <summary>
+        /// https://leetcode.com/problems/game-of-life
+        /// </summary>
         public static void GameOfLife(int[][] board)
         {
             var flips = new List<(int, int)>();
@@ -3554,6 +3557,28 @@ namespace ChipsPlayGround
             {
                 board[flips[i].Item1][flips[i].Item2] = Math.Abs(board[flips[i].Item1][flips[i].Item2] - 1);
             }
+        }
+    
+        /// <summary>
+        /// https://leetcode.com/problems/ransom-note
+        /// </summary>
+        public static bool CanConstruct(string ransomNote, string magazine)
+        {
+            var dict = new int[26];
+
+            for (int i = 0; i < magazine.Length; i++)
+            {
+                dict[magazine[i] - 97]++;
+            }
+
+            for (int i = 0; i < ransomNote.Length; i++)
+            {
+                dict[ransomNote[i] - 97]--;
+
+                if (dict[ransomNote[i] - 97] < 0) return false;
+            }
+
+            return true;
         }
     }
 }
