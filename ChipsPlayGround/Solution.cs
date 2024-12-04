@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Formats.Asn1;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace ChipsPlayGround
@@ -3521,6 +3522,37 @@ namespace ChipsPlayGround
                 {
                     matrix[j][rowCols[i].Item2] = 0;
                 }
+            }
+        }
+
+        public static void GameOfLife(int[][] board)
+        {
+            var flips = new List<(int, int)>();
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[0].Length; j++)
+                {
+                    var liveCells = 0;
+
+                    if (i > 0 && j > 0 && board[i - 1][j - 1] == 1) liveCells++;
+                    if (i > 0 && board[i - 1][j] == 1) liveCells++;
+                    if (i > 0 && j < board[0].Length - 1 && board[i - 1][j + 1] == 1) liveCells++;
+                    if (j > 0 && board[i][j - 1] == 1) liveCells++;
+                    if (j < board[0].Length - 1 && board[i][j + 1] == 1) liveCells++;
+                    if (j > 0 && i < board.Length - 1 && board[i + 1][j - 1] == 1) liveCells++;
+                    if (i < board.Length - 1 && board[i + 1][j] == 1) liveCells++;
+                    if (i < board.Length - 1 && j < board[0].Length - 1 && board[i + 1][j + 1] == 1) liveCells++;
+
+                    if (liveCells < 2 && board[i][j] == 1) flips.Add((i, j));
+                    else if (liveCells == 3 && board[i][j] == 0) flips.Add((i, j));
+                    else if (liveCells > 3 && board[i][j] == 1) flips.Add((i, j));
+                }
+            }
+
+            for (int i = 0; i < flips.Count; i++)
+            {
+                board[flips[i].Item1][flips[i].Item2] = Math.Abs(board[flips[i].Item1][flips[i].Item2] - 1);
             }
         }
     }
