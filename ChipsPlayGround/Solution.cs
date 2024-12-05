@@ -3558,7 +3558,7 @@ namespace ChipsPlayGround
                 board[flips[i].Item1][flips[i].Item2] = Math.Abs(board[flips[i].Item1][flips[i].Item2] - 1);
             }
         }
-    
+
         /// <summary>
         /// https://leetcode.com/problems/ransom-note
         /// </summary>
@@ -3576,6 +3576,31 @@ namespace ChipsPlayGround
                 dict[ransomNote[i] - 97]--;
 
                 if (dict[ransomNote[i] - 97] < 0) return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/isomorphic-strings
+        /// </summary>
+        public static bool IsIsomorphic(string s, string t)
+        {
+            var dict = new int[128];
+            var dict2 = new int[128];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((dict[s[i]] != 0 && dict[s[i]] != t[i])
+                    || (dict2[t[i]] != 0 && dict2[t[i]] != s[i]))
+                {
+                    return false;
+                }
+                else
+                {
+                    dict[s[i]] = t[i];
+                    dict2[t[i]] = s[i];
+                }
             }
 
             return true;
