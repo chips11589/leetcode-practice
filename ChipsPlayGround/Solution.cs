@@ -3605,5 +3605,41 @@ namespace ChipsPlayGround
 
             return true;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/word-pattern
+        /// </summary>
+        public static bool WordPattern(string pattern, string s)
+        {
+            var dict = new string[128];
+            var dict2 = new Dictionary<string, char>();
+
+            var words = s.Split(' ');
+
+            if (pattern.Length != words.Length)
+                return false;
+
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                if (dict[pattern[i]] != null && dict[pattern[i]] != words[i])
+                {
+                    return false;
+                }
+                else if (dict[pattern[i]] == null)
+                {
+                    dict[pattern[i]] = words[i];
+                }
+                
+                if (dict2.TryGetValue(words[i], out char c) && c != pattern[i])
+                    return false;
+
+                if (c == default(char))
+                {
+                    dict2[words[i]] = pattern[i];
+                }
+            }
+
+            return true;
+        }
     }
 }
