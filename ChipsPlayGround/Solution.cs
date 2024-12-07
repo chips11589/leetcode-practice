@@ -3660,13 +3660,81 @@ namespace ChipsPlayGround
                 dict2[t[i]]++;
             }
 
-            for (int i = 0 ; i < dict1.Length; i++)
+            for (int i = 0; i < dict1.Length; i++)
             {
                 if (dict1[i] != dict2[i])
                     return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/group-anagrams
+        /// </summary>
+        public static IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            // var ans = new List<IList<string>>();
+
+            // for (int k = 0; k < strs.Length; k++)
+            // {
+            //     var existing = false;
+
+            //     foreach (var list in ans)
+            //     {
+            //         var dict1 = new int[26];
+            //         var dict2 = new int[26];
+
+            //         var s = list[0];
+            //         var t = strs[k];
+
+            //         if (s.Length != t.Length) continue;
+
+            //         for (int i = 0; i < s.Length; i++)
+            //         {
+            //             dict1[s[i] - 'a']++;
+            //         }
+
+            //         for (int i = 0; i < t.Length; i++)
+            //         {
+            //             dict2[t[i] - 'a']++;
+            //         }
+
+            //         if (dict1.SequenceEqual(dict2))
+            //         {
+            //             existing = true;
+            //             list.Add(strs[k]);
+            //             break;
+            //         }
+            //     }
+
+            //     if (!existing)
+            //     {
+            //         ans.Add([strs[k]]);
+            //     }
+            // }
+
+            // return ans;
+
+            var dict = new Dictionary<string, IList<string>>();
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                Span<char> chars = strs[i].ToCharArray();
+                chars.Sort();
+                var sorted = new string(chars);
+
+                if (dict.TryGetValue(sorted, out var list))
+                {
+                    list.Add(strs[i]);
+                }
+                else
+                {
+                    dict[sorted] = [strs[i]];
+                }
+            }
+
+            return [.. dict.Values];
         }
     }
 }
