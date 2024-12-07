@@ -3629,7 +3629,7 @@ namespace ChipsPlayGround
                 {
                     dict[pattern[i]] = words[i];
                 }
-                
+
                 if (dict2.TryGetValue(words[i], out char c) && c != pattern[i])
                     return false;
 
@@ -3637,6 +3637,33 @@ namespace ChipsPlayGround
                 {
                     dict2[words[i]] = pattern[i];
                 }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/valid-anagram
+        /// </summary>
+        public static bool IsAnagram(string s, string t)
+        {
+            var dict1 = new int[128];
+            var dict2 = new int[128];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                dict1[s[i]]++;
+            }
+
+            for (int i = 0; i < t.Length; i++)
+            {
+                dict2[t[i]]++;
+            }
+
+            for (int i = 0 ; i < dict1.Length; i++)
+            {
+                if (dict1[i] != dict2[i])
+                    return false;
             }
 
             return true;
