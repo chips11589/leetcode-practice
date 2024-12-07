@@ -3736,5 +3736,29 @@ namespace ChipsPlayGround
 
             return [.. dict.Values];
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/two-sum
+        /// </summary>
+        public static int[] TwoSum(int[] nums, int target)
+        {
+            var dict = new Dictionary<int, int>();
+            var ans = new int[2];
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (dict.TryGetValue(nums[i], out var index))
+                {
+                    ans = [index, i];
+                    break;
+                }
+                else
+                {
+                    dict[target - nums[i]] = i;
+                }
+            }
+
+            return ans;
+        }
     }
 }
