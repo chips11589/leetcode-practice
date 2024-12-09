@@ -933,6 +933,13 @@ namespace ChipsTest
             Solution.Rotate(matrix);
         }
 
+        [Theory]
+        [InlineData(3)]
+        public void IsHappy(int n)
+        {
+            Solution.IsHappy(n);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

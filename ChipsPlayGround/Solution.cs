@@ -3760,5 +3760,36 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/happy-number
+        /// </summary>
+        public static bool IsHappy(int n)
+        {
+            HashSet<int> repeats = [];
+            int number;
+
+            repeats.Add(n);
+
+            do
+            {
+                number = 0;
+
+                while (n != 0)
+                {
+                    number += (n % 10) * (n % 10);
+
+                    n /= 10;
+                }
+
+                if (number == 1)
+                    return true;
+
+                n = number;
+            }
+            while (repeats.Add(number));
+
+            return false;
+        }
     }
 }
