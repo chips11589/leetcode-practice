@@ -3791,5 +3791,82 @@ namespace ChipsPlayGround
 
             return false;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/contains-duplicate-ii
+        /// </summary>
+        public static bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            var dict = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (dict.TryGetValue(nums[i], out var val) && Math.Abs(i - val) <= k)
+                {
+                    return true;
+                }
+                else
+                {
+                    dict[nums[i]] = i;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/longest-consecutive-sequence
+        /// </summary>
+        public static int LongestConsecutive(int[] nums)
+        {
+            // 100,4,200,1,3,2
+            // 100 - 99, 101
+            // 4 - 3, 5
+            // 200 - 199, 201
+            // 1 - 0, 2
+            // 3 - 2, 4
+            // 2 - 1, 2
+
+            var hashSet = new HashSet<int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                hashSet.Add(nums[i]);
+            }
+
+            var checks = new HashSet<int>();
+            var ans = 0;
+
+            foreach (var item in hashSet)
+            {
+                if (checks.Contains(item))
+                    continue;
+
+                var count = 1;
+                var i = item + 1;
+                checks.Add(item);
+
+                while (hashSet.Contains(i))
+                {
+                    count++;
+                    checks.Add(i);
+                    i++;
+                }
+
+                var j = item - 1;
+
+                while (hashSet.Contains(j))
+                {
+                    count++;
+                    checks.Add(j);
+                    j--;
+                }
+
+                if (count > ans)
+                    ans = count;
+            }
+
+            return ans;
+        }
     }
 }
