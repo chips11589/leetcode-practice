@@ -3868,5 +3868,53 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/summary-ranges
+        /// </summary>
+        public static IList<string> SummaryRanges(int[] nums)
+        {
+            if (nums.Length == 0)
+                return [];
+
+            if (nums.Length == 1)
+                return [nums[0].ToString()];
+
+            var ans = new List<string>();
+            int prev = nums[0];
+            int start = 0;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (prev != nums[i] - 1)
+                {
+                    if (start != i - 1)
+                    {
+                        ans.Add($"{nums[start]}->{nums[i - 1]}");
+                    }
+                    else
+                    {
+                        ans.Add($"{nums[start]}");
+                    }
+                    start = i;
+                }
+
+                if (i == nums.Length - 1)
+                {
+                    if (start != i)
+                    {
+                        ans.Add($"{nums[start]}->{nums[i]}");
+                    }
+                    else
+                    {
+                        ans.Add($"{nums[start]}");
+                    }
+                }
+
+                prev = nums[i];
+            }
+
+            return ans;
+        }
     }
 }
