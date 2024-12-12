@@ -3916,5 +3916,42 @@ namespace ChipsPlayGround
 
             return ans;
         }
+
+        /// <summary>
+        /// https://leetcode.com/problems/merge-intervals
+        /// </summary>
+        public static int[][] Merge(int[][] intervals)
+        {
+            if (intervals.Length == 1)
+                return intervals;
+
+            var ans = new List<int[]>();
+
+            Array.Sort(intervals, (a, b) => {
+                return a[0] - b[0];
+            });
+
+            var curr = intervals[0];
+
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                if (intervals[i][0] <= curr[1])
+                {
+                    curr[1] = Math.Max(curr[1], intervals[i][1]);
+                }
+                else
+                {
+                    ans.Add(curr);
+                    curr = intervals[i];
+                }
+
+                if (i == intervals.Length - 1)
+                {
+                    ans.Add(curr);
+                }
+            }
+
+            return [.. ans];
+        }
     }
 }
