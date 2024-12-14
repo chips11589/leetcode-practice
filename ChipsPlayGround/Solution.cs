@@ -3998,5 +3998,36 @@ namespace ChipsPlayGround
 
             return [.. ans];
         }
+    
+        /// <summary>
+        /// https://leetcode.com/problems/insert-interval/
+        /// </summary>
+        public static int[][] Insert2(int[][] intervals, int[] newInterval)
+        {
+            var ans = new List<int[]>();
+            var i = 0;
+
+            while (i < intervals.Length && intervals[i][1] < newInterval[0])
+            {
+                ans.Add(intervals[i]);
+                i++;
+            }
+
+            while (i < intervals.Length && intervals[i][0] <= newInterval[1])
+            {
+                newInterval[0] = Math.Min(intervals[i][0], newInterval[0]);
+                newInterval[1] = Math.Max(intervals[i][1], newInterval[1]);
+                i++;
+            }
+            ans.Add(newInterval);
+
+            while (i < intervals.Length)
+            {
+                ans.Add(intervals[i]);
+                i++;
+            }
+
+            return [.. ans];
+        }
     }
 }
