@@ -3927,7 +3927,8 @@ namespace ChipsPlayGround
 
             var ans = new List<int[]>();
 
-            Array.Sort(intervals, (a, b) => {
+            Array.Sort(intervals, (a, b) =>
+            {
                 return a[0] - b[0];
             });
 
@@ -3948,6 +3949,50 @@ namespace ChipsPlayGround
                 if (i == intervals.Length - 1)
                 {
                     ans.Add(curr);
+                }
+            }
+
+            return [.. ans];
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/insert-interval/
+        /// </summary>
+        public static int[][] Insert(int[][] intervals, int[] newInterval)
+        {
+            if (intervals.Length == 0)
+                return [newInterval];
+            
+            var ans = new List<int[]>();
+            var added = false;
+
+            for (int i = 0; i < intervals.Length; i++)
+            {
+                if (!added && intervals[i][0] > newInterval[0])
+                {
+                    ans.Add(newInterval);
+                    added = true;
+                }
+                ans.Add(intervals[i]);
+
+                if (!added && i == intervals.Length - 1)
+                    ans.Add(newInterval);
+            }
+
+            var prev = ans[0];
+
+            // [[1,2],[3,8],[6,7],[8,10],[12,16]]
+            for (int i = 1; i < ans.Count; i++)
+            {
+                if (prev[1] >= ans[i][0])
+                {
+                    prev[1] = Math.Max(prev[1], ans[i][1]);
+                    ans.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    prev = ans[i];
                 }
             }
 
