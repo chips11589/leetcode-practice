@@ -3962,7 +3962,7 @@ namespace ChipsPlayGround
         {
             if (intervals.Length == 0)
                 return [newInterval];
-            
+
             var ans = new List<int[]>();
             var added = false;
 
@@ -3998,7 +3998,7 @@ namespace ChipsPlayGround
 
             return [.. ans];
         }
-    
+
         /// <summary>
         /// https://leetcode.com/problems/insert-interval/
         /// </summary>
@@ -4028,6 +4028,44 @@ namespace ChipsPlayGround
             }
 
             return [.. ans];
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons
+        /// </summary>
+        public static int FindMinArrowShots(int[][] points)
+        {
+            var ans = 1;
+
+            if (points.Length == 1) return ans;
+
+            Array.Sort(points, (a, b) => 
+            {
+                if (a[0] == b[0]) return 0;
+
+                return a[0] > b[0] ? 1 : -1;
+            });
+
+            var currRange = points[0];
+
+            // [1,6],[2,8],[7,12],[10,16]
+            // [1,2],[3,4],[5,6],[7,8]
+            // [1,10],[3,9],[4,11],[6,9],[6,7],[8,12],[9,12]
+            for (int i = 1; i < points.Length; i++)
+            {
+                if (points[i][0] > currRange[1])
+                {
+                    currRange = points[i];
+                    ans++;
+                }
+                else
+                {
+                    currRange[0] = points[i][0];
+                    currRange[1] = Math.Min(points[i][1], currRange[1]);
+                }
+            }
+
+            return ans;
         }
     }
 }
