@@ -4039,7 +4039,7 @@ namespace ChipsPlayGround
 
             if (points.Length == 1) return ans;
 
-            Array.Sort(points, (a, b) => 
+            Array.Sort(points, (a, b) =>
             {
                 if (a[0] == b[0]) return 0;
 
@@ -4066,6 +4066,41 @@ namespace ChipsPlayGround
             }
 
             return ans;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/valid-parentheses
+        /// </summary>
+        public static bool IsValid(string s)
+        {
+            if (s.Length == 1) return false;
+
+            var stack = new Stack<char>();
+            stack.Push(s[0]);
+
+            var dict = new Dictionary<char, char>(3)
+            {
+                {')', '('},
+                {'}', '{'},
+                {']', '['}
+            };
+
+            // ([])
+            // ((
+            for (int i = 1; i < s.Length; i++)
+            {
+                if (dict.TryGetValue(s[i], out char val))
+                {
+                    if (stack.Count == 0 || stack.Pop() != val)
+                        return false;
+                }
+                else
+                {
+                    stack.Push(s[i]);
+                }
+            }
+
+            return stack.Count == 0;
         }
     }
 }
