@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace ChipsPlayGround;
@@ -4141,5 +4142,50 @@ public class Solution
         return ans.ToString();
     }
 
-    
+    /// <summary>
+    /// https://leetcode.com/problems/min-stack
+    /// </summary>
+    public class MinStack
+    {
+        private class Node
+        {
+            public Node Next { get; set; }
+            public int Val { get; set; }
+            public int Min { get; set; }
+        }
+
+        private Node head;
+
+        public MinStack()
+        {
+
+        }
+
+        public void Push(int val)
+        {
+            if (head == null)
+            {
+                head = new Node { Val = val, Min = val };
+            }
+            else
+            {
+                head = new Node { Val = val, Min = Math.Min(head.Min, val), Next = head };
+            }
+        }
+
+        public void Pop()
+        {
+            head = head.Next;
+        }
+
+        public int Top()
+        {
+            return head.Val;
+        }
+
+        public int GetMin()
+        {
+            return head.Min;
+        }
+    }
 }
