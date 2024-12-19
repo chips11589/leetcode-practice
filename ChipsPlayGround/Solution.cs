@@ -441,39 +441,6 @@ public class Solution
         return Rob(nums, 0);
     }
 
-    public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
-    {
-        ListNode current = l1;
-
-        while (current != null)
-        {
-            int sum;
-            if (l2 == null) sum = current.val;
-            else sum = current.val + l2.val;
-
-            current.val = sum % 10;
-
-            if (sum >= 10)
-            {
-                if (current.next != null)
-                    current.next.val++;
-                else if (l2?.next != null)
-                    l2.next.val++;
-                else current.next = new ListNode(1);
-            }
-
-            if (current.next == null && l2 != null)
-            {
-                current.next = l2.next;
-                l2 = null;
-            }
-            current = current.next;
-
-            l2 = l2?.next;
-        }
-        return l1;
-    }
-
     public static void FindMinimumBribes(int[] input)
     {
         // 1 2 3 4 5
@@ -4228,21 +4195,69 @@ public class Solution
     /// <summary>
     /// https://leetcode.com/problems/linked-list-cycle
     /// </summary>
-    public class LinkedListSolution
+    public static bool HasCycle(ListNode head)
     {
-        public bool HasCycle(ListNode head)
+        var set = new HashSet<ListNode>();
+
+        while (head?.next != null)
         {
-            var set = new HashSet<ListNode>();
+            if (!set.Add(head))
+                return true;
 
-            while (head?.next != null)
+            head = head.next;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/add-two-numbers/description
+    /// </summary>
+    public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+    {
+        ListNode ans = null;
+        ListNode next = null;
+        var add = 0;
+
+        while (l1 != null && l2 != null)
+        {
+            var sum = l1.val + l2.val + add;
+
+            if (ans == null)
             {
-                if (!set.Add(head))
-                    return true;
-
-                head = head.next;
+                ans = new ListNode(sum % 10);
+                next = ans;
+            }
+            else
+            {
+                next.next = new ListNode(sum % 10);
+                next = next.next;
             }
 
-            return false;
+            add = sum / 10;
+
+            l1 = l1.next;
+            l2 = l2.next;
         }
+
+        var remain = l1 ?? l2;
+
+        while (remain != null)
+        {
+            var sum = remain.val + add;
+            add = sum / 10;
+
+            next.next = new ListNode(sum % 10);
+            next = next.next;
+
+            remain = remain.next;
+        }
+
+        if (add > 0)
+        {
+            next.next = new ListNode(add);
+        }
+
+        return ans;
     }
 }
