@@ -4188,4 +4188,40 @@ public class Solution
             return head.Min;
         }
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/evaluate-reverse-polish-notation
+    /// </summary>
+    public static int EvalRPN(string[] tokens)
+    {
+        var stack = new Stack<int>(tokens.Length);
+
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            switch (tokens[i])
+            {
+                case "+":
+                    stack.Push(stack.Pop() + stack.Pop());
+                    break;
+                case "-":
+                    var b = stack.Pop();
+                    var a = stack.Pop();
+                    stack.Push(a - b);
+                    break;
+                case "*":
+                    stack.Push(stack.Pop() * stack.Pop());
+                    break;
+                case "/":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a / b);
+                    break;
+                default:
+                    stack.Push(int.Parse(tokens[i]));
+                    break;
+            }
+        }
+
+        return stack.Pop();
+    }
 }
