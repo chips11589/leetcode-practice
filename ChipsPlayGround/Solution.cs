@@ -4224,4 +4224,25 @@ public class Solution
 
         return stack.Pop();
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/linked-list-cycle
+    /// </summary>
+    public class LinkedListSolution
+    {
+        public bool HasCycle(ListNode head)
+        {
+            var set = new HashSet<ListNode>();
+
+            while (head?.next != null)
+            {
+                if (!set.Add(head))
+                    return true;
+
+                head = head.next;
+            }
+
+            return false;
+        }
+    }
 }
