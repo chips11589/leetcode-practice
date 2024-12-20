@@ -4260,4 +4260,46 @@ public class Solution
 
         return ans;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/merge-two-sorted-lists
+    /// </summary>
+    public ListNode MergeTwoLists(ListNode list1, ListNode list2)
+    {
+        ListNode first;
+
+        if (list2 == null || list1?.val < list2.val)
+        {
+            first = list1;
+            list1 = list1?.next;
+        }
+        else
+        {
+            first = list2;
+            list2 = list2?.next;
+        }
+
+        var curr = first;
+
+        while (list1 != null || list2 != null)
+        {
+            ListNode next = null;
+
+            if (list2 == null || list1?.val < list2.val)
+            {
+                next = list1;
+                list1 = list1?.next;
+            }
+            else
+            {
+                next = list2;
+                list2 = list2?.next;
+            }
+
+            curr.next = next;
+            curr = curr.next;
+        }
+
+        return first;
+    }
 }
