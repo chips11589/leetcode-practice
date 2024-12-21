@@ -4264,7 +4264,7 @@ public class Solution
     /// <summary>
     /// https://leetcode.com/problems/merge-two-sorted-lists
     /// </summary>
-    public ListNode MergeTwoLists(ListNode list1, ListNode list2)
+    public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
     {
         ListNode first;
 
@@ -4298,6 +4298,62 @@ public class Solution
 
             curr.next = next;
             curr = curr.next;
+        }
+
+        return first;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/copy-list-with-random-pointer
+    /// </summary>
+    public static Node CopyRandomList(Node head)
+    {
+        if (head == null)
+            return null;
+
+        var newHead = new Node(head.val);
+        var first = newHead;
+
+        var firstHead = head;
+
+        var i = 0;
+        var nodeDict = new Dictionary<Node, int>
+        {
+            { head, i }
+        };
+
+        var nodeList = new List<Node>
+        {
+            newHead
+        };
+
+        head = head?.next;
+        i++;
+
+        while (head != null)
+        {
+            newHead.next = new Node(head.val);
+            newHead = newHead.next;
+
+            nodeList.Add(newHead);
+            nodeDict.Add(head, i);
+
+            head = head.next;
+            i++;
+        }
+
+        head = firstHead;
+        newHead = first;
+
+        while (head != null)
+        {
+            if (head.random != null)
+            {
+                newHead.random = nodeList[nodeDict[head.random]];
+            }
+
+            newHead = newHead.next;
+            head = head.next;
         }
 
         return first;
