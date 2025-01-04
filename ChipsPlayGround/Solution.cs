@@ -4358,4 +4358,59 @@ public class Solution
 
         return first;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/reverse-linked-list-ii
+    /// </summary>
+    public static ListNode ReverseBetween(ListNode head, int left, int right)
+    {
+        head = new ListNode(1);
+        var next = head;
+        left = 2;
+        right = 4;
+
+        for (int i = 1; i < 5; i++)
+        {
+            next.next = new ListNode(i + 1);
+            next = next.next;
+        }
+
+        // head = [1,2,3,4,5], left = 2, right = 4
+        var first = head;
+
+        ListNode preLeft = null;
+
+        var prev = head;
+        var curr = head.next;
+        var index = 0;
+
+        while (index < left - 1 && curr != null)
+        {
+            preLeft = prev;
+            prev = curr;
+            curr = curr.next;
+            index++;
+        }
+
+        var firstLeft = prev;
+
+        while (index < right - 1 && curr != null)
+        {
+            var oldNext = curr.next;
+            curr.next = prev;
+            prev = curr;
+
+            curr = oldNext;
+            index++;
+        }
+
+        if (preLeft != null)
+            preLeft.next = prev;
+        else
+            first = prev;
+
+        firstLeft.next = curr;
+
+        return first;
+    }
 }

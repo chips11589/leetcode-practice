@@ -940,6 +940,12 @@ namespace ChipsTest
             Solution.IsHappy(n);
         }
 
+        [Fact]
+        public void ReverseBetween()
+        {
+            Solution.ReverseBetween(null, 0, 0);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
