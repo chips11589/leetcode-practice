@@ -4412,6 +4412,9 @@ public class Solution
         return first;
     }
 
+    /// <summary>
+    /// https://leetcode.com/problems/maximum-depth-of-binary-tree
+    /// </summary>
     public static int MaxDepth(TreeNode root)
     {
         if (root == null)
