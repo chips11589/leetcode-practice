@@ -4474,4 +4474,39 @@ public class Solution
 
         return root;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/symmetric-tree
+    /// </summary>
+    public static bool IsSymmetric(TreeNode root)
+    {
+        var stack1 = new Stack<TreeNode>();
+        stack1.Push(root.left);
+        
+        var stack2 = new Stack<TreeNode>();
+        stack2.Push(root.right);
+
+        while (stack1.Count > 0 && stack2.Count > 0)
+        {
+            var node1 = stack1.Pop();
+            var node2 = stack2.Pop();
+
+            if (node1?.val != node2?.val)
+                return false;
+
+            if (node1 != null)
+            {
+                stack1.Push(node1.left);
+                stack1.Push(node1.right);
+            }
+
+            if (node2 != null)
+            {
+                stack2.Push(node2.right);
+                stack2.Push(node2.left);
+            }
+        }
+
+        return true;
+    }
 }
