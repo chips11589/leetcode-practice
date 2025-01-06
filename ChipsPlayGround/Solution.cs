@@ -1,11 +1,9 @@
-﻿using Coding;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 
-namespace ChipsPlayGround;
+namespace Coding;
 
 public class Solution
 {
@@ -342,7 +340,7 @@ public class Solution
             var length = palindromeWordCounts[key];
             if (length < 0)
             {
-                longestSameLetterLength += (length - length % 4);
+                longestSameLetterLength += length - length % 4;
 
                 if (length % 4 != 0)
                 {
@@ -699,7 +697,7 @@ public class Solution
                             discountedPrice = discountLookup[products[i][j]].Item2;
                             break;
                         case 1:
-                            discountedPrice -= (discountedPrice * discountLookup[products[i][j]].Item2 / 100);
+                            discountedPrice -= discountedPrice * discountLookup[products[i][j]].Item2 / 100;
                             break;
                         case 2:
                             discountedPrice -= discountLookup[products[i][j]].Item2;
@@ -1422,7 +1420,7 @@ public class Solution
                     balanceCount = 1;
                 }
                 else if (balanceCount > 0 && s[i] == s[i - 1]
-                    && (i - (balanceCount + 1) * 2) is int oppositeIndex && oppositeIndex > -1 && s[i] == s[oppositeIndex])
+                    && i - (balanceCount + 1) * 2 is int oppositeIndex && oppositeIndex > -1 && s[i] == s[oppositeIndex])
                 {
                     balanceCount++;
                 }
@@ -1488,7 +1486,7 @@ public class Solution
         // same characters repeating, i.e. aaa, aaaa...
         for (int i = 0; i < charCounts.Count; i++)
         {
-            output += (charCounts[i].count * (charCounts[i].count + 1) / 2);
+            output += charCounts[i].count * (charCounts[i].count + 1) / 2;
         }
 
         // characters repeating on both sides of another character, i.e. aba, abaa...
@@ -1764,7 +1762,7 @@ public class Solution
 
         foreach (var machine in machines)
         {
-            productionPerDay += (1M / machine);
+            productionPerDay += 1M / machine;
         }
 
         var approximate = (long)Math.Round(goal / productionPerDay, MidpointRounding.ToPositiveInfinity);
@@ -1772,7 +1770,7 @@ public class Solution
 
         foreach (var machine in machines)
         {
-            production += (approximate / machine);
+            production += approximate / machine;
         }
 
         // Delta for the search
@@ -1791,7 +1789,7 @@ public class Solution
                 approximate -= days;
                 foreach (var machine in machines)
                 {
-                    production += (approximate / machine);
+                    production += approximate / machine;
                 }
             }
 
@@ -1801,7 +1799,7 @@ public class Solution
                 approximate += days;
                 foreach (var machine in machines)
                 {
-                    production += (approximate / machine);
+                    production += approximate / machine;
                 }
             }
 
@@ -1829,7 +1827,7 @@ public class Solution
 
             foreach (var machine in machines)
             {
-                production += (mid / machine);
+                production += mid / machine;
             }
 
             // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
@@ -1939,7 +1937,7 @@ public class Solution
         {
             max = Math.Max(max, prices[i]);
 
-            output += (max - prices[i]);
+            output += max - prices[i];
         }
 
         return output;
@@ -2362,7 +2360,7 @@ public class Solution
         var totalPairs = 0L;
         for (int i = 0; i < n - 1; i++)
         {
-            totalPairs += (n - i - 1);
+            totalPairs += n - i - 1;
         }
 
         Dictionary<long, long> dict = new();
@@ -2375,7 +2373,7 @@ public class Solution
 
         foreach (var goodKeys in dict.Values)
         {
-            var goodPairs = (goodKeys) * (goodKeys - 1) / 2;
+            var goodPairs = goodKeys * (goodKeys - 1) / 2;
             count += goodPairs;
         }
 
@@ -3556,8 +3554,8 @@ public class Solution
 
         for (int i = 0; i < s.Length; i++)
         {
-            if ((dict[s[i]] != 0 && dict[s[i]] != t[i])
-                || (dict2[t[i]] != 0 && dict2[t[i]] != s[i]))
+            if (dict[s[i]] != 0 && dict[s[i]] != t[i]
+                || dict2[t[i]] != 0 && dict2[t[i]] != s[i])
             {
                 return false;
             }
@@ -3742,7 +3740,7 @@ public class Solution
 
             while (n != 0)
             {
-                number += (n % 10) * (n % 10);
+                number += n % 10 * (n % 10);
 
                 n /= 10;
             }
@@ -4412,5 +4410,35 @@ public class Solution
         firstLeft.next = curr;
 
         return first;
+    }
+
+    public static int MaxDepth(TreeNode root)
+    {
+        if (root == null)
+            return 0;
+
+        var stack = new Stack<(TreeNode, int)>();
+        stack.Push((root, 1));
+
+        var maxDepth = 0;
+
+        while (stack.Count > 0)
+        {
+            var item = stack.Pop();
+            var node = item.Item1;
+            maxDepth = Math.Max(maxDepth, item.Item2);
+
+            if (node.left != null)
+            {
+                stack.Push((node.left, item.Item2 + 1));
+            }
+
+            if (node.right != null)
+            {
+                stack.Push((node.right, item.Item2 + 1));
+            }
+        }
+
+        return maxDepth;
     }
 }
