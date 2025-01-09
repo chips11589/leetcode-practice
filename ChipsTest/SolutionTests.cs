@@ -953,6 +953,13 @@ namespace ChipsTest
             Solution.BuildTree(preorder, inorder);
         }
 
+        [Theory]
+        [InlineData(new int[] { 9, 3, 15, 20, 7 }, new int[] { 9, 15, 7, 20, 3 })]
+        public void BuildTree2(int[] inorder, int[] postorder)
+        {
+            Solution.BuildTree2(inorder, postorder);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

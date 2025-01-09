@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -4535,6 +4536,35 @@ public class Solution
 
         var preOrderIndex = 0;
         var firstNode = BuildTreeNode(ref preOrderIndex, inorder);
+
+        return firstNode;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal
+    /// </summary>
+    public static TreeNode BuildTree2(int[] inorder, int[] postorder)
+    {
+        // inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+
+        TreeNode BuildTreeNode(ref int postOrderIndex, ReadOnlySpan<int> inorder)
+        {
+            if (postOrderIndex < 0 || inorder.Length == 0)
+                return null;
+
+            var node = new TreeNode(postorder[postOrderIndex]);
+            var mid = inorder.IndexOf(node.val);
+
+            postOrderIndex--;
+
+            node.right = BuildTreeNode(ref postOrderIndex, inorder[(mid + 1)..]);
+            node.left = BuildTreeNode(ref postOrderIndex, inorder[0..mid]);
+
+            return node;
+        }
+
+        var postOrderIndex = postorder.Length - 1;
+        var firstNode = BuildTreeNode(ref postOrderIndex, inorder);
 
         return firstNode;
     }
