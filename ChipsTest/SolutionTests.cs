@@ -946,6 +946,13 @@ namespace ChipsTest
             Solution.ReverseBetween(null, 0, 0);
         }
 
+        [Theory]
+        [InlineData(new int[] { 3, 9, 20, 15, 7 }, new int[] { 9, 3, 15, 20, 7 })]
+        public void BuildTree(int[] preorder, int[] inorder)
+        {
+            Solution.BuildTree(preorder, inorder);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

@@ -4482,7 +4482,7 @@ public class Solution
     {
         var stack1 = new Stack<TreeNode>();
         stack1.Push(root.left);
-        
+
         var stack2 = new Stack<TreeNode>();
         stack2.Push(root.right);
 
@@ -4508,5 +4508,34 @@ public class Solution
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+    /// </summary>
+    public static TreeNode BuildTree(int[] preorder, int[] inorder)
+    {
+        // preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+
+        TreeNode BuildTreeNode(ref int preOrderIndex, ReadOnlySpan<int> inorder)
+        {
+            if (preOrderIndex > preorder.Length - 1 || inorder.Length == 0)
+                return null;
+
+            var node = new TreeNode(preorder[preOrderIndex]);
+            var mid = inorder.IndexOf(preorder[preOrderIndex]);;
+
+            preOrderIndex++;
+
+            node.left = BuildTreeNode(ref preOrderIndex, inorder[0..mid]);
+            node.right = BuildTreeNode(ref preOrderIndex, inorder[(mid + 1)..]);
+
+            return node;
+        }
+
+        var preOrderIndex = 0;
+        var firstNode = BuildTreeNode(ref preOrderIndex, inorder);
+
+        return firstNode;
     }
 }
