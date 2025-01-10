@@ -11,6 +11,16 @@ public class Node(int _val)
     public int val = _val;
     public Node next = null;
     public Node random = null;
+
+    public Node left;
+    public Node right;
+
+    public Node(int _val, Node _left, Node _right, Node _next) : this (_val) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
 }
 
 

@@ -4568,4 +4568,43 @@ public class Solution
 
         return firstNode;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii
+    /// </summary>
+    public Node Connect(Node root)
+    {
+        if (root == null)
+            return null;
+
+        var queue = new Queue<Node>();
+
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var prev = queue.Dequeue();
+            var tmpQueue = new Queue<Node>();
+            tmpQueue.Enqueue(prev);
+
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                prev.next = node;
+                prev = node;
+
+                tmpQueue.Enqueue(node);
+            }
+
+            while (tmpQueue.Count > 0)
+            {
+                var node = tmpQueue.Dequeue();
+                
+                if (node.left != null) queue.Enqueue(node.left);
+                if (node.right != null) queue.Enqueue(node.right);
+            }
+        }
+
+        return root;
+    }
 }
