@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Management;
 using System.Text;
 
 namespace Coding;
@@ -4524,7 +4525,7 @@ public class Solution
                 return null;
 
             var node = new TreeNode(preorder[preOrderIndex]);
-            var mid = inorder.IndexOf(preorder[preOrderIndex]);;
+            var mid = inorder.IndexOf(preorder[preOrderIndex]); ;
 
             preOrderIndex++;
 
@@ -4572,7 +4573,7 @@ public class Solution
     /// <summary>
     /// https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii
     /// </summary>
-    public Node Connect(Node root)
+    public static Node Connect(Node root)
     {
         if (root == null)
             return null;
@@ -4599,9 +4600,60 @@ public class Solution
             while (tmpQueue.Count > 0)
             {
                 var node = tmpQueue.Dequeue();
-                
+
                 if (node.left != null) queue.Enqueue(node.left);
                 if (node.right != null) queue.Enqueue(node.right);
+            }
+        }
+
+        return root;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii
+    /// </summary>
+    public static Node Connect2(Node root)
+    {
+        if (root == null)
+            return null;
+
+        var curr = root;
+        Node firstChild = null;
+        Node prev = null;
+
+        while (curr != null)
+        {
+            if (curr.left != null)
+            {
+                if (prev != null)
+                {
+                    prev.next = curr.left;
+                }
+                prev = curr.left;
+
+                firstChild ??= prev;
+            }
+
+            if (curr.right != null)
+            {
+                if (prev != null)
+                {
+                    prev.next = curr.right;
+                }
+                prev = curr.right;
+
+                firstChild ??= prev;
+            }
+
+            if (curr.next != null)
+            {
+                curr = curr.next;
+            }
+            else
+            {
+                curr = firstChild;
+                prev = null;
+                firstChild = null;
             }
         }
 

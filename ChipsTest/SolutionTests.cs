@@ -960,6 +960,19 @@ namespace ChipsTest
             Solution.BuildTree2(inorder, postorder);
         }
 
+        [Fact]
+        public void Connect()
+        {
+            var root = new Node(1);
+            root.left = new Node(2);
+            root.right = new Node(3);
+            root.left.left = new Node(4);
+            root.left.right = new Node(5);
+            root.right.right = new Node(7);
+
+            Solution.Connect2(root);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
