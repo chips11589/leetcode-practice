@@ -973,6 +973,19 @@ namespace ChipsTest
             Solution.Connect2(root);
         }
 
+        [Fact]
+        public void Flatten()
+        {
+            var root = new TreeNode(1);
+            root.left = new TreeNode(2);
+            root.right = new TreeNode(5);
+            root.left.left = new TreeNode(3);
+            root.left.right = new TreeNode(4);
+            root.right.right = new TreeNode(6);
+
+            Solution.Flatten(root);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

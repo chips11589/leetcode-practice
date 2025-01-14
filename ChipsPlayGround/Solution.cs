@@ -4659,4 +4659,30 @@ public class Solution
 
         return root;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/flatten-binary-tree-to-linked-list
+    /// </summary>
+    public static void Flatten(TreeNode root) {
+        if (root == null)
+            return;
+
+        Flatten(root.left);
+        Flatten(root.right);
+
+        if (root.left != null)
+        {
+            var tmp = root.right;
+            root.right = root.left;
+            
+            var next = root.right;
+            while (next.right != null)
+            {
+                next = next.right;
+            }
+            next.right = tmp;
+            
+            root.left = null;
+        }
+    }
 }
