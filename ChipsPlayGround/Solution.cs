@@ -4681,8 +4681,24 @@ public class Solution
                 next = next.right;
             }
             next.right = tmp;
-            
+
             root.left = null;
         }
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/path-sum
+    /// </summary>
+    public static bool HasPathSum(TreeNode root, int targetSum)
+    {
+        if (root == null)
+            return false;
+
+        targetSum -= root.val;
+
+        if (targetSum == 0 && root.left == null && root.right == null)
+            return true;
+
+        return HasPathSum(root.left, targetSum) || HasPathSum(root.right, targetSum);
     }
 }
