@@ -4663,7 +4663,8 @@ public class Solution
     /// <summary>
     /// https://leetcode.com/problems/flatten-binary-tree-to-linked-list
     /// </summary>
-    public static void Flatten(TreeNode root) {
+    public static void Flatten(TreeNode root)
+    {
         if (root == null)
             return;
 
@@ -4674,7 +4675,7 @@ public class Solution
         {
             var tmp = root.right;
             root.right = root.left;
-            
+
             var next = root.right;
             while (next.right != null)
             {
@@ -4700,5 +4701,42 @@ public class Solution
             return true;
 
         return HasPathSum(root.left, targetSum) || HasPathSum(root.right, targetSum);
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/sum-root-to-leaf-numbers
+    /// </summary>
+    public static int SumNumbers(TreeNode root)
+    {
+        var queue = new Queue<TreeNode>();
+        var sum = 0;
+
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var count = queue.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                var node = queue.Dequeue();
+
+                if (node.left != null)
+                {
+                    node.left.val += node.val * 10;
+                    queue.Enqueue(node.left);
+                }
+                
+                if (node.right != null)
+                {
+                    node.right.val += node.val * 10;
+                    queue.Enqueue(node.right);
+                }
+
+                if (node.left == null && node.right == null) sum += node.val;
+            }
+        }
+
+        return sum;
     }
 }

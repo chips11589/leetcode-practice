@@ -986,6 +986,20 @@ namespace ChipsTest
             Solution.Flatten(root);
         }
 
+        [Fact]
+        public void SumNumbers()
+        {
+            var root = new TreeNode(6);
+            root.left = new TreeNode(4);
+            root.left.left = new TreeNode(6);
+            root.left.left.right = new TreeNode(4);
+            root.left.left.right.left = new TreeNode(2);
+            root.left.left.right.left.left = new TreeNode(6);
+            root.right = new TreeNode(1);
+
+            Solution.SumNumbers(root);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
