@@ -4726,7 +4726,7 @@ public class Solution
                     node.left.val += node.val * 10;
                     queue.Enqueue(node.left);
                 }
-                
+
                 if (node.right != null)
                 {
                     node.right.val += node.val * 10;
@@ -4738,5 +4738,35 @@ public class Solution
         }
 
         return sum;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/binary-tree-right-side-view
+    /// </summary>
+    public static IList<int> RightSideView(TreeNode root)
+    {
+        if (root == null) return [];
+
+        var queue = new Queue<TreeNode>();
+        var ans = new List<int>();
+
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var count = queue.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                var node = queue.Dequeue();
+
+                if (i == count - 1) ans.Add(node.val);
+
+                if (node.left != null) queue.Enqueue(node.left);
+                if (node.right != null) queue.Enqueue(node.right);
+            }
+        }
+
+        return ans;
     }
 }
