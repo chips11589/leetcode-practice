@@ -4769,4 +4769,35 @@ public class Solution
 
         return ans;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/average-of-levels-in-binary-tree
+    /// </summary>
+    public static IList<double> AverageOfLevels(TreeNode root)
+    {
+        var queue = new Queue<TreeNode>();
+        var ans = new List<double>();
+
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var count = queue.Count;
+            long sum = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                var node = queue.Dequeue();
+
+                sum += node.val;
+
+                if (node.left != null) queue.Enqueue(node.left);
+                if (node.right != null) queue.Enqueue(node.right);
+            }
+
+            ans.Add((double)sum / count);
+        }
+
+        return ans;
+    }
 }
