@@ -4807,7 +4807,7 @@ public class Solution
     public static IList<IList<int>> LevelOrder(TreeNode root)
     {
         var ans = new List<IList<int>>();
-        
+
         if (root == null) return ans;
 
         var queue = new Queue<TreeNode>();
@@ -4829,6 +4829,44 @@ public class Solution
             }
 
             ans.Add(list);
+        }
+
+        return ans;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal
+    /// </summary>
+    public static IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+    {
+        var ans = new List<IList<int>>();
+
+        if (root == null) return ans;
+
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+
+        var leftToRight = true;
+
+        while (queue.Count > 0)
+        {
+            var count = queue.Count;
+            var list = new List<int>(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                var node = queue.Dequeue();
+
+                list.Add(node.val);
+
+                if (node.left != null) queue.Enqueue(node.left);
+                if (node.right != null) queue.Enqueue(node.right);
+            }
+
+            if (!leftToRight) list.Reverse();
+
+            ans.Add(list);
+            leftToRight = !leftToRight;
         }
 
         return ans;
