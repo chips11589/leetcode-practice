@@ -4871,4 +4871,31 @@ public class Solution
 
         return ans;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/minimum-absolute-difference-in-bst
+    /// </summary>
+    public static int GetMinimumDifference(TreeNode root)
+    {
+        TreeNode prev = null;
+        var min = int.MaxValue;
+
+        void DFS(TreeNode root)
+        {
+            if (root == null) return;
+
+            DFS(root.left);
+
+            if (prev != null)
+                min = Math.Min(min, root.val - prev.val);
+
+            prev = root;
+
+            DFS(root.right);
+        }
+
+        DFS(root);
+
+        return min;
+    }
 }

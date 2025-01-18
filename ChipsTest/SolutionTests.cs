@@ -1000,6 +1000,18 @@ namespace ChipsTest
             Solution.SumNumbers(root);
         }
 
+        [Fact]
+        public void GetMinimumDifference()
+        {
+            var root = new TreeNode(236);
+            root.left = new TreeNode(104);
+            root.left.right = new TreeNode(227);
+            root.right = new TreeNode(701);
+            root.right.right = new TreeNode(911);
+
+            Solution.GetMinimumDifference(root);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
