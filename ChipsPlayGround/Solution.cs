@@ -131,7 +131,7 @@ public class Solution
         //[DataRow(new int[] { 1, 3 }, new int[] { 2 }, 2)]
         //[DataRow(new int[] { 1, 2 }, new int[] { 3, 4 }, 2.5)]
 
-        double findMedian(int[] a, int[] b)
+        static double FindMedian(int[] a, int[] b)
         {
             int minIndex = 0;
             int maxIndex = a.Length;
@@ -187,15 +187,16 @@ public class Solution
                 return (median + a[i]) / 2.0;
 
             return (median + Math.Min(a[i], b[j])) / 2.0;
-        };
+        }
+        ;
 
         if (nums1.Length < nums2.Length)
         {
-            return findMedian(nums1, nums2);
+            return FindMedian(nums1, nums2);
         }
         else
         {
-            return findMedian(nums2, nums1);
+            return FindMedian(nums2, nums1);
         }
     }
 
@@ -2403,7 +2404,7 @@ public class Solution
             {
                 Next(node, path, depth + 1);
             }
-        };
+        }
 
         Next(0, new int[n], 0);
 
@@ -4897,5 +4898,38 @@ public class Solution
         DFS(root);
 
         return min;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/kth-smallest-element-in-a-bst
+    /// </summary>
+    public static int KthSmallest(TreeNode root, int k)
+    {
+        int count = 0;
+        TreeNode node = null;
+
+        void DFS(TreeNode root)
+        {
+            if (root == null || node != null)
+            {
+                return;
+            }
+
+            DFS(root.left);
+
+            count++;
+
+            if (count == k)
+            {
+                node = root;
+                return;
+            }
+
+            DFS(root.right);
+        }
+
+        DFS(root);
+
+        return node.val;
     }
 }

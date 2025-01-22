@@ -1012,6 +1012,19 @@ namespace ChipsTest
             Solution.GetMinimumDifference(root);
         }
 
+        [Fact]
+        public void KthSmallest()
+        {
+            var root = new TreeNode(5);
+            root.left = new TreeNode(3);
+            root.left.left = new TreeNode(2);
+            root.left.left.left = new TreeNode(1);
+            root.left.right = new TreeNode(4);
+            root.right = new TreeNode(6);
+
+            Solution.KthSmallest(root, 4);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
