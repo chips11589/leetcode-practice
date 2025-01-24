@@ -4932,4 +4932,31 @@ public class Solution
 
         return node.val;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/validate-binary-search-tree
+    /// </summary>
+    public static bool IsValidBST(TreeNode root)
+    {
+        TreeNode prev = null;
+        var ans = true;
+
+        void DFS(TreeNode root)
+        {
+            if (root == null || !ans) return;
+
+            DFS(root.left);
+
+            if (prev != null && root.val <= prev.val)
+                ans = false;
+
+            prev = root;
+
+            DFS(root.right);
+        }
+
+        DFS(root);
+
+        return ans;
+    }
 }
