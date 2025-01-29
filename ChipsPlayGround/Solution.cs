@@ -4959,4 +4959,43 @@ public class Solution
 
         return ans;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/number-of-islands
+    /// </summary>
+    public static int NumIslands(char[][] grid)
+    {
+        var count = 0;
+
+        int CheckSurrounding(int i, int j)
+        {
+            var found = grid[i][j] - '0';
+
+            if (found == 1)
+            {
+                grid[i][j] = '2';
+
+                if (i > 0) found = Math.Max(found, CheckSurrounding(i - 1, j));
+                if (j > 0) found = Math.Max(found, CheckSurrounding(i, j - 1));
+                if (i < grid.Length - 1) found = Math.Max(found, CheckSurrounding(i + 1, j));
+                if (j < grid[0].Length - 1) found = Math.Max(found, CheckSurrounding(i, j + 1));
+            }
+
+            return found;
+        }
+
+        for (int i = 0; i < grid.Length; i++)
+        {
+            for (int j = 0; j < grid[i].Length; j++)
+            {
+                if (grid[i][j] == '1')
+                {
+                    CheckSurrounding(i, j);
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
