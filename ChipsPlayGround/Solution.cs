@@ -4998,4 +4998,44 @@ public class Solution
 
         return count;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/surrounded-regions
+    /// </summary>
+    public static void Solve(char[][] board)
+    {
+        void UpdateSurrounding(int i, int j)
+        {
+            if (board[i][j] == 'O')
+            {
+                board[i][j] = 'T';
+
+                if (i > 0) UpdateSurrounding(i - 1, j);
+                if (j > 0) UpdateSurrounding(i, j - 1);
+                if (i < board.Length - 1) UpdateSurrounding(i + 1, j);
+                if (j < board[0].Length - 1) UpdateSurrounding(i, j + 1);
+            }
+        }
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            if (board[i][0] == 'O') UpdateSurrounding(i, 0);
+            if (board[i][board[0].Length - 1] == 'O') UpdateSurrounding(i, board[0].Length - 1);
+        }
+
+        for (int j = 0; j < board[0].Length; j++)
+        {
+            if (board[0][j] == 'O') UpdateSurrounding(0, j);
+            if (board[^1][j] == 'O') UpdateSurrounding(board.Length - 1, j);
+        }
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[0].Length; j++)
+            {
+                if (board[i][j] == 'O') board[i][j] = 'X';
+                else if (board[i][j] == 'T') board[i][j] = 'O';
+            }
+        }
+    }
 }
