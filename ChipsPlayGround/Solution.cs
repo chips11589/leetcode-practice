@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Management;
 using System.Text;
+using Microsoft.Diagnostics.Tracing.Parsers.JSDumpHeap;
 
 namespace Coding;
 
@@ -5037,5 +5038,50 @@ public class Solution
                 else if (board[i][j] == 'T') board[i][j] = 'O';
             }
         }
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/clone-graph
+    /// </summary>
+    public static Node CloneGraph(Node node)
+    {
+        if (node == null) return null;
+
+        var queue = new Queue<Node>();
+        var dict = new Dictionary<int, Node>();
+        var visited = new HashSet<int>();
+        Node firstClone = null;
+
+        queue.Enqueue(node);
+
+        while (queue.Count > 0)
+        {
+            var curr = queue.Dequeue();
+            
+            if (visited.Add(curr.val))
+            {
+                if (!dict.TryGetValue(curr.val, out var clonedCurr))
+                {
+                    clonedCurr = new Node(curr.val);
+                    dict.Add(curr.val, clonedCurr);
+                }
+                firstClone ??= clonedCurr;
+
+                foreach (var neighbor in curr.neighbors)
+                {
+                    if (!dict.TryGetValue(neighbor.val, out var cloned))
+                    {
+                        cloned = new Node(neighbor.val);
+                        dict.Add(neighbor.val, cloned);
+                    }
+
+                    clonedCurr.neighbors.Add(cloned);
+
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+
+        return firstClone;
     }
 }

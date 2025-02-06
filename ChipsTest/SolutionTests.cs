@@ -1025,6 +1025,22 @@ namespace ChipsTest
             Solution.KthSmallest(root, 4);
         }
 
+        [Fact]
+        public void CloneGraph()
+        {
+            var node1 = new Node(1);
+            var node2 = new Node(2);
+            var node3 = new Node(3);
+            var node4 = new Node(4);
+
+            node1.neighbors = [ node2, node4 ];
+            node2.neighbors = [ node1, node3 ];
+            node3.neighbors = [ node2, node4 ];
+            node4.neighbors = [ node1, node3 ];
+
+            Solution.CloneGraph(node1);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
