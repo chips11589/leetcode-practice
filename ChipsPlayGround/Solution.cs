@@ -5057,7 +5057,7 @@ public class Solution
         while (queue.Count > 0)
         {
             var curr = queue.Dequeue();
-            
+
             if (visited.Add(curr.val))
             {
                 if (!dict.TryGetValue(curr.val, out var clonedCurr))
@@ -5083,5 +5083,74 @@ public class Solution
         }
 
         return firstClone;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/evaluate-division
+    /// </summary>
+    public static double[] CalcEquation(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+    {
+        var ans = new double[queries.Count];
+        var dict = new Dictionary<string, List<(string, double)>>();
+
+        for (int i = 0; i < equations.Count; i++)
+        {
+            if (!dict.TryGetValue(equations[i][0], out var adjacentList))
+            {
+                adjacentList = [];
+                dict[equations[i][0]] = adjacentList;
+            }
+            adjacentList.Add((equations[i][1], values[i]));
+
+            if (!dict.TryGetValue(equations[i][1], out var adjacentList2))
+            {
+                adjacentList2 = [];
+                dict[equations[i][1]] = adjacentList2;
+            }
+            adjacentList2.Add((equations[i][0], 1 / values[i]));
+        }
+
+        for (int i = 0; i < queries.Count; i++)
+        {
+            if (!dict.ContainsKey(queries[i][0]) || !dict.ContainsKey(queries[i][1]))
+            {
+                ans[i] = -1;
+                continue;
+            }
+
+            var queue = new Queue<(string, double)>();
+            var visited = new HashSet<string>();
+            double? queryWeight = null;
+
+            queue.Enqueue((queries[i][0], 1));
+
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+
+                if (node.Item1 == queries[i][1])
+                {
+                    queryWeight = node.Item2;
+                    break;
+                }
+
+                visited.Add(node.Item1);
+
+                for (int j = 0; j < dict[node.Item1].Count; j++)
+                {
+                    var neighbour = dict[node.Item1][j];
+
+                    if (visited.Contains(neighbour.Item1)) continue;
+
+                    var weight = dict[node.Item1].First(item => item.Item1 == neighbour.Item1).Item2;
+
+                    queue.Enqueue((neighbour.Item1, node.Item2 * weight));
+                }                
+            }
+
+            ans[i] = queryWeight != null ? queryWeight.Value : -1;
+        }
+
+        return ans;
     }
 }
