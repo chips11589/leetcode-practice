@@ -1049,6 +1049,12 @@ namespace ChipsTest
                 [["ff", "a"]]);
         }
 
+        [Fact]
+        public void CanFinish()
+        {
+            Solution.CanFinish(500, [[118,406],[238,303],[77,157],[157,13],[13,34],[34,157],[22,307],[363,446],[90,438],[86,247],[175,122],[198,399],[389,398],[488,225],[151,397],[40,269]]);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

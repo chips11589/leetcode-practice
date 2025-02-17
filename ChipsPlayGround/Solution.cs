@@ -5145,12 +5145,63 @@ public class Solution
                     var weight = dict[node.Item1].First(item => item.Item1 == neighbour.Item1).Item2;
 
                     queue.Enqueue((neighbour.Item1, node.Item2 * weight));
-                }                
+                }
             }
 
             ans[i] = queryWeight != null ? queryWeight.Value : -1;
         }
 
         return ans;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/course-schedule
+    /// </summary>
+    public static bool CanFinish(int numCourses, int[][] prerequisites)
+    {
+        if (prerequisites.Length == 0) return true;
+
+        var adjacents = new List<List<int>>(numCourses);
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            adjacents.Add([]);
+        }
+
+        foreach (var pre in prerequisites)
+        {
+            if (pre[0] == pre[1]) return false;
+
+            adjacents[pre[0]].Add(pre[1]);
+        }
+
+        var visited = new bool[numCourses];
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            if (!visited[i] && adjacents[i].Count > 0)
+            {
+                var queue = new Queue<(int, List<int>)>();
+                queue.Enqueue((i, []));
+
+                while (queue.Count > 0)
+                {
+                    var node = queue.Dequeue();
+
+                    visited[node.Item1] = true;
+
+                    foreach (var neighbour in adjacents[node.Item1])
+                    {
+                        if (node.Item2.Contains(neighbour)) return false;
+                        
+                        if (visited[neighbour]) continue;
+
+                        queue.Enqueue((neighbour, [..node.Item2, node.Item1]));
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }
