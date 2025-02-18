@@ -5193,13 +5193,66 @@ public class Solution
                     foreach (var neighbour in adjacents[node.Item1])
                     {
                         if (node.Item2.Contains(neighbour)) return false;
-                        
+
                         if (visited[neighbour]) continue;
 
-                        queue.Enqueue((neighbour, [..node.Item2, node.Item1]));
+                        queue.Enqueue((neighbour, [.. node.Item2, node.Item1]));
                     }
                 }
             }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/course-schedule
+    /// </summary>
+    public static bool CanFinish2(int numCourses, int[][] prerequisites)
+    {
+        var adjacents = new List<int>[numCourses];
+        var states = new int[numCourses];
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            adjacents[i] = [];
+        }
+
+        foreach (var preq in prerequisites)
+        {
+            if (preq[0] == preq[1]) return false;
+
+            adjacents[preq[0]].Add(preq[1]);
+        }
+
+        bool DFS(int node)
+        {
+            if (adjacents[node].Count == 0)
+            {
+                states[node] = 2;
+                
+                return true;
+            }
+
+            states[node] = 1;
+
+            foreach (var neighbour in adjacents[node])
+            {
+                if (states[neighbour] == 2) continue;
+
+                if (states[neighbour] == 1) return false;
+
+                if (!DFS(neighbour)) return false;
+            }
+
+            states[node] = 2;
+
+            return true;
+        }
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            if (!DFS(i)) return false;
         }
 
         return true;
