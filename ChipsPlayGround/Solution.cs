@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Management;
+using System.Runtime.CompilerServices;
 using System.Text;
+using BenchmarkDotNet.Configs;
 using Microsoft.Diagnostics.Tracing.Parsers.JSDumpHeap;
 
 namespace Coding;
@@ -5230,7 +5232,7 @@ public class Solution
             if (adjacents[node].Count == 0)
             {
                 states[node] = 2;
-                
+
                 return true;
             }
 
@@ -5256,5 +5258,69 @@ public class Solution
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/course-schedule-ii
+    /// </summary>
+    public static int[] FindOrder(int numCourses, int[][] prerequisites)
+    {
+        var adjacents = new List<int>[numCourses];
+        var states = new int[numCourses];
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            adjacents[i] = [];
+        }
+
+        foreach (var preq in prerequisites)
+        {
+            if (preq[0] == preq[1]) return [];
+
+            adjacents[preq[0]].Add(preq[1]);
+        }
+
+        var steps = new List<int>();
+
+        bool DFS(int node)
+        {
+            if (adjacents[node].Count == 0)
+            {
+                states[node] = 2;
+                steps.Add(node);
+
+                return true;
+            }
+
+            states[node] = 1;
+
+            foreach (var neighbour in adjacents[node])
+            {
+                if (states[neighbour] == 1) return false;
+
+                if (states[neighbour] == 2) continue;
+
+                if (!DFS(neighbour)) return false;
+            }
+
+            states[node] = 2;
+            steps.Add(node);
+
+            return true;
+        }
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            if (states[i] != 0) continue;
+
+            if (!DFS(i)) return [];
+        }
+
+        for (int i = 0; i < states.Length; i++)
+        {
+            if (states[i] == 0) steps.Add(i);
+        }
+
+        return [.. steps];
     }
 }
