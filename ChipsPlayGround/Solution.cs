@@ -6,7 +6,9 @@ using System.Management;
 using System.Runtime.CompilerServices;
 using System.Text;
 using BenchmarkDotNet.Configs;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using Microsoft.Diagnostics.Tracing.Parsers.JSDumpHeap;
+using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
 
 namespace Coding;
 
@@ -5322,5 +5324,95 @@ public class Solution
         }
 
         return [.. steps];
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/snakes-and-ladders
+    /// </summary>
+    public static int SnakesAndLadders(int[][] board)
+    {
+        var n = board.Length * board.Length + 1;
+        var adjacents = new List<int>[n];
+        var leftToRight = true;
+        var cells = new int[n];
+        var cellIndex = 1;
+        var j = 0;
+
+        for (int i = 1; i < n; i++)
+        {
+            adjacents[i] = [];
+        }
+
+        for (int i = board.Length - 1; i >= 0; i--)
+        {
+            while (j >= 0 && j < board.Length)
+            {
+                cells[cellIndex] = board[i][j];
+
+                if (leftToRight)
+                {
+                    j++;
+                }
+                else
+                {
+                    j--;
+                }
+
+                cellIndex++;
+            }
+
+            j = Math.Max(j, 0);
+            j = Math.Min(j, board.Length - 1);
+            leftToRight = !leftToRight;
+        }
+
+        for (int i = 1; i < cells.Length; i++)
+        {
+            bool furthestReached = false;
+
+            for (var k = 6; k > 0; k--)
+            {
+                if (i + k >= cells.Length) continue;
+
+                if (cells[i + k] == -1)
+                {
+                    if (!furthestReached) adjacents[i].Add(i + k);
+                    
+                    furthestReached = true;
+                }
+                else
+                {
+                    adjacents[i].Add(cells[i + k]);
+                }
+            }
+        }
+
+        var queue = new Queue<(int, int)>();
+        var visited = new bool[n];
+        var node = (1, 0);
+        queue.Enqueue(node);
+
+        while (queue.Count > 0)
+        {
+            var queueLength = queue.Count;
+
+            for (int i = 0; i < queueLength; i++)
+            {
+                node = queue.Dequeue();
+
+                visited[node.Item1] = true;
+
+                foreach (var neighbour in adjacents[node.Item1])
+                {
+                    if (neighbour == n - 1) return node.Item2 + 1;
+
+                    if (visited[neighbour]) continue;
+
+                    queue.Enqueue((neighbour, node.Item2 + 1));
+                }
+            }
+        }
+
+        return -1;
     }
 }

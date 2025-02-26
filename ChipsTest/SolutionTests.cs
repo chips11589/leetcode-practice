@@ -1055,6 +1055,12 @@ namespace ChipsTest
             Solution.CanFinish(500, [[118,406],[238,303],[77,157],[157,13],[13,34],[34,157],[22,307],[363,446],[90,438],[86,247],[175,122],[198,399],[389,398],[488,225],[151,397],[40,269]]);
         }
 
+        [Fact]
+        public void SnakesAndLadders()
+        {
+            Solution.SnakesAndLadders([[-1,10,-1,15,-1],[-1,-1,18,2,20],[-1,-1,12,-1,-1],[2,4,11,18,8],[-1,-1,-1,-1,-1]]);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
