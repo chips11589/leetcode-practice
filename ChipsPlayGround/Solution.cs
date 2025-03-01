@@ -5377,7 +5377,7 @@ public class Solution
                 if (cells[i + k] == -1)
                 {
                     if (!furthestReached) adjacents[i].Add(i + k);
-                    
+
                     furthestReached = true;
                 }
                 else
@@ -5407,6 +5407,57 @@ public class Solution
                     if (neighbour == n - 1) return node.Item2 + 1;
 
                     if (visited[neighbour]) continue;
+
+                    queue.Enqueue((neighbour, node.Item2 + 1));
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/minimum-genetic-mutation/
+    /// </summary>
+    public static int MinMutation(string startGene, string endGene, string[] bank)
+    {
+        if (!bank.Contains(endGene)) return -1;
+
+        var queue = new Queue<(string, int)>();
+        queue.Enqueue((startGene, 0));
+        var visited = new HashSet<string>();
+
+        static bool IsNeighbour(string item1, string item2)
+        {
+            var diff = 0;
+
+            for (int i = 0; i < item1.Length; i++)
+            {
+                if (item1[i] != item2[i]) diff++;
+
+                if (diff > 1) return false;
+            }
+
+            return diff == 1;
+        }
+
+        while (queue.Count > 0)
+        {
+            var queueLength = queue.Count;
+
+            for (int i = 0; i < queueLength; i++)
+            {
+                var node = queue.Dequeue();
+
+                visited.Add(node.Item1);
+
+                foreach (var neighbour in bank)
+                {
+                    if (visited.Contains(neighbour)) continue;
+
+                    if (!IsNeighbour(neighbour, node.Item1)) continue;
+
+                    if (neighbour == endGene) return node.Item2 + 1;
 
                     queue.Enqueue((neighbour, node.Item2 + 1));
                 }
