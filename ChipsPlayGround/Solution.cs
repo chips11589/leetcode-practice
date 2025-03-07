@@ -5466,4 +5466,72 @@ public class Solution
 
         return -1;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/implement-trie-prefix-tree
+    /// </summary>
+    public class Trie
+    {
+        private class Node()
+        {
+            public Dictionary<char, Node> Children = [];
+
+            public int Weight;
+
+            public int ChildWeights;
+        }
+
+        private readonly Node root = new();
+
+        public Trie() { }
+
+        private void Insert(string word, Node node, int index)
+        {
+            node.Weight++;
+
+            if (index >= word.Length) return;
+
+            if (!node.Children.TryGetValue(word[index], out Node child))
+            {
+                child = new Node();
+                node.Children.Add(word[index], child);
+            }
+            node.ChildWeights++;
+
+            Insert(word, child, index + 1);
+        }
+
+        public void Insert(string word)
+        {
+            Insert(word, root, 0);
+        }
+
+        private bool StartsWith(string prefix, out Node node)
+        {
+            int index = 0;
+            node = root;
+
+            while (index < prefix.Length)
+            {
+                if (!node.Children.TryGetValue(prefix[index], out node))
+                    return false;
+
+                index++;
+            }
+
+            return true;
+        }
+
+        public bool Search(string word)
+        {
+            var result = StartsWith(word, out Node node);
+
+            return result && node.Weight > node.ChildWeights;
+        }
+
+        public bool StartsWith(string prefix)
+        {
+            return StartsWith(prefix, out _);
+        }
+    }
 }
