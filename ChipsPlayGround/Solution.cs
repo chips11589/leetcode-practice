@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
@@ -5532,6 +5533,71 @@ public class Solution
         public bool StartsWith(string prefix)
         {
             return StartsWith(prefix, out _);
+        }
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/design-add-and-search-words-data-structure
+    /// </summary>
+    public class WordDictionary
+    {
+        private readonly Node root = new();
+
+        private class Node()
+        {
+            public Dictionary<char, Node> Children = [];
+
+            public bool IsLeaf;
+        }
+
+        public WordDictionary() { }
+
+        public void AddWord(string word)
+        {
+            var node = root;
+
+            foreach (var c in word)
+            {
+                if (!node.Children.TryGetValue(c, out var child))
+                {
+                    child = new Node();
+                    node.Children.Add(c, child);
+                }
+
+                node = child;
+            }
+
+            node.IsLeaf = true;
+        }
+
+        public bool Search(string word)
+        {
+            static bool Search(string word, Node node, int index)
+            {
+                if (index >= word.Length) return node.IsLeaf;
+
+                var found = false;
+
+                if (word[index] != '.')
+                {
+                    if (!node.Children.TryGetValue(word[index], out node))
+                        return false;
+
+                    found = Search(word, node, index + 1);
+                }
+                else
+                {
+                    foreach (var child in node.Children)
+                    {
+                        if (!found)
+                            found |= Search(word, child.Value, index + 1);
+                    }
+                }
+
+                return found;
+            }
+
+            return Search(word, root, 0);
         }
     }
 }

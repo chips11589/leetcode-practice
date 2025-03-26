@@ -1061,6 +1061,20 @@ namespace ChipsTest
             Solution.SnakesAndLadders([[-1,10,-1,15,-1],[-1,-1,18,2,20],[-1,-1,12,-1,-1],[2,4,11,18,8],[-1,-1,-1,-1,-1]]);
         }
 
+        [Fact]
+        public void WordDictionary()
+        {
+            Solution.WordDictionary wordDictionary = new();
+
+            wordDictionary.AddWord("bad");
+            wordDictionary.AddWord("dad");
+            wordDictionary.AddWord("mad");
+            wordDictionary.Search("pad"); // return False
+            wordDictionary.Search("bad"); // return True
+            wordDictionary.Search(".ad"); // return True
+            wordDictionary.Search("b.."); // return True
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();
