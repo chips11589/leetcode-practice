@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Globalization;
 using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
@@ -5599,5 +5600,47 @@ public class Solution
 
             return Search(word, root, 0);
         }
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+    /// </summary>
+    public static IList<string> LetterCombinations(string digits)
+    {
+        var dict = new Dictionary<char, string>
+        {
+            {'2', "abc"},
+            {'3', "def"},
+            {'4', "ghi"},
+            {'5', "jkl"},
+            {'6', "mno"},
+            {'7', "pqrs"},
+            {'8', "tuv"},
+            {'9', "wxyz"},
+        };
+
+        var output = new List<string>();
+        var strBuilder = new StringBuilder();
+
+        void BackTrack(int index)
+        {
+            if (index == digits.Length)
+            {
+                output.Add(strBuilder.ToString());
+                return;
+            }
+
+            foreach (var c in dict[digits[index]])
+            {
+                strBuilder.Append(c);
+                BackTrack(index + 1);
+                strBuilder.Remove(strBuilder.Length - 1, 1);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(digits))
+            BackTrack(0);
+
+        return output;
     }
 }
