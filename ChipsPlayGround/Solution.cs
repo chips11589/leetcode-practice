@@ -5643,4 +5643,33 @@ public class Solution
 
         return output;
     }
+
+    /// <summary>
+    /// https://leetcode.com/problems/combinations
+    /// </summary>
+    public static IList<IList<int>> Combine(int n, int k)
+    {
+        var ans = new List<IList<int>>();
+        List<int> list = [];
+        
+        void BackTrack(int index)
+        {
+            if (list.Count == k)
+            {
+                ans.Add([.. list]);
+                return;
+            }
+
+            for (int i = index; i <= n; i++)
+            {
+                list.Add(i);
+                BackTrack(i + 1);
+                list.RemoveAt(list.Count - 1);
+            }
+        }
+
+        BackTrack(1);
+
+        return ans;
+    }
 }
