@@ -2114,75 +2114,6 @@ public class Solution
     }
 
     /// <summary>
-    /// https://leetcode.com/problems/permutations/
-    /// </summary>
-    public static IList<IList<int>> Permute(int[] nums)
-    {
-
-        // 1,2,3
-        // 1,2,3 - 1,3,2 - 2,1,3 - 2,3,1 - 3,2,1 - 3,1,2
-
-        IList<IList<int>> output = new List<IList<int>>();
-        var n = nums.Length;
-        //var selected = new HashSet<int>();
-
-        //void Loop(int depth)
-        //{
-        //    for (int i = 0; i < n; i++)
-        //    {
-        //        if (selected.Contains(nums[i])) continue;
-
-        //        if (depth == 1)
-        //        {
-        //            var list = selected.ToList();
-        //            list.Add(nums[i]);
-
-        //            output.Add(list);
-        //        }
-        //        else
-        //        {
-        //            selected.Add(nums[i]);
-
-        //            Loop(depth - 1);
-
-        //            selected.Remove(nums[i]);
-        //        }
-        //    }
-        //}
-        //Loop(n);
-
-        var stack = new Stack<(int, HashSet<int>)>();
-        stack.Push((n, new HashSet<int>()));
-
-        while (stack.Count > 0)
-        {
-            var item = stack.Pop();
-
-            for (int i = 0; i < n; i++)
-            {
-                if (item.Item2.Contains(nums[i])) continue;
-
-                if (item.Item1 == 1)
-                {
-                    var list = item.Item2.ToList();
-                    list.Add(nums[i]);
-
-                    output.Add(list);
-                }
-                else
-                {
-                    var hash = item.Item2.ToHashSet();
-                    hash.Add(nums[i]);
-
-                    stack.Push((item.Item1 - 1, hash));
-                }
-            }
-        }
-
-        return output;
-    }
-
-    /// <summary>
     /// https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks/
     /// </summary>
     public static int MinimumRounds(int[] tasks)
@@ -5669,6 +5600,42 @@ public class Solution
         }
 
         BackTrack(1);
+
+        return ans;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/permutations
+    /// </summary>
+    public static IList<IList<int>> Permute(int[] nums)
+    {
+        var ans = new List<IList<int>>();
+        var visited = new int[nums.Length];
+        var list = new List<int>();
+
+        void BackTrack(int level)
+        {
+            if (list.Count == nums.Length)
+            {
+                ans.Add([.. list]);
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (visited[i] == 1) continue;
+
+                list.Add(nums[i]);
+                visited[i] = 1;
+                
+                BackTrack(level + 1);
+
+                list.RemoveAt(list.Count - 1);
+                visited[i] = 0;
+            }
+        }
+
+        BackTrack(0);
 
         return ans;
     }
