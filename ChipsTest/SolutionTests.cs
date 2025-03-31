@@ -1075,6 +1075,12 @@ namespace ChipsTest
             wordDictionary.Search("b.."); // return True
         }
 
+        [Fact]
+        public void CombinationSum()
+        {
+            Solution.CombinationSum([2,3,6,7], 7);
+        }
+
         private static List<IList<int>> ConvertStringsToLists(string expected)
         {
             return expected.Split("],[").Select(arr => arr.Split(',').Select(i => Convert.ToInt32(i)).ToList() as IList<int>).ToList();

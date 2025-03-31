@@ -5582,7 +5582,7 @@ public class Solution
     {
         var ans = new List<IList<int>>();
         List<int> list = [];
-        
+
         void BackTrack(int index)
         {
             if (list.Count == k)
@@ -5627,11 +5627,48 @@ public class Solution
 
                 list.Add(nums[i]);
                 visited[i] = 1;
-                
+
                 BackTrack(level + 1);
 
                 list.RemoveAt(list.Count - 1);
                 visited[i] = 0;
+            }
+        }
+
+        BackTrack(0);
+
+        return ans;
+    }
+
+    /// <summary>
+    /// https://leetcode.com/problems/combination-sum
+    /// </summary>
+    public static IList<IList<int>> CombinationSum(int[] candidates, int target)
+    {
+        var ans = new List<IList<int>>();
+        var list = new List<int>();
+        int sum = 0;
+
+        void BackTrack(int level)
+        {
+            if (sum >= target)
+            {
+                if (sum == target)
+                {
+                    ans.Add([.. list]);
+                }
+                return;
+            }
+
+            for (int i = level; i < candidates.Length; i++)
+            {
+                sum += candidates[i];
+                list.Add(candidates[i]);
+
+                BackTrack(i);
+
+                sum -= candidates[i];
+                list.RemoveAt(list.Count - 1);
             }
         }
 
